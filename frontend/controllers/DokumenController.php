@@ -71,7 +71,7 @@ class DokumenController extends Controller
 
     public function actionPeraturan()
     {
-        $searchModel = new DokumenSearch(['tipe_dokumen' => 1]);
+        $searchModel = new DokumenSearch(['tipe_dokumen' => Dokumen::TYPE_PERATURAN]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index-peraturan', [
@@ -82,7 +82,7 @@ class DokumenController extends Controller
 
     public function actionMonografi()
     {
-        $searchModel = new DokumenSearch(['tipe_dokumen' => 2]);
+        $searchModel = new DokumenSearch(['tipe_dokumen' => Dokumen::TYPE_MONOGRAFI]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index-monografi', [
@@ -93,7 +93,7 @@ class DokumenController extends Controller
 
     public function actionArtikel()
     {
-        $searchModel = new DokumenSearch(['tipe_dokumen' => 3]);
+        $searchModel = new DokumenSearch(['tipe_dokumen' => Dokumen::TYPE_ARTIKEL]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index-artikel', [
@@ -104,7 +104,7 @@ class DokumenController extends Controller
 
     public function actionPutusan()
     {
-        $searchModel = new DokumenSearch(['tipe_dokumen' => 4]);
+        $searchModel = new DokumenSearch(['tipe_dokumen' => Dokumen::TYPE_PUTUSAN]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index-putusan', [
@@ -170,7 +170,7 @@ class DokumenController extends Controller
     
      public function actionBerlaku()
     {
-        $searchModel = new DokumenSearch(['status' => 'Berlaku', 'tipe_dokumen' => 1]);
+        $searchModel = new DokumenSearch(['status' => 'Berlaku', 'tipe_dokumen' => Dokumen::TYPE_PERATURAN]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index-berlaku', [
@@ -215,19 +215,19 @@ class DokumenController extends Controller
         }
 
         switch ($model->tipe_dokumen) {
-            case 1:
+            case Dokumen::TYPE_PERATURAN:
                 return $this->render('view-peraturan', ['model' => $this->findModel($id), 'title' => $title, 'deskripsi' => $deskripsi, 'keywords' => $keywords]);
                 break;
 
-            case 2:
+            case Dokumen::TYPE_MONOGRAFI:
                 return $this->render('view-monografi', ['model' => $this->findModel($id), 'title' => $title, 'deskripsi' => $deskripsi]);
                 break;
 
-            case 3:
+            case Dokumen::TYPE_ARTIKEL:
                 return $this->render('view-artikel', ['model' => $this->findModel($id), 'title' => $title, 'deskripsi' => $deskripsi]);
                 break;
 
-            case 4:
+            case Dokumen::TYPE_PUTUSAN:
                 return $this->render('view-putusan', ['model' => $this->findModel($id), 'title' => $title, 'deskripsi' => $deskripsi]);
                 break;
         }

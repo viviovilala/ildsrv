@@ -13,6 +13,7 @@ use yii\web\UploadedFile;
 use backend\web\components\FileHelper;
 use common\components\SafeDownload;
 use yii\data\ActiveDataProvider;
+use backend\models\DokumenJdih;
 /**
  * PenyusunanController implements the CRUD actions for Rancangan model.
  */
@@ -204,7 +205,7 @@ class PenyusunanController extends Controller
     public function actionParent($id)
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $institutionType = ($id == '11e449f371bb47e09607313231373436') ? 'Kementerian' : 'Lembaga';
+        $institutionType = ($id == DokumenJdih::KEMENTERIAN_ID) ? 'Kementerian' : 'Lembaga';
         $institutions = \backend\models\peraturan\Institutions::find()->where(['jenis' => $institutionType])->all();
         $results = [];
         foreach ($institutions as $institution) {

@@ -101,7 +101,7 @@ $this->registerJs('<script type="application/ld+json">' . Json::encode($ldJson) 
                         </div>
                         <div class="col-sm-6">
                             <label class="text-muted small text-uppercase font-weight-700 mb-1 d-block tracking-wider">Tanggal Penetapan</label>
-                            <div class="text-dark font-weight-600"><?= $model->tanggal_penetapan ? $model->getTanggal($model->tanggal_penetapan) : '-' ?></div>
+                            <div class="text-dark font-weight-600"><?= $model->tanggal_penetapan ? \common\components\DateHelper::formatIndonesian($model->tanggal_penetapan) : '-' ?></div>
                         </div>
                         <div class="col-sm-6">
                             <label class="text-muted small text-uppercase font-weight-700 mb-1 d-block tracking-wider">Tanggal Pengundangan</label>

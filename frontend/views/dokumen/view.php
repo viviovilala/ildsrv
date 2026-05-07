@@ -248,7 +248,7 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                         <?php if ($model->tanggal_penetapan): ?>
                         <div class="col-sm-6">
                             <label class="text-muted small text-uppercase font-weight-700 mb-1 d-block tracking-wider">Tanggal</label>
-                            <div class="text-dark font-weight-600"><?= $model->getTanggal($model->tanggal_penetapan) ?></div>
+                            <div class="text-dark font-weight-600"><?= \common\components\DateHelper::formatIndonesian($model->tanggal_penetapan) ?></div>
                         </div>
                         <?php endif; ?>
 

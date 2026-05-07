@@ -15,7 +15,7 @@ class LogService
         $log->aksi = $aksi;
         $log->keterangan = 'User ' . Yii::$app->user->identity->username
             . ' melakukan ' . strtolower($aksi) . ' pada '
-            . $log->getTanggal2(date('Y-m-d H:i:s'));
+            . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
 
         if (!$log->save()) {
             Yii::error('Failed to save log: ' . json_encode($log->getErrors()));

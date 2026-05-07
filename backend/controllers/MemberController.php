@@ -12,6 +12,7 @@ use yii\web\UploadedFile;
 use backend\web\components\FileHelper;
 use yii\web\Response;
 use yii\helpers\Html;
+use backend\models\DokumenJdih;
 
 /**
  * MemberController implements the CRUD actions for Member model.
@@ -65,7 +66,7 @@ class MemberController extends Controller
         $model = new Member();
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->status = 10; // STATUS_ACTIVE
+            $model->status = Member::STATUS_ACTIVE;
             $model->setPassword(Yii::$app->security->generateRandomString(8));
             $model->generateAuthKey();
 
@@ -178,7 +179,7 @@ class MemberController extends Controller
     public function actionParent($id)
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
-        $institutionType = ($id == '11e449f371bb47e09607313231373436') ? 'Kementerian' : 'Lembaga';
+        $institutionType = ($id == DokumenJdih::KEMENTERIAN_ID) ? 'Kementerian' : 'Lembaga';
         $institutions = \backend\models\peraturan\Institutions::find()->where(['jenis' => $institutionType])->all();
         $results = [];
         foreach ($institutions as $institution) {

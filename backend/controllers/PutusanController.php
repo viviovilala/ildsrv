@@ -6,6 +6,7 @@ use Yii;
 use backend\models\Putusan;
 use backend\models\Pengarang;
 use backend\models\LogPustakawan;
+use common\components\DateHelper;
 use backend\models\DataPengarang;
 use backend\models\JenisPeraturan;
 use backend\models\DataSubyek;
@@ -180,7 +181,7 @@ class PutusanController extends Controller
             $log->dokumen_id = $model->id;
             $log->controller = 'Putusan';
             $log->aksi = 'Tambah Peraturan';
-            $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data putusan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+            $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data putusan pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
             $log->save();
 
             Yii::$app->session->setFlash('success', 'Data Putusan berhasil ditambahkan');
@@ -260,7 +261,7 @@ class PutusanController extends Controller
                 $log->dokumen_id = $id;
                 $log->controller = 'Putusan';
                 $log->aksi = 'Ubah Putusan';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data putusan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data putusan pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('success', 'Data Putusan berhasil diubah');
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -342,7 +343,7 @@ class PutusanController extends Controller
                 $log->dokumen_id = $id;
                 $log->controller = 'Peraturan';
                 $log->aksi = 'Tambah Pengarang';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data pengarang pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data pengarang pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
 
                 Yii::$app->session->setFlash('success', 'Data Pengarang berhasil ditambah');
@@ -477,7 +478,7 @@ class PutusanController extends Controller
                 $log->dokumen_id = $model->id_dokumen;
                 $log->controller = 'Peraturan';
                 $log->aksi = 'Ubah Lampiran';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data lampiran pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data lampiran pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('warning', 'Data Lampiran berhasil diubah');
                 return $this->redirect(['view', 'id' => $model->id_dokumen]);
@@ -590,7 +591,7 @@ class PutusanController extends Controller
                 $log->dokumen_id = $model->id_dokumen;
                 $log->controller = 'Putusan';
                 $log->aksi = 'Dokumen Terkait';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data dokumen terkait putusan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data dokumen terkait putusan pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('success', 'Data Dokumen terkait berhasil ditambah');
                 return $this->redirect(['view', 'id' => $id]);

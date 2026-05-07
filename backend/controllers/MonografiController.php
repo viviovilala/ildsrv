@@ -6,6 +6,7 @@ use Yii;
 use backend\models\Monografi;
 use backend\models\Pengarang;
 use backend\models\LogPustakawan;
+use common\components\DateHelper;
 use backend\models\JenisPeraturan;
 use backend\models\DataPengarang;
 use backend\models\DataSubyek;
@@ -164,7 +165,7 @@ class MonografiController extends Controller
     public function actionView($id)
     {
 
-        $teu = new ActiveDataProvider([
+        $pengarangProvider = new ActiveDataProvider([
             'query' => DataPengarang::find()->where(['id_dokumen' => $id]),
             'pagination' => ['pageSize' => 10]
         ]);
@@ -211,7 +212,7 @@ class MonografiController extends Controller
 
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'teu' => $teu,
+            'teu' => $pengarangProvider,
             'subyek' => $subyek,
             'lampiran' => $lampiran,
             'peraturan' => $peraturan,
@@ -228,7 +229,7 @@ class MonografiController extends Controller
     {
         $model = new Monografi();
         $lampiran = new DataLampiran();
-        $teu = new DataPengarang();
+        $pengarangProvider = new DataPengarang();
         $log = new LogPustakawan();
 
         if ($model->load(Yii::$app->request->post())) {
@@ -250,7 +251,7 @@ class MonografiController extends Controller
             $log->dokumen_id = $model->id;
             $log->controller = 'Monografi';
             $log->aksi = 'Tambah Monografi';
-            $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data monografi pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+            $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data monografi pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
             $log->save();
 
             Yii::$app->session->setFlash('success', 'Data Monografi berhasil ditambahkan');
@@ -310,7 +311,7 @@ class MonografiController extends Controller
                 $log->dokumen_id = $id;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Ubah Peraturan';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah Data Monografi pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah Data Monografi pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('success', 'Data Monografi berhasil diubah');
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -337,7 +338,7 @@ class MonografiController extends Controller
             $log->dokumen_id = $id;
             $log->controller = 'Monografi';
             $log->aksi = 'Hapus Peraturan';
-            $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus Data Monografi pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+            $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus Data Monografi pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
             $log->save();
 
             Yii::$app->session->setFlash('danger', 'Data Monografi berhasil dihapus');
@@ -389,7 +390,7 @@ class MonografiController extends Controller
                 $log->dokumen_id = $id;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Tambah Pengarang';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data pengarang pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data pengarang pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
 
                 Yii::$app->session->setFlash('success', 'Data Pengarang berhasil ditambah');
@@ -406,20 +407,20 @@ class MonografiController extends Controller
     public function actionTambahPengarang2($id)
     {
         $model = new Pengarang();
-        $teu = new DataPengarang();
-        if ($model->load(Yii::$app->request->post()) && $teu->load(Yii::$app->request->post())) {
+        $pengarangProvider = new DataPengarang();
+        if ($model->load(Yii::$app->request->post()) && $pengarangProvider->load(Yii::$app->request->post())) {
             $model->status = 'Publish';
             if ($model->save()) {
 
-                $teu->id_dokumen = $id;
-                $teu->nama_pengarang = $model->id;
-                $teu->save();
+                $pengarangProvider->id_dokumen = $id;
+                $pengarangProvider->nama_pengarang = $model->id;
+                $pengarangProvider->save();
 
                 $log = new LogPustakawan();
                 $log->dokumen_id = $id;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Tambah Pengarang';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data pengarang pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data pengarang pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
 
                 Yii::$app->session->setFlash('success', 'Data Pengarang berhasil ditambah');
@@ -428,7 +429,7 @@ class MonografiController extends Controller
         } else {
             return $this->render('teu/create-teu2', [
                 'model' => $model,
-                'teu' => $teu,
+                'teu' => $pengarangProvider,
                 'id' => $id,
             ]);
         }
@@ -444,7 +445,7 @@ class MonografiController extends Controller
                 $log->dokumen_id = $model->id_dokumen;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Ubah Pengarang';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data teu monografi pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data teu monografi pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('warning', 'Data Pengarang berhasil diubah');
                 return $this->redirect(['view', 'id' => $model->id_dokumen]);
@@ -464,7 +465,7 @@ class MonografiController extends Controller
         $log->dokumen_id = $model->id_dokumen;
         $log->controller = 'Monografi';
         $log->aksi = 'Hapus Pengarang';
-        $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data teu peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+        $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data teu peraturan pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
         $log->save();
         Yii::$app->session->setFlash('danger', 'Data Pengarang berhasil dihapus');
         return $this->redirect(['view', 'id' => $model->id_dokumen]);
@@ -486,7 +487,7 @@ class MonografiController extends Controller
                 $log->dokumen_id = $id;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Tambah Subjek';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data subjek peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data subjek peraturan pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
 
                 Yii::$app->session->setFlash('success', 'Data Subyek berhasil ditambah');
@@ -509,7 +510,7 @@ class MonografiController extends Controller
                 $log->dokumen_id = $model->id_dokumen;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Ubah Subjek';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data subjek peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data subjek peraturan pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('warning', 'Data Subyek berhasil diubah');
                 return $this->redirect(['view', 'id' => $model->id_dokumen]);
@@ -529,7 +530,7 @@ class MonografiController extends Controller
         $log->dokumen_id = $model->id_dokumen;
         $log->controller = 'Monografi';
         $log->aksi = 'Hapus Subjek';
-        $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data subjek peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+        $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data subjek peraturan pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
         $log->save();
         Yii::$app->session->setFlash('danger', 'Data Subyek berhasil dihapus');
         return $this->redirect(['view', 'id' => $model->id_dokumen]);
@@ -560,7 +561,7 @@ class MonografiController extends Controller
                 $log->dokumen_id = $id;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Tambah Eksemplar';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data kode eksemplar pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data kode eksemplar pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
 
                 Yii::$app->session->setFlash('success', 'Data Eksemplar berhasil ditambah');
@@ -601,7 +602,7 @@ class MonografiController extends Controller
                 $log->dokumen_id = $model->id_dokumen;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Ubah Eksemplar';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data eksemplar monografi pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data eksemplar monografi pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('warning', 'Data Eksemplar berhasil diubah');
                 return $this->redirect(['view', 'id' => $model->id_dokumen]);
@@ -622,7 +623,7 @@ class MonografiController extends Controller
         $log->dokumen_id = $model->id_dokumen;
         $log->controller = 'Monografi';
         $log->aksi = 'Hapus Subjek';
-        $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data subjek peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+        $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data subjek peraturan pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
         $log->save();
         Yii::$app->session->setFlash('danger', 'Data Subyek berhasil dihapus');
         return $this->redirect(['view', 'id' => $model->id_dokumen]);
@@ -654,7 +655,7 @@ class MonografiController extends Controller
                 $log->dokumen_id = $model->id;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Tambah Lampiran';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data lampiran pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data lampiran pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('success', 'Data Lampiran berhasil ditambah');
                 return $this->redirect(['view', 'id' => $id]);
@@ -687,7 +688,7 @@ class MonografiController extends Controller
                 $log->dokumen_id = $model->id_dokumen;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Ubah Lampiran';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data lampiran pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data lampiran pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('warning', 'Data Lampiran berhasil diubah');
                 return $this->redirect(['view', 'id' => $model->id_dokumen]);
@@ -707,7 +708,7 @@ class MonografiController extends Controller
         $log->dokumen_id = $model->id_dokumen;
         $log->controller = 'Monografi';
         $log->aksi = 'Hapus Lampiran';
-        $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data lampiran peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+        $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data lampiran peraturan pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
         $log->save();
         Yii::$app->session->setFlash('danger', 'Data Lampiran berhasil dihapus');
         return $this->redirect(['view', 'id' => $model->id_dokumen]);
@@ -727,7 +728,7 @@ class MonografiController extends Controller
                 $log->dokumen_id = $model->id_dokumen;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Tambah Peraturan Terkait';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah Data Monografi terkait pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah Data Monografi terkait pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('success', 'Data Monografi Terkait berhasil ditambah');
                 return $this->redirect(['view', 'id' => $id]);
@@ -748,7 +749,7 @@ class MonografiController extends Controller
                 $log->dokumen_id = $model->id_dokumen;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Ubah Peraturan Terkait';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah Data Monografi terkait pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah Data Monografi terkait pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('warning', 'Data Monografi Terkait berhasil diubah');
                 return $this->redirect(['view', 'id' => $model->id_dokumen]);
@@ -768,7 +769,7 @@ class MonografiController extends Controller
         $log->dokumen_id = $model->id_dokumen;
         $log->controller = 'Monografi';
         $log->aksi = 'Hapus Peraturan Terkait';
-        $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus Data Monografi terkait pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+        $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus Data Monografi terkait pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
         $log->save();
         Yii::$app->session->setFlash('danger', 'Data Monografi Terkait berhasil dihapus');
         return $this->redirect(['view', 'id' => $model->id_dokumen]);
@@ -797,7 +798,7 @@ class MonografiController extends Controller
                 $log->dokumen_id = $model->id_dokumen;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Dokumen Terkait';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data dokumen terkait peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data dokumen terkait peraturan pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('success', 'Data Dokumen terkait berhasil ditambah');
                 return $this->redirect(['view', 'id' => $id]);
@@ -819,7 +820,7 @@ class MonografiController extends Controller
                 $log->dokumen_id = $id;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Tambah Dokumen Terkait';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data dokumen terkait pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data dokumen terkait pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('success', 'Data Dokumen terkait berhasil ditambah');
                 return $this->redirect(['view', 'id' => $id]);
@@ -852,7 +853,7 @@ class MonografiController extends Controller
                 $log->dokumen_id = $model->id_dokumen;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Ubah Dokumen Terkait';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data dokumen terkait peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data dokumen terkait peraturan pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('warning', 'Data Dokumen terkait berhasil diubah');
                 return $this->redirect(['view', 'id' => $model->id_dokumen]);
@@ -872,7 +873,7 @@ class MonografiController extends Controller
         $log->dokumen_id = $model->id_dokumen;
         $log->controller = 'Monografi';
         $log->aksi = 'Hapus Dokumen Terkait';
-        $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data dokumen terkait peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+        $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data dokumen terkait peraturan pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
         $log->save();
         Yii::$app->session->setFlash('danger', 'Data Dokumen terkait berhasil dihapus');
         return $this->redirect(['view', 'id' => $model->id_dokumen]);
@@ -900,7 +901,7 @@ class MonografiController extends Controller
                 $log->dokumen_id = $model->id_dokumen;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Tambah Uji Materi';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data uji materi pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data uji materi pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('success', 'Data Hasil Uji Materi berhasil ditambah');
                 return $this->redirect(['view', 'id' => $id]);
@@ -932,7 +933,7 @@ class MonografiController extends Controller
                 $log->dokumen_id = $model->id_dokumen;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Ubah Uji Materi';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data uji materi peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data uji materi peraturan pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('warning', 'Data Hasil Uji Materi berhasil diubah');
                 return $this->redirect(['view', 'id' => $model->id_dokumen]);
@@ -952,7 +953,7 @@ class MonografiController extends Controller
         $log->dokumen_id = $model->id_dokumen;
         $log->controller = 'Monografi';
         $log->aksi = 'Hapus Uji Materi';
-        $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data uji materi pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+        $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data uji materi pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
         $log->save();
         Yii::$app->session->setFlash('danger', 'Data Hasil Uji Materi berhasil dihapus');
         return $this->redirect(['view', 'id' => $model->id_dokumen]);
@@ -971,7 +972,7 @@ class MonografiController extends Controller
                 $log->dokumen_id = $model->id_dokumen;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Tambah Status';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data status peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data status peraturan pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('success', 'Data Status berhasil ditambah');
                 return $this->redirect(['view', 'id' => $id]);
@@ -992,7 +993,7 @@ class MonografiController extends Controller
                 $log->dokumen_id = $model->id_dokumen;
                 $log->controller = 'Monografi';
                 $log->aksi = 'Ubah Status';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data status peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data status peraturan pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('warning', 'Data status berhasil diubah');
                 return $this->redirect(['view', 'id' => $model->id_dokumen]);
@@ -1012,7 +1013,7 @@ class MonografiController extends Controller
         $log->dokumen_id = $model->id_dokumen;
         $log->controller = 'Monografi';
         $log->aksi = 'Hapus Status';
-        $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data status peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+        $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data status peraturan pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
         $log->save();
         Yii::$app->session->setFlash('danger', 'Data status berhasil dihapus');
         return $this->redirect(['view', 'id' => $model->id_dokumen]);

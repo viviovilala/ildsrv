@@ -10,11 +10,10 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\UploadedFile;
+use frontend\models\Dokumen;
 
 class BeritaController extends Controller
 {
-    const KEMENTERIAN_ID = '11e449f371bb47e09607313231373436';
-
     public function behaviors()
     {
         return [
@@ -113,7 +112,7 @@ class BeritaController extends Controller
     public function actionParent($id)
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $institutionType = ($id == '11e449f371bb47e09607313231373436') ? 'Kementerian' : 'Lembaga';
+        $institutionType = ($id == Dokumen::KEMENTERIAN_ID) ? 'Kementerian' : 'Lembaga';
         $institutions = \backend\models\peraturan\Institutions::find()->where(['jenis' => $institutionType])->all();
         $results = [];
         foreach ($institutions as $institution) {

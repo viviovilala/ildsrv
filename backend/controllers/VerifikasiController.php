@@ -7,6 +7,7 @@ use backend\models\DokumenJdih;
 use backend\models\Eksemplar;
 use backend\models\Pengarang;
 use backend\models\LogPustakawan;
+use common\components\DateHelper;
 use backend\models\JenisPeraturan;
 use backend\models\DataPengarang;
 use backend\models\DataSubyek;
@@ -64,7 +65,7 @@ class VerifikasiController extends Controller
     {
         $searchModel = new DokumenJdihSearch(['tahun_terbit'=>$tahun]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->andWhere(['tipe_dokumen'=>1]);
+        $dataProvider->query->andWhere(['tipe_dokumen'=>DokumenJdih::TYPE_PERATURAN]);
         return $this->render('index-peraturan', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -105,7 +106,7 @@ class VerifikasiController extends Controller
                 $log->dokumen_id = $id;
                 $log->controller = 'Peraturan';
                 $log->aksi = 'Ubah Peraturan';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data peraturan pada ' . DateHelper::formatIndonesian(date('Y-m-d H:i:s'));
                 $log->save();
                 Yii::$app->session->setFlash('success', 'Data Peraturan berhasil diubah');
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -122,7 +123,7 @@ class VerifikasiController extends Controller
     {
         $searchModel = new DokumenJdihSearch(['tahun_terbit'=>$tahun]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->andWhere(['tipe_dokumen'=>2]);
+        $dataProvider->query->andWhere(['tipe_dokumen'=>DokumenJdih::TYPE_MONOGRAFI]);
         return $this->render('index-monografi', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -133,7 +134,7 @@ class VerifikasiController extends Controller
     {
         $searchModel = new DokumenJdihSearch(['tahun_terbit'=>$tahun]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->andWhere(['tipe_dokumen'=>3]);
+        $dataProvider->query->andWhere(['tipe_dokumen'=>DokumenJdih::TYPE_ARTIKEL]);
         return $this->render('index-artikel', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -144,7 +145,7 @@ class VerifikasiController extends Controller
     {
         $searchModel = new DokumenJdihSearch(['tahun_terbit'=>$tahun]);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->query->andWhere(['tipe_dokumen'=>4]);
+        $dataProvider->query->andWhere(['tipe_dokumen'=>DokumenJdih::TYPE_PUTUSAN]);
         return $this->render('index-putusan', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -160,7 +161,7 @@ class VerifikasiController extends Controller
 
         $model = $this->findModel($id);
 
-        $teu = new ActiveDataProvider([
+        $pengarangProvider = new ActiveDataProvider([
             'query' => DataPengarang::find()->where(['id_dokumen' => $id]),
             'pagination' => ['pageSize' => 10]
         ]);
@@ -206,10 +207,10 @@ class VerifikasiController extends Controller
         ]);
 
         switch ($model->tipe_dokumen) {
-            case '1':
+            case (string)DokumenJdih::TYPE_PERATURAN:
             return $this->render('view-peraturan', [
                 'model' => $this->findModel($id),
-                'teu' => $teu,
+                'teu' => $pengarangProvider,
                 'subyek' => $subyek,
                 'lampiran' => $lampiran,
                 'peraturan' => $peraturan,
@@ -222,10 +223,10 @@ class VerifikasiController extends Controller
             break;
 
 
-            case '2':
+            case (string)DokumenJdih::TYPE_MONOGRAFI:
             return $this->render('view-monografi', [
                 'model' => $this->findModel($id),
-                'teu' => $teu,
+                'teu' => $pengarangProvider,
                 'subyek' => $subyek,
                 'lampiran' => $lampiran,
                 'peraturan' => $peraturan,
@@ -240,10 +241,10 @@ class VerifikasiController extends Controller
 
             break;
 
-            case '3':
+            case (string)DokumenJdih::TYPE_ARTIKEL:
             return $this->render('view-artikel', [
                 'model' => $this->findModel($id),
-                'teu' => $teu,
+                'teu' => $pengarangProvider,
                 'subyek' => $subyek,
                 'lampiran' => $lampiran,
                 'peraturan' => $peraturan,
@@ -255,10 +256,10 @@ class VerifikasiController extends Controller
             ]);
             break;
 
-            case '4':
+            case (string)DokumenJdih::TYPE_PUTUSAN:
             return $this->render('view-putusan', [
                 'model' => $this->findModel($id),
-                'teu' => $teu,
+                'teu' => $pengarangProvider,
                 'subyek' => $subyek,
                 'lampiran' => $lampiran,
                 'peraturan' => $peraturan,
@@ -273,7 +274,7 @@ class VerifikasiController extends Controller
 
             return $this->render('view', [
                 'model' => $this->findModel($id),
-                'teu' => $teu,
+                'teu' => $pengarangProvider,
                 'subyek' => $subyek,
                 'lampiran' => $lampiran,
                 'peraturan' => $peraturan,
@@ -321,16 +322,16 @@ class VerifikasiController extends Controller
         $model->save();
 
         switch ($model->tipe_dokumen) {
-            case '1':
+            case (string)DokumenJdih::TYPE_PERATURAN:
                 $view = 'peraturan';
                 break;
-            case '2':
+            case (string)DokumenJdih::TYPE_MONOGRAFI:
                 $view = 'monografi';
                 break;
-            case '3':
+            case (string)DokumenJdih::TYPE_ARTIKEL:
                 $view = 'artikel';
                 break;
-            case '4':
+            case (string)DokumenJdih::TYPE_PUTUSAN:
                 $view = 'putusan';
                 break;
         }
