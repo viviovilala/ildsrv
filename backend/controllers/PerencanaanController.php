@@ -11,6 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use backend\web\components\FileHelper;
+use common\components\SafeDownload;
 use yii\data\ActiveDataProvider;
 /**
  * PerencanaanController implements the CRUD actions for Rancangan model.
@@ -206,16 +207,9 @@ class PerencanaanController extends Controller
         
     }
 
-    public function actionDownload($id) 
-    { 
-
-        $path = Yii::getAlias('@common'). '/uploads/rancangan/' . $id;
-        if (file_exists($path)) {
-
-            return Yii::$app->response->sendFile($path);
-        } else {
-            throw new NotFoundHttpException("can't find {$id} file");
-        }
+    public function actionDownload($id)
+    {
+        return SafeDownload::sendFile('@common/uploads/rancangan', $id);
     } 
 
 

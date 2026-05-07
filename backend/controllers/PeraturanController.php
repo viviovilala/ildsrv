@@ -21,6 +21,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use backend\web\components\FileHelper;
+use common\components\SafeDownload;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
 use yii\helpers\Html;
@@ -961,10 +962,10 @@ class PeraturanController extends Controller
                 switch ($model->status_peraturan) {
                     case 'dicabut':
                         $model2 = new DataStatus();
-                        $model2->id_dokumen = $_POST['DataStatus']['id_dokumen_target'];
+                        $model2->id_dokumen = Yii::$app->request->post('DataStatus')['id_dokumen_target'];
                         $model2->status_peraturan = 'mencabut';
                         $model2->id_dokumen_target = $id;
-                        $model2->tanggal_perubahan = $_POST['DataStatus']['tanggal_perubahan'];
+                        $model2->tanggal_perubahan = Yii::$app->request->post('DataStatus')['tanggal_perubahan'];
                         $model2->save(false);
 
                         $model3 = Peraturan::findOne($id);
@@ -993,10 +994,10 @@ class PeraturanController extends Controller
                                 return $this->redirect(['view', 'id' => $id]);
                             } else {
                                 $model2 = new DataStatus();
-                                $model2->id_dokumen = $_POST['DataStatus']['id_dokumen_target'];
+                                $model2->id_dokumen = Yii::$app->request->post('DataStatus')['id_dokumen_target'];
                                 $model2->status_peraturan = 'dicabut';
                                 $model2->id_dokumen_target = $id;
-                                $model2->tanggal_perubahan = $_POST['DataStatus']['tanggal_perubahan'];
+                                $model2->tanggal_perubahan = Yii::$app->request->post('DataStatus')['tanggal_perubahan'];
                                 $model2->save(false);
 
                                 $model3 = Peraturan::findOne($id);
@@ -1023,10 +1024,10 @@ class PeraturanController extends Controller
                                 Yii::$app->session->setFlash('danger', 'peraturan sudah tidak berlaku');
                                 return $this->redirect(['view', 'id' => $id]);
                             } else {
-                                $model2->id_dokumen = $_POST['DataStatus']['id_dokumen_target'];
+                                $model2->id_dokumen = Yii::$app->request->post('DataStatus')['id_dokumen_target'];
                                 $model2->status_peraturan = 'diubah';
                                 $model2->id_dokumen_target = $id;
-                                $model2->tanggal_perubahan = $_POST['DataStatus']['tanggal_perubahan'];
+                                $model2->tanggal_perubahan = Yii::$app->request->post('DataStatus')['tanggal_perubahan'];
                                 $model2->save(false);
 
                                 $model3 = Peraturan::findOne($id);
@@ -1047,10 +1048,10 @@ class PeraturanController extends Controller
 
                     case 'diubah':
                         $model2 = new DataStatus();
-                        $model2->id_dokumen = $_POST['DataStatus']['id_dokumen_target'];
+                        $model2->id_dokumen = Yii::$app->request->post('DataStatus')['id_dokumen_target'];
                         $model2->status_peraturan = 'mengubah';
                         $model2->id_dokumen_target = $id;
-                        $model2->tanggal_perubahan = $_POST['DataStatus']['tanggal_perubahan'];
+                        $model2->tanggal_perubahan = Yii::$app->request->post('DataStatus')['tanggal_perubahan'];
                         $model2->save(false);
 
                         $model3 = Peraturan::findOne($id);
@@ -1072,7 +1073,7 @@ class PeraturanController extends Controller
                         $model2->id_dokumen = 0;
                         $model2->status_peraturan = '-';
                         $model2->id_dokumen_target = $id;
-                        $model2->tanggal_perubahan = $_POST['DataStatus']['tanggal_perubahan'];
+                        $model2->tanggal_perubahan = Yii::$app->request->post('DataStatus')['tanggal_perubahan'];
                         $model2->save(false);
 
                         $model3 = Peraturan::findOne($id);
@@ -1218,43 +1219,22 @@ class PeraturanController extends Controller
 
     public function actionDownload($id)
     {
-
-        $path = Yii::getAlias('@common') . '/dokumen/' . $id;
-        if (file_exists($path)) {
-
-            return Yii::$app->response->sendFile($path);
-        } else {
-            throw new NotFoundHttpException("can't find {$id} file");
-        }
+        return SafeDownload::sendFile('@common/dokumen', $id);
     }
 
     public function actionDownloadPeraturan($id)
     {
         $file = DataLampiran::find()->where(['id_dokumen' => $id])->one();
-
-
-        $path = Yii::getAlias('@common') . '/dokumen/' . $file->dokumen_lampiran;
-        if (file_exists($path)) {
-
-            return Yii::$app->response->sendFile($path);
-        } else {
-            throw new NotFoundHttpException("Tidak dapat menemukan file {$id}, silahkan hubungi admin");
+        if (!$file) {
+            throw new NotFoundHttpException('Data lampiran tidak ditemukan.');
         }
+        return SafeDownload::sendFile('@common/dokumen', $file->dokumen_lampiran);
     }
 
 
     public function actionDownloadAbstrak($id)
     {
-        //$file = DataLampiran::find()->where(['id_dokumen'=>$id])->one();
-
-
-        $path = Yii::getAlias('@common') . '/dokumen/' . $id;
-        if (file_exists($path)) {
-
-            return Yii::$app->response->sendFile($path);
-        } else {
-            throw new NotFoundHttpException("Tidak dapat menemukan file {$id}, silahkan hubungi admin");
-        }
+        return SafeDownload::sendFile('@common/dokumen', $id);
     }
 
     public function actionLoaddokumen($q = null, $id = null)

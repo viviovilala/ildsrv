@@ -44,6 +44,14 @@ Header set Permissions-Policy "geolocation=self"
 # Increase cookie security
 <IfModule php5_module>
   php_value session.cookie_httponly true
+  php_value session.cookie_secure 1
+  php_value session.cookie_samesite Strict
+</IfModule>
+
+<IfModule php7_module>
+  php_value session.cookie_httponly true
+  php_value session.cookie_secure 1
+  php_value session.cookie_samesite Strict
 </IfModule>
 
 # Settings to hide index.php and ensure pretty urls

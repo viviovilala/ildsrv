@@ -20,6 +20,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use backend\web\components\FileHelper;
+use common\components\SafeDownload;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
 
@@ -854,43 +855,22 @@ return $this->render('create',['model'=>$model]);
 
     public function actionDownload($id)
     {
-
-        $path = Yii::getAlias('@common') . '/dokumen/' . $id;
-        if (file_exists($path)) {
-
-            return Yii::$app->response->sendFile($path);
-        } else {
-            throw new NotFoundHttpException("can't find {$id} file");
-        }
+        return SafeDownload::sendFile('@common/dokumen', $id);
     }
 
     public function actionDownloadPeraturan($id)
     {
         $file = DataLampiran::find()->where(['id_dokumen' => $id])->one();
-
-
-        $path = Yii::getAlias('@common') . '/dokumen/' . $file->dokumen_lampiran;
-        if (file_exists($path)) {
-
-            return Yii::$app->response->sendFile($path);
-        } else {
-            throw new NotFoundHttpException("Tidak dapat menemukan file {$id}, silahkan hubungi admin");
+        if (!$file) {
+            throw new NotFoundHttpException('Data lampiran tidak ditemukan.');
         }
+        return SafeDownload::sendFile('@common/dokumen', $file->dokumen_lampiran);
     }
 
 
     public function actionDownloadAbstrak($id)
     {
-        //$file = DataLampiran::find()->where(['id_dokumen'=>$id])->one();
-
-
-        $path = Yii::getAlias('@common') . '/dokumen/' . $id;
-        if (file_exists($path)) {
-
-            return Yii::$app->response->sendFile($path);
-        } else {
-            throw new NotFoundHttpException("Tidak dapat menemukan file {$id}, silahkan hubungi admin");
-        }
+        return SafeDownload::sendFile('@common/dokumen', $id);
     }
 
     public function actionLoaddokumen($q = null, $id = null)

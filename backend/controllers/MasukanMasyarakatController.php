@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use common\components\SafeDownload;
 
 /**
  * MasukanMasyarakatController implements the CRUD actions for MasukanMasyarakat model.
@@ -112,16 +113,9 @@ class MasukanMasyarakatController extends Controller
         }
     }
 
-    public function actionDownload($id) 
-    { 
-
-        $path = Yii::getAlias('@common'). '/uploads/masyarakat/' . $id;
-        if (file_exists($path)) {
-
-            return Yii::$app->response->sendFile($path);
-        } else {
-            throw new NotFoundHttpException("can't find {$id} file");
-        }
+    public function actionDownload($id)
+    {
+        return SafeDownload::sendFile('@common/uploads/masyarakat', $id);
     } 
     /**
      * Updates an existing MasukanMasyarakat model.

@@ -11,9 +11,25 @@ use backend\models\CirculationSearch;
 use yii\data\ActiveDataProvider;
 use yii\web\UploadedFile;
 use backend\web\components\FileHelper;
+use yii\filters\AccessControl;
 
 class ProfileController extends \yii\web\Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
         return $this->render('index');

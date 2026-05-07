@@ -42,11 +42,15 @@ return [
         'user' => [
             'identityClass' => 'common\models\Member',
             'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+            'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true, 'secure' => getenv('YII_ENV') === 'prod', 'sameSite' => 'Lax'],
         ],
         'session' => [
-            // this is the name of the session cookie used for login on the frontend
-            'name' => 'practical-a-frontend',
+            'name' => 'ildis-frontend',
+            'cookieParams' => [
+                'httponly' => true,
+                'secure' => getenv('YII_ENV') === 'prod',
+                'sameSite' => 'Lax',
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

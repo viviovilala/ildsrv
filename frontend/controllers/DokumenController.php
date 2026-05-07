@@ -9,6 +9,7 @@ use frontend\models\DokumenSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use yii\web\UploadedFile;
 
 /**
@@ -22,6 +23,17 @@ class DokumenController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['create', 'update', 'delete'],
+                'rules' => [
+                    [
+                        'actions' => ['create', 'update', 'delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -264,33 +276,17 @@ class DokumenController extends Controller
 
     public function actionJenis($id)
     {
-
-        //  $dokumen = \backend\models\JenisDokumenHukum::find()->where(['singkatan_peraturan'=>$id])->one(); 
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $rows = \frontend\models\DokumenHukum::find()->where(['parent_id' => $id])->all();
-        //echo "<option> Pilih Jenis Dokumen </option>";
-        echo "<option></option>";
-        if (count($rows) > 0) {
-            foreach ($rows as $branch) {
-                echo "<option value'" . $branch->id . "'>" . $branch->name . "</option>";
-            }
+        $result = [];
+        foreach ($rows as $branch) {
+            $result[] = ['id' => $branch->id, 'name' => $branch->name];
         }
+        return $result;
     }
 
     public function actionDownload($id)
     {
-
-        $path = Yii::getAlias('@common') . '/dokumen/' . $id;
-        if (file_exists($path)) {
-
-            // $model = Dokumen::find()
-            //    ->where(['lampiran' => $id])
-            //    ->one();
-
-            //    $model->hit_download = $model->hit_download +1;
-            //    $model->save(); 
-            return Yii::$app->response->sendFile($path);
-        } else {
-            throw new NotFoundHttpException("Tidak dapat menemukan file {$id}, silahkan hubungi admin");
-        }
+        return \common\components\SafeDownload::sendFile('@common/dokumen', $id);
     }
 }
