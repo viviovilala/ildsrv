@@ -56,10 +56,6 @@ class PeraturanController extends Controller
     public function actionIndex()
     {
         $searchModel = new PeraturanSearch();
-        /*
-        $searchModel = new PeraturanSearch(['id'=>\Yii::$app->user->identity->direktorat_id]);
-        $dataProvider->query->andWhere(['id'=>[2,3,4]]);
-        */
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -149,30 +145,36 @@ class PeraturanController extends Controller
             if (!empty($jenisperaturan)) {
                 $model->jenis_peraturan = $jenisperaturan->name;
                 $model->singkatan_jenis = $jenisperaturan->singkatan;
-                // $model->bentuk_peraturan = $jenisperaturan->name;
             }
 
             $abstrak = UploadedFile::getInstance($model, 'abstrak');
             if (!empty($abstrak)) {
-                $model->abstrak =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $abstrak->name));
                 $model->abstrak = FileHelper::sanitizeFilename($abstrak->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->abstrak;
                 $abstrak->saveAs($path);
             }
-            $model->save();
+            if (!$model->save()) {
+                Yii::$app->session->setFlash('error', 'Gagal menyimpan data peraturan.');
+                return $this->render('create', [
+                    'model' => $model,
+                    'lampiran' => $lampiran,
+                    'teu' => $teu,
+                ]);
+            }
 
             $lampiran->id_dokumen = $model->id;
             $dokumen_lampiran = UploadedFile::getInstance($lampiran, 'dokumen_lampiran');
 
             if (!empty($dokumen_lampiran)) {
-                $lampiran->dokumen_lampiran =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $dokumen_lampiran->name));
                 $lampiran->dokumen_lampiran = FileHelper::sanitizeFilename($dokumen_lampiran->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $lampiran->dokumen_lampiran;
                 $dokumen_lampiran->saveAs($path);
             }
             $lampiran->url_lampiran = Yii::getAlias('@imageurl') . '/common/dokumen/' . $lampiran->dokumen_lampiran;
 
-            $lampiran->save();
+            if (!$lampiran->save()) {
+                Yii::$app->session->setFlash('error', 'Gagal menyimpan data lampiran.');
+            }
 
             $teu->id_dokumen = $model->id;
             $teu->save();
@@ -186,21 +188,6 @@ class PeraturanController extends Controller
 
             Yii::$app->session->setFlash('success', 'Data Peraturan berhasil ditambahkan');
             return $this->redirect(['view', 'id' => $model->id]);
-
-            // $jenisperaturan = JenisPeraturan::findOne($model->jenis_peraturan);
-            // if(!empty($jenisperaturan))
-            // {
-            //     $model->jenis_peraturan = $jenisperaturan->name;
-            //    // $model->singkatan_jenis = 'UU';
-            //     $model->bentuk_peraturan = $jenisperaturan->name;
-            // }
-            /*
-            isi parameter tambahan
-            
-            $model->id = md5(uniqid(mt_rand(), true));
-            $jenis = $_POST['Peraturan']['field']);    
-            $model->tahun_ln =  date('Y', strtotime($_POST['Peraturan']['tgl_diundangkan']));
-            */
         } else {
             Yii::$app->session->setFlash('warning', 'Pastikan Data Tajuk Entry Utama Sudah diinput terlebih dahulu');
             return $this->render('create', [
@@ -227,12 +214,10 @@ class PeraturanController extends Controller
                 $model->jenis_peraturan = $jenisperaturan->name;
                 $model->singkatan_jenis = $jenisperaturan->singkatan;
                 $model->dokumen_type_id = $jenisperaturan->id;
-                // $model->bentuk_peraturan = $jenisperaturan->name;
             }
 
             $abstrak = UploadedFile::getInstance($model, 'abstrak');
             if (!empty($abstrak)) {
-                $model->abstrak =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $abstrak->name));
                 $model->abstrak = FileHelper::sanitizeFilename($abstrak->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->abstrak;
                 $abstrak->saveAs($path);
@@ -245,25 +230,32 @@ class PeraturanController extends Controller
             $model->tahun_terbit = htmlentities($model->tahun_terbit);
             $model->tempat_terbit = htmlentities($model->tempat_terbit);
             $model->tanggal_penetapan = htmlentities($model->tanggal_penetapan);
-            $model->penandatanganan = htmlentities($model->penandatanganan);
+            $model->penandatanganan_txt = htmlentities($model->penandatanganan);
             $model->tanggal_pengundangan = htmlentities($model->tanggal_pengundangan);
             $model->pemrakarsa = htmlentities($model->pemrakarsa);
             $model->sumber = htmlentities($model->sumber);
             
-            $model->save();
+            if (!$model->save()) {
+                Yii::$app->session->setFlash('error', 'Gagal menyimpan data peraturan.');
+                return $this->render('create2', [
+                    'model' => $model,
+                    'lampiran' => $lampiran,
+                ]);
+            }
 
             $lampiran->id_dokumen = $model->id;
             $dokumen_lampiran = UploadedFile::getInstance($lampiran, 'dokumen_lampiran');
 
             if (!empty($dokumen_lampiran)) {
-                $lampiran->dokumen_lampiran =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $dokumen_lampiran->name));
                 $lampiran->dokumen_lampiran = FileHelper::sanitizeFilename($dokumen_lampiran->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $lampiran->dokumen_lampiran;
                 $dokumen_lampiran->saveAs($path);
             }
             $lampiran->url_lampiran = Yii::getAlias('@imageurl') . '/common/dokumen/' . $lampiran->dokumen_lampiran;
 
-            $lampiran->save();
+            if (!$lampiran->save()) {
+                Yii::$app->session->setFlash('error', 'Gagal menyimpan data lampiran.');
+            }
 
             $log->dokumen_id = $model->id;
             $log->controller = 'Peraturan';
@@ -273,21 +265,6 @@ class PeraturanController extends Controller
 
             Yii::$app->session->setFlash('success', 'Data Peraturan berhasil ditambahkan');
             return $this->redirect(['view', 'id' => $model->id]);
-
-            // $jenisperaturan = JenisPeraturan::findOne($model->jenis_peraturan);
-            // if(!empty($jenisperaturan))
-            // {
-            //     $model->jenis_peraturan = $jenisperaturan->name;
-            //    // $model->singkatan_jenis = 'UU';
-            //     $model->bentuk_peraturan = $jenisperaturan->name;
-            // }
-            /*
-            isi parameter tambahan
-            
-            $model->id = md5(uniqid(mt_rand(), true));
-            $jenis = $_POST['Peraturan']['field']);    
-            $model->tahun_ln =  date('Y', strtotime($_POST['Peraturan']['tgl_diundangkan']));
-            */
         } else {
 
             return $this->render('create2', [
@@ -314,7 +291,6 @@ class PeraturanController extends Controller
 
             $abstrak = UploadedFile::getInstance($model, 'abstrak');
             if (!empty($abstrak)) {
-                $model->abstrak =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $abstrak->name));
                 $model->abstrak = FileHelper::sanitizeFilename($abstrak->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->abstrak;
                 $abstrak->saveAs($path);
@@ -325,7 +301,6 @@ class PeraturanController extends Controller
             $jenisperaturan = JenisPeraturan::findOne($model->jenis_peraturan);
             if (!empty($jenisperaturan)) {
                 $model->jenis_peraturan = $jenisperaturan->name;
-                // $model->singkatan_jenis = 'UU';
                 $model->bentuk_peraturan = $jenisperaturan->name;
             }
             
@@ -336,7 +311,7 @@ class PeraturanController extends Controller
             $model->tahun_terbit = htmlentities($model->tahun_terbit);
             $model->tempat_terbit = htmlentities($model->tempat_terbit);
             $model->tanggal_penetapan = htmlentities($model->tanggal_penetapan);
-            $model->penandatanganan = htmlentities($model->penandatanganan);
+            $model->penandatanganan_txt = htmlentities($model->penandatanganan);
             $model->tanggal_pengundangan = htmlentities($model->tanggal_pengundangan);
             $model->pemrakarsa = htmlentities($model->pemrakarsa);
             $model->sumber = htmlentities($model->sumber);
@@ -358,7 +333,6 @@ class PeraturanController extends Controller
         }
     }
 
-    //-- Update JDIH 2022 START -->
     public function actionUbahAbstrak($id)
     {
         $model = $this->findModel($id);
@@ -366,18 +340,14 @@ class PeraturanController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 
-
             $abstrak = UploadedFile::getInstance($model, 'abstrak');
             if (!empty($abstrak)) {
-                $model->abstrak =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $abstrak->name));
                 $model->abstrak = FileHelper::sanitizeFilename($abstrak->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->abstrak;
                 $abstrak->saveAs($path);
             } else {
                 $model->abstrak = $old_abstrak;
             }
-
-
 
             if ($model->save()) {
                 $log = new LogPustakawan();
@@ -409,8 +379,6 @@ class PeraturanController extends Controller
         Yii::$app->session->setFlash('danger', 'Data Abstrak berhasil dihapus');
         return $this->redirect(['view', 'id' => $model->id_dokumen]);
     }
-
-    //-- Update JDIH 2022 END --
 
     public function actionDelete($id)
     {
@@ -449,7 +417,6 @@ class PeraturanController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->id_dokumen = $id;
             if ($model->save()) {
-
 
                 $log = new LogPustakawan();
                 $log->dokumen_id = $id;
@@ -504,17 +471,16 @@ class PeraturanController extends Controller
     {
         $model = DataPengarang::findOne($id);
         if ($model->load(Yii::$app->request->post())) {
-            //$model->id_dokumen=$id;
             if ($model->save()) {
 
                 $log = new LogPustakawan();
                 $log->dokumen_id = $model->id_dokumen;
                 $log->controller = 'Peraturan';
-                $log->aksi = 'Ubah teu';
-                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data teu monografi pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+                $log->aksi = 'Ubah Pengarang';
+                $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data pengarang pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
-                return $this->redirect(['view', 'id' => $model->id_dokumen]);
                 Yii::$app->session->setFlash('warning', 'Data Pengarang berhasil diubah');
+                return $this->redirect(['view', 'id' => $model->id_dokumen]);
             }
         } else {
             return $this->render('teu/update-teu', [
@@ -530,8 +496,8 @@ class PeraturanController extends Controller
         $log = new LogPustakawan();
         $log->dokumen_id = $model->id_dokumen;
         $log->controller = 'Peraturan';
-        $log->aksi = 'Hapus  Pengarang';
-        $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data teu peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
+        $log->aksi = 'Hapus Pengarang';
+        $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data pengarang peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
         $log->save();
         Yii::$app->session->setFlash('danger', 'Data Pengarang berhasil dihapus');
         return $this->redirect(['view', 'id' => $model->id_dokumen]);
@@ -617,7 +583,6 @@ class PeraturanController extends Controller
             $dokumen_lampiran = UploadedFile::getInstance($model, 'dokumen_lampiran');
 
             if (!empty($dokumen_lampiran)) {
-                $model->dokumen_lampiran =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $dokumen_lampiran->name));
                 $model->dokumen_lampiran = FileHelper::sanitizeFilename($dokumen_lampiran->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->dokumen_lampiran;
                 $dokumen_lampiran->saveAs($path);
@@ -651,7 +616,6 @@ class PeraturanController extends Controller
             $dokumen_lampiran = UploadedFile::getInstance($model, 'dokumen_lampiran');
 
             if (!empty($dokumen_lampiran)) {
-                $model->dokumen_lampiran =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $dokumen_lampiran->name));
                 $model->dokumen_lampiran = FileHelper::sanitizeFilename($dokumen_lampiran->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->dokumen_lampiran;
                 $dokumen_lampiran->saveAs($path);
@@ -754,7 +718,7 @@ class PeraturanController extends Controller
 
     /*---------- END PERATURAN TERKAIT -----------------*/
 
-    /*---------- BEGIN LAMPIRAN -----------------*/
+    /*---------- BEGIN DOKUMEN TERKAIT -----------------*/
 
     public function actionTambahDokumenTerkait($id)
     {
@@ -765,19 +729,12 @@ class PeraturanController extends Controller
             if (!empty($dokumen)) {
                 $model->document_terkait = $dokumen->dokumen_lampiran;
             }
-            // $document_terkait = UploadedFile::getInstance($model, 'document_terkait');
-
-            // if (!empty($document_terkait)) {
-            //     $model->document_terkait =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $document_terkait->name));
-            //     $path = Yii::getAlias('@common') . '/dokumen/' . $model->document_terkait;
-            //     $document_terkait->saveAs($path);
-            // }
 
             if ($model->save()) {
                 $log = new LogPustakawan();
                 $log->dokumen_id = $model->id_dokumen;
                 $log->controller = 'Peraturan';
-                $log->aksi = 'Dokumen Terkait';
+                $log->aksi = 'Tambah Dokumen Terkait';
                 $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data dokumen terkait peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
                 Yii::$app->session->setFlash('success', 'Data Dokumen terkait berhasil ditambah');
@@ -801,7 +758,6 @@ class PeraturanController extends Controller
                 $model->document_terkait = $dokumen->dokumen_lampiran;
                 $model->id_dokumen_terkait = $dokumen->id_dokumen;
             }
-            //$model->urutan
             if ($model->save()) {
                 $log = new LogPustakawan();
                 $log->dokumen_id = $id;
@@ -828,7 +784,6 @@ class PeraturanController extends Controller
             $document_terkait = UploadedFile::getInstance($model, 'document_terkait');
 
             if (!empty($document_terkait)) {
-                $model->document_terkait =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $document_terkait->name));
                 $model->document_terkait = FileHelper::sanitizeFilename($document_terkait->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->document_terkait;
                 $document_terkait->saveAs($path);
@@ -879,7 +834,6 @@ class PeraturanController extends Controller
             $hasil_uji_materi = UploadedFile::getInstance($model, 'hasil_uji_materi');
 
             if (!empty($hasil_uji_materi)) {
-                $model->hasil_uji_materi =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $hasil_uji_materi->name));
                 $model->hasil_uji_materi = FileHelper::sanitizeFilename($hasil_uji_materi->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->hasil_uji_materi;
                 $hasil_uji_materi->saveAs($path);
@@ -911,7 +865,6 @@ class PeraturanController extends Controller
             $hasil_uji_materi = UploadedFile::getInstance($model, 'hasil_uji_materi');
 
             if (!empty($hasil_uji_materi)) {
-                $model->hasil_uji_materi =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $hasil_uji_materi->name));
                 $model->hasil_uji_materi = FileHelper::sanitizeFilename($hasil_uji_materi->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->hasil_uji_materi;
                 $hasil_uji_materi->saveAs($path);
@@ -1001,9 +954,11 @@ class PeraturanController extends Controller
                                 $model2->save(false);
 
                                 $model3 = Peraturan::findOne($id);
-                                $model3->status = 'Berlaku';
-                                $model3->status_terakhir = 'mencabut';
-                                $model3->save(false);
+                                if (!empty($model3)) {
+                                    $model3->status = 'Berlaku';
+                                    $model3->status_terakhir = 'mencabut';
+                                    $model3->save(false);
+                                }
 
                                 $model4 = Peraturan::findOne($model2->id_dokumen);
 
@@ -1055,9 +1010,11 @@ class PeraturanController extends Controller
                         $model2->save(false);
 
                         $model3 = Peraturan::findOne($id);
-                        $model3->status = 'Berlaku';
-                        $model3->status_terakhir = 'diubah';
-                        $model3->save(false);
+                        if (!empty($model3)) {
+                            $model3->status = 'Berlaku';
+                            $model3->status_terakhir = 'diubah';
+                            $model3->save(false);
+                        }
 
                         $model4 = Peraturan::findOne($model2->id_dokumen);
 
@@ -1077,9 +1034,11 @@ class PeraturanController extends Controller
                         $model2->save(false);
 
                         $model3 = Peraturan::findOne($id);
-                        $model3->status = '-';
-                        $model3->status_terakhir = '-';
-                        $model3->save(false);
+                        if (!empty($model3)) {
+                            $model3->status = '-';
+                            $model3->status_terakhir = '-';
+                            $model3->save(false);
+                        }
 
                         $model4 = Peraturan::findOne($model2->id_dokumen);
 
@@ -1136,12 +1095,12 @@ class PeraturanController extends Controller
 
         switch ($model->status_peraturan) {
             case 'dicabut':
-
-
                 $model3 = Peraturan::findOne($model->id_dokumen);
-                $model3->status = 'Berlaku';
-                $model3->status_terakhir = '';
-                $model3->save(false);
+                if (!empty($model3)) {
+                    $model3->status = 'Berlaku';
+                    $model3->status_terakhir = '';
+                    $model3->save(false);
+                }
 
                 $model4 = Peraturan::findOne($model->id_dokumen_target);
 
@@ -1153,12 +1112,12 @@ class PeraturanController extends Controller
                 break;
 
             case 'mencabut':
-
-
                 $model3 = Peraturan::findOne($model->id_dokumen);
-                $model3->status = 'Berlaku';
-                $model3->status_terakhir = '';
-                $model3->save(false);
+                if (!empty($model3)) {
+                    $model3->status = 'Berlaku';
+                    $model3->status_terakhir = '';
+                    $model3->save(false);
+                }
 
                 $model4 = Peraturan::findOne($model->id_dokumen_target);
 
@@ -1170,11 +1129,12 @@ class PeraturanController extends Controller
                 break;
 
             case 'mengubah':
-
                 $model3 = Peraturan::findOne($model->id_dokumen);
-                $model3->status = 'Berlaku';
-                $model3->status_terakhir = 'Berlaku';
-                $model3->save(false);
+                if (!empty($model3)) {
+                    $model3->status = 'Berlaku';
+                    $model3->status_terakhir = 'Berlaku';
+                    $model3->save(false);
+                }
 
                 $model4 = Peraturan::findOne($model->id_dokumen_target);
 
@@ -1184,14 +1144,14 @@ class PeraturanController extends Controller
                     $model4->save(false);
                 }
                 break;
-                break;
 
             case 'diubah':
-
                 $model3 = Peraturan::findOne($model->id_dokumen);
-                $model3->status = 'Berlaku';
-                $model3->status_terakhir = 'Berlaku';
-                $model3->save(false);
+                if (!empty($model3)) {
+                    $model3->status = 'Berlaku';
+                    $model3->status_terakhir = 'Berlaku';
+                    $model3->save(false);
+                }
 
                 $model4 = Peraturan::findOne($model->id_dokumen_target);
 
@@ -1250,8 +1210,6 @@ class PeraturanController extends Controller
             $command = $query->createCommand();
             $data = $command->queryAll();
             $out['results'] = array_values($data);
-            // $data = Peraturan::find($id)->select('id, judul as text')->where(['like', 'judul', $q])->asArray()->all();
-            // $out['results'] = ArrayHelper::map($data); 
         } elseif ($id > 0) {
             $out['results'] = ['id' => $id, 'text' => $text];
         }
@@ -1260,41 +1218,42 @@ class PeraturanController extends Controller
 
     public function actionJenis($id)
     {
-
-        $dokumen = \backend\models\JenisPeraturan::find()->where(['id' => $id])->one();
-        $rows = \backend\models\JenisPeraturan::find()->where(['parent_id' => $id])->all();
-        //echo "<option> Pilih Bentuk Peraturan Dokumen </option>";
-        //echo "<option></option>";
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $dokumen = JenisPeraturan::find()->where(['id' => $id])->one();
+        $rows = JenisPeraturan::find()->where(['parent_id' => $id])->all();
+        $result = [];
         if (count($rows) > 0) {
             foreach ($rows as $branch) {
-                echo "<option value'" . $branch->name . "'>" . $branch->singkatan . "</option>";
+                $result[] = ['id' => $branch->name, 'text' => $branch->singkatan];
             }
         } else {
-            echo "<option value'" . $dokumen->name . "'>" . $dokumen->singkatan . "</option>";
+            $result[] = ['id' => $dokumen->name, 'text' => $dokumen->singkatan];
         }
+        return $result;
     }
 
 
     public function actionJenis2($id)
     {
-
-        $dokumen = \backend\models\JenisPeraturan::find()->where(['name' => $id])->one();
-        $rows = \backend\models\JenisPeraturan::find()->where(['parent_id' => $dokumen->id])->all();
-        //echo "<option> Pilih Bentuk Peraturan Dokumen </option>";
-        //echo "<option></option>";
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $dokumen = JenisPeraturan::find()->where(['name' => $id])->one();
+        $rows = JenisPeraturan::find()->where(['parent_id' => $dokumen->id])->all();
+        $result = [];
         if (count($rows) > 0) {
             foreach ($rows as $branch) {
-                echo "<option value'" . $branch->name . "'>" . $branch->singkatan . "</option>";
+                $result[] = ['id' => $branch->name, 'text' => $branch->singkatan];
             }
         } else {
-            echo "<option value'" . $dokumen->name . "'>" . $dokumen->singkatan . "</option>";
+            $result[] = ['id' => $dokumen->name, 'text' => $dokumen->singkatan];
         }
+        return $result;
     }
 
     public function actionGetPeraturan($zipId)
     {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $location = JenisPeraturan::find()->where(['name' => $zipId])->one();
-        echo Json::encode($location);
+        return $location;
     }
 
 
@@ -1311,8 +1270,6 @@ class PeraturanController extends Controller
             $command = $query->createCommand();
             $data = $command->queryAll();
             $out['results'] = array_values($data);
-            // $data = Peraturan::find($id)->select('id, judul as text')->where(['like', 'judul', $q])->asArray()->all();
-            // $out['results'] = ArrayHelper::map($data); 
         } elseif ($id > 0) {
             $out['results'] = ['id' => $id, 'text' => Peraturan::find($id)->judul];
         }
@@ -1333,8 +1290,6 @@ class PeraturanController extends Controller
             $command = $query->createCommand();
             $data = $command->queryAll();
             $out['results'] = array_values($data);
-            // $data = Peraturan::find($id)->select('id, judul as text')->where(['like', 'judul', $q])->asArray()->all();
-            // $out['results'] = ArrayHelper::map($data); 
         } elseif ($id > 0) {
             $out['results'] = ['id' => $id, 'text' => Peraturan::find($id)->judul];
         }
@@ -1355,25 +1310,20 @@ class PeraturanController extends Controller
             $command = $query->createCommand();
             $data = $command->queryAll();
             $out['results'] = array_values($data);
-            // $data = Peraturan::find($id)->select('id, judul as text')->where(['like', 'judul', $q])->asArray()->all();
-            // $out['results'] = ArrayHelper::map($data); 
         } elseif ($id > 0) {
             $out['results'] = ['id' => $id, 'text' => Peraturan::find($id)->judul];
         }
         return $out;
     }
 
-    // ============ abstrak ====================/
-
     public function actionTambahAbstrak($id)
     {
         $model = new Abstrak();
         $peraturan = Peraturan::findOne($id);
         $datasubyek = DataSubyek::find()->where(['id_dokumen' => $id])->all();
+        $simpan = '';
         if (!empty($datasubyek)) {
-            $simpan = '';
             foreach ($datasubyek as $data) {
-
                 $simpan = $simpan . $data->subyek . '-';
             }
         }
@@ -1398,13 +1348,11 @@ class PeraturanController extends Controller
     public function actionEditAbstrak($id)
     {
         $model = Abstrak::findOne($id);
-        //   $peraturan = Peraturan::findOne($id);
 
         $datasubyek = DataSubyek::find()->where(['id_dokumen' => $model->id_dokumen])->all();
+        $simpan = '';
         if (!empty($datasubyek)) {
-            $simpan = '';
             foreach ($datasubyek as $data) {
-
                 $simpan = $simpan . $data->subyek . '-';
             }
         }
@@ -1429,7 +1377,6 @@ class PeraturanController extends Controller
     {
 
         $model = Abstrak::findOne($id);
-        //  $komentar = Komentar::find()->where(['partisipasi_id' => $id])->all();
         $content = $this->renderPartial('abstrak/cetak-abstrak', ['model' => $model]);
         $pdf = new Pdf([
             'mode' => Pdf::MODE_CORE,
@@ -1448,21 +1395,21 @@ class PeraturanController extends Controller
 
         return $pdf->render();
     }
+
     public function actionInactive($id = null)
     {
         if ($id != null) {
             $model = $this->findModel($id);
             $model->is_publish = 0;
             if ($model->save()) {
-                Yii::$app->session->setFlash('danger', 'Produk Hukum tidak  diverifikasi');
+                Yii::$app->session->setFlash('danger', 'Produk Hukum tidak diverifikasi');
                 return $this->redirect(['index']);
             } else {
-                print_r($model->getErrors());
+                Yii::error('Failed to save model: ' . json_encode($model->getErrors()));
             }
         } else {
             $model = $this->findModel(\Yii::$app->user->identity->id);
             $model->is_publish = 0;
-            $model->save();
             if ($model->save()) {
                 Yii::$app->user->logout();
                 Yii::$app->session->setFlash('success', 'Account inactive');

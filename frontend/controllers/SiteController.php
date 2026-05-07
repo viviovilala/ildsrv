@@ -132,7 +132,6 @@ class SiteController extends Controller
         $model = new MemberForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             Yii::$app->session->setFlash('success', 'Selamat Datang Di Website JDIH');
-            //return $this->goBack();
             return $this->render('/profile/index', ['model' => $model]);
         } else {
             return $this->render('login', [

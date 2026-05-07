@@ -40,10 +40,6 @@ class PenyusunanController extends Controller
     public function actionIndex()
     {
         $searchModel = new PenyusunanSearch();
-        /*
-        $searchModel = new PenyusunanSearch(['id'=>\Yii::$app->user->identity->direktorat_id]);
-        $dataProvider->query->andWhere(['id'=>[2,3,4]]);
-        */
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -61,7 +57,6 @@ class PenyusunanController extends Controller
     {
         $partisipasi = new ActiveDataProvider([
             'query' => MasukanMasyarakat::find()->where(['rancangan_id'=>$id]),
-            ///'sort' => ['defaultOrder' => ['tanggal_akhir_publish' => SORT_DESC]],
             'pagination' => [
                 'pageSize' => 10,
             ],
@@ -73,25 +68,6 @@ class PenyusunanController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Rancangan model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-    
-    public function actionCreate()
-    {
-        $model = new Rancangan();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
-     */
-
     public function actionCreate()
     {
         $model = new Rancangan();
@@ -101,7 +77,6 @@ class PenyusunanController extends Controller
 
             $file_rancangan = UploadedFile::getInstance($model, 'file_rancangan');
             if(!empty($file_rancangan)){
-                $model->file_rancangan =  strtolower($model->tahun.'_'.preg_replace('/[^a-zA-Z0-9-_\.]/','', $file_rancangan->name));
                 $model->file_rancangan = FileHelper::sanitizeFilename($file_rancangan->name);
                 $path = Yii::getAlias('@common'). '/uploads/rancangan/' . $model->file_rancangan;
                 $file_rancangan->saveAs($path);
@@ -109,7 +84,6 @@ class PenyusunanController extends Controller
 
             $file_naskah_akademik = UploadedFile::getInstance($model, 'file_naskah_akademik');
             if(!empty($file_naskah_akademik)){
-                $model->file_naskah_akademik =  strtolower($model->tahun.'_'.preg_replace('/[^a-zA-Z0-9-_\.]/','', $file_naskah_akademik->name));
                 $model->file_naskah_akademik = FileHelper::sanitizeFilename($file_naskah_akademik->name);
                 $path = Yii::getAlias('@common'). '/uploads/rancangan/' . $model->file_naskah_akademik;
                 $file_naskah_akademik->saveAs($path);
@@ -149,7 +123,6 @@ class PenyusunanController extends Controller
 
            $file_rancangan = UploadedFile::getInstance($model, 'file_rancangan');
             if(!empty($file_rancangan)){
-                $model->file_rancangan =  strtolower($model->tahun.'_'.preg_replace('/[^a-zA-Z0-9-_\.]/','', $file_rancangan->name));
                 $model->file_rancangan = FileHelper::sanitizeFilename($file_rancangan->name);
                 $path = Yii::getAlias('@common'). '/uploads/rancangan/' . $model->file_rancangan;
                 $file_rancangan->saveAs($path);
@@ -160,7 +133,6 @@ class PenyusunanController extends Controller
 
            $file_naskah_akademik = UploadedFile::getInstance($model, 'file_naskah_akademik');
             if(!empty($file_naskah_akademik)){
-                $model->file_naskah_akademik =  strtolower($model->tahun.'_'.preg_replace('/[^a-zA-Z0-9-_\.]/','', $file_naskah_akademik->name));
                 $model->file_naskah_akademik = FileHelper::sanitizeFilename($file_naskah_akademik->name);
                 $path = Yii::getAlias('@common'). '/uploads/rancangan/' . $model->file_naskah_akademik;
                 $file_naskah_akademik->saveAs($path);
@@ -229,29 +201,15 @@ class PenyusunanController extends Controller
         }
     }
 
-    public function actionParent($id){
-        if ($id== '11e449f371bb47e09607313231373436')
-        {
-            $instansi='Kementerian';
-            $rows = \backend\models\peraturan\Institutions::find()->where(['jenis' => $instansi])->all();
-            echo "<option>Pilih Kementerian</option>";
-        }else
-        {
-            $instansi='Lembaga';
-            $rows = \backend\models\peraturan\Institutions::find()->where(['jenis' => $instansi])->all();
-            echo "<option>Pilih Lembaga Non Kementerian</option>";
+    public function actionParent($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $institutionType = ($id == '11e449f371bb47e09607313231373436') ? 'Kementerian' : 'Lembaga';
+        $institutions = \backend\models\peraturan\Institutions::find()->where(['jenis' => $institutionType])->all();
+        $results = [];
+        foreach ($institutions as $institution) {
+            $results[] = ['id' => $institution->id, 'name' => $institution->nama];
         }
-
-       // echo "<option>Pilih Kementerian/Lembaga</option>";
-        
-        if(count($rows)>0){
-            foreach($rows as $row){
-                echo "<option value='$row->id'>$row->nama</option>";
-            }
-        }
-        else{
-            echo "<option>Nenhum municipio cadastrado</option>";
-        }
-        
+        return $results;
     }
 }

@@ -30,7 +30,7 @@ use backend\models\EksemplarSearch;
 use kartik\mpdf\Pdf;
 
 /**
- * PeraturanController implements the CRUD actions for Peraturan model.
+ * MonografiController implements the CRUD actions for Monografi model.
  */
 class MonografiController extends Controller
 {
@@ -56,28 +56,11 @@ class MonografiController extends Controller
     public function actionIndex()
     {
         $searchModel = new MonografiSearch();
-        /*
-        $searchModel = new PeraturanSearch(['id'=>\Yii::$app->user->identity->direktorat_id]);
-        $dataProvider->query->andWhere(['id'=>[2,3,4]]);
-        */
-
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    public function actionFlush()
-    {
-        Yii::app()->cache->flush();
-    }
-
-    public function actionTest()
-    {
-        return $this->render('eksemplar/test', [
-             //'result' => $result
         ]);
     }
 
@@ -93,51 +76,22 @@ class MonografiController extends Controller
 
             if(empty($result))
             {
-                echo "tidak ada eksemplar pada judul buku yang telah dipilih.";
+                Yii::$app->session->setFlash('error', 'Tidak ada eksemplar pada judul buku yang telah dipilih.');
             }
 
-            //$content = $this->render('eksemplar/test');
-            //exit;
             return $this->render('eksemplar/barcode', [
                  'result' => $result
             ]);
-            exit;
-            $content = $this->renderPartial('eksemplar/barcode', [
-                 'result' => $result
-            ]);
-
-            $pdf = new Pdf([
-                //'mode' => Pdf::MODE_CORE,
-                'format' => Pdf::FORMAT_FOLIO,
-                'orientation' => Pdf::ORIENT_PORTRAIT,
-                //'destination' => Pdf::DEST_BROWSER,
-                'content' => $content,
-                //'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.css',
-                //'marginFooter' => 5,
-                'options' => ['title' => 'Krajee Report Title'],
-                'methods' => []
-            ]);
-
-            return $pdf->render();
-            //foreach ($result as $key) {
-            //    
-            //    echo var_dump($key);
-            //}
-            //echo var_dump($result[0]['judul']);
         }
         else
         {
-            echo "kosong";
+            Yii::$app->session->setFlash('error', 'Tidak ada data yang dipilih.');
         }
     }
 
     public function actionSubjek()
     {
         $searchModel = new DataSubjekSearch();
-        /*
-        $searchModel = new DataSubjekSearch(['id'=>\Yii::$app->user->identity->direktorat_id]);
-        $dataProvider->query->andWhere(['id'=>[2,3,4]]);
-        */
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index-subyek', [
@@ -176,10 +130,6 @@ class MonografiController extends Controller
     public function actionPengarang()
     {
         $searchModel = new PengarangSearch();
-        /*
-        $searchModel = new PengarangSearch(['id'=>\Yii::$app->user->identity->direktorat_id]);
-        $dataProvider->query->andWhere(['id'=>[2,3,4]]);
-        */
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index-pengarang', [
@@ -274,25 +224,6 @@ class MonografiController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Peraturan model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-    
-    public function actionCreate()
-    {
-        $model = new Peraturan();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
-     */
-
     public function actionCreate()
     {
         $model = new Monografi();
@@ -300,11 +231,9 @@ class MonografiController extends Controller
         $teu = new DataPengarang();
         $log = new LogPustakawan();
 
-        //if ($model->load(Yii::$app->request->post()))
         if ($model->load(Yii::$app->request->post())) {
             $abstrak = UploadedFile::getInstance($model, 'abstrak');
             if (!empty($abstrak)) {
-                $model->abstrak =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $abstrak->name));
                 $model->abstrak = FileHelper::sanitizeFilename($abstrak->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->abstrak;
                 $abstrak->saveAs($path);
@@ -312,7 +241,6 @@ class MonografiController extends Controller
 
             $cover = UploadedFile::getInstance($model, 'gambar_sampul');
             if (!empty($cover)) {
-                $model->gambar_sampul =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $cover->name));
                 $model->gambar_sampul = FileHelper::sanitizeFilename($cover->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->gambar_sampul;
                 $cover->saveAs($path);
@@ -327,21 +255,6 @@ class MonografiController extends Controller
 
             Yii::$app->session->setFlash('success', 'Data Monografi berhasil ditambahkan');
             return $this->redirect(['view', 'id' => $model->id]);
-
-            // $jenisperaturan = JenisPeraturan::findOne($model->jenis_peraturan);
-            // if(!empty($jenisperaturan))
-            // {
-            //     $model->jenis_peraturan = $jenisperaturan->name;
-            //    // $model->singkatan_jenis = 'UU';
-            //     $model->bentuk_peraturan = $jenisperaturan->name;
-            // }
-            /*
-            isi parameter tambahan
-            
-            $model->id = md5(uniqid(mt_rand(), true));
-            $jenis = $_POST['Peraturan']['field']);    
-            $model->tahun_ln =  date('Y', strtotime($_POST['Peraturan']['tgl_diundangkan']));
-            */
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -369,7 +282,6 @@ class MonografiController extends Controller
 
             $abstrak = UploadedFile::getInstance($model, 'abstrak');
             if (!empty($abstrak)) {
-                $model->abstrak =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $abstrak->name));
                 $model->abstrak = FileHelper::sanitizeFilename($abstrak->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->abstrak;
                 $abstrak->saveAs($path);
@@ -379,7 +291,6 @@ class MonografiController extends Controller
 
             $cover = UploadedFile::getInstance($model, 'gambar_sampul');
             if (!empty($cover)) {
-                $model->gambar_sampul =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $cover->name));
                 $model->gambar_sampul = FileHelper::sanitizeFilename($cover->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->gambar_sampul;
                 $cover->saveAs($path);
@@ -391,14 +302,13 @@ class MonografiController extends Controller
             $jenisperaturan = JenisPeraturan::findOne($model->jenis_peraturan);
             if (!empty($jenisperaturan)) {
                 $model->jenis_peraturan = $jenisperaturan->name;
-                // $model->singkatan_jenis = 'UU';
                 $model->bentuk_peraturan = $jenisperaturan->name;
             }
 
             if ($model->save()) {
                 $log = new LogPustakawan();
                 $log->dokumen_id = $id;
-                $log->controller = 'Peraturan';
+                $log->controller = 'Monografi';
                 $log->aksi = 'Ubah Peraturan';
                 $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah Data Monografi pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
@@ -425,7 +335,7 @@ class MonografiController extends Controller
 
             $log = new LogPustakawan();
             $log->dokumen_id = $id;
-            $log->controller = 'Peraturan';
+            $log->controller = 'Monografi';
             $log->aksi = 'Hapus Peraturan';
             $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus Data Monografi pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
             $log->save();
@@ -477,7 +387,7 @@ class MonografiController extends Controller
 
                 $log = new LogPustakawan();
                 $log->dokumen_id = $id;
-                $log->controller = 'Peraturan';
+                $log->controller = 'Monografi';
                 $log->aksi = 'Tambah Pengarang';
                 $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data pengarang pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
@@ -507,7 +417,7 @@ class MonografiController extends Controller
 
                 $log = new LogPustakawan();
                 $log->dokumen_id = $id;
-                $log->controller = 'Peraturan';
+                $log->controller = 'Monografi';
                 $log->aksi = 'Tambah Pengarang';
                 $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data pengarang pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
@@ -528,17 +438,16 @@ class MonografiController extends Controller
     {
         $model = DataPengarang::findOne($id);
         if ($model->load(Yii::$app->request->post())) {
-            //$model->id_dokumen=$id;
             if ($model->save()) {
 
                 $log = new LogPustakawan();
                 $log->dokumen_id = $model->id_dokumen;
-                $log->controller = 'Peraturan';
-                $log->aksi = 'Ubah teu';
+                $log->controller = 'Monografi';
+                $log->aksi = 'Ubah Pengarang';
                 $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data teu monografi pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
-                return $this->redirect(['view', 'id' => $model->id_dokumen]);
                 Yii::$app->session->setFlash('warning', 'Data Pengarang berhasil diubah');
+                return $this->redirect(['view', 'id' => $model->id_dokumen]);
             }
         } else {
             return $this->render('teu/update-teu', [
@@ -553,8 +462,8 @@ class MonografiController extends Controller
         $model->delete();
         $log = new LogPustakawan();
         $log->dokumen_id = $model->id_dokumen;
-        $log->controller = 'Peraturan';
-        $log->aksi = 'Hapus  Pengarang';
+        $log->controller = 'Monografi';
+        $log->aksi = 'Hapus Pengarang';
         $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data teu peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
         $log->save();
         Yii::$app->session->setFlash('danger', 'Data Pengarang berhasil dihapus');
@@ -575,7 +484,7 @@ class MonografiController extends Controller
 
                 $log = new LogPustakawan();
                 $log->dokumen_id = $id;
-                $log->controller = 'Peraturan';
+                $log->controller = 'Monografi';
                 $log->aksi = 'Tambah Subjek';
                 $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data subjek peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
@@ -598,7 +507,7 @@ class MonografiController extends Controller
 
                 $log = new LogPustakawan();
                 $log->dokumen_id = $model->id_dokumen;
-                $log->controller = 'Peraturan';
+                $log->controller = 'Monografi';
                 $log->aksi = 'Ubah Subjek';
                 $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data subjek peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
@@ -618,7 +527,7 @@ class MonografiController extends Controller
         $model->delete();
         $log = new LogPustakawan();
         $log->dokumen_id = $model->id_dokumen;
-        $log->controller = 'Peraturan';
+        $log->controller = 'Monografi';
         $log->aksi = 'Hapus Subjek';
         $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data subjek peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
         $log->save();
@@ -641,8 +550,7 @@ class MonografiController extends Controller
 
             $barcode = UploadedFile::getInstance($model, 'barcode_image');
             if (!empty($barcode)) {
-                $model->barcode_image =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $barcode->name));
-                $model->barcode_image = FileHelper::sanitizeFilename($barcode_image->name);
+                $model->barcode_image = FileHelper::sanitizeFilename($barcode->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->barcode_image;
                 $barcode->saveAs($path);
             }
@@ -672,22 +580,6 @@ class MonografiController extends Controller
         }
     }
 
-    // public function actionUbahEksemplar($id)
-    // {
-    //     $model = Eksemplar::findOne($id);
-    //     if ($model->load(Yii::$app->request->post())) {
-    //         if ($model->save()) {
-    //             Yii::$app->session->setFlash('warning', 'Data Subyek berhasil diubah');
-    //             return $this->redirect(['view', 'id' => $model->id_dokumen]);
-    //         }
-    //     } else {
-    //         return $this->render('eksemplar/update-eksemplar', [
-    //             'model' => $model,
-    //             'id' => $id,
-    //         ]);
-    //     }
-    // }
-
     public function actionUbahEksemplar($id)
     {
         $model = Eksemplar::findOne($id);
@@ -696,8 +588,7 @@ class MonografiController extends Controller
 
             $barcode = UploadedFile::getInstance($model, 'barcode_image');
             if (!empty($barcode)) {
-                $model->barcode_image =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $barcode->name));
-                $model->barcode_image = FileHelper::sanitizeFilename($barcode_image->name);
+                $model->barcode_image = FileHelper::sanitizeFilename($barcode->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->barcode_image;
                 $barcode->saveAs($path);
             } else {
@@ -723,28 +614,13 @@ class MonografiController extends Controller
         }
     }
 
-    // public function actionUbahEksemplar($id)
-    // {
-    //     $model = Eksemplar::findOne($id);
-
-    //     if ($model->load(Yii::$app->request->post()) && $model->save()) {
-    //         Yii::$app->session->setFlash('success', 'Data Eksemplar berhasil diubah');
-    //         return $this->redirect(['view', 'id' => $model->id]);
-    //     } else {
-    //         return $this->render('eksemplar/update-eksemplar', [
-    //             'model' => $model,
-
-    //         ]);
-    //     }
-    // }
-
     public function actionHapusEksemplar($id)
     {
         $model = Eksemplar::findOne($id);
         $model->delete();
         $log = new LogPustakawan();
         $log->dokumen_id = $model->id_dokumen;
-        $log->controller = 'Peraturan';
+        $log->controller = 'Monografi';
         $log->aksi = 'Hapus Subjek';
         $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data subjek peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
         $log->save();
@@ -766,7 +642,6 @@ class MonografiController extends Controller
             $dokumen_lampiran = UploadedFile::getInstance($model, 'dokumen_lampiran');
 
             if (!empty($dokumen_lampiran)) {
-                $model->dokumen_lampiran =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $dokumen_lampiran->name));
                 $model->dokumen_lampiran = FileHelper::sanitizeFilename($dokumen_lampiran->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->dokumen_lampiran;
                 $dokumen_lampiran->saveAs($path);
@@ -777,7 +652,7 @@ class MonografiController extends Controller
 
                 $log = new LogPustakawan();
                 $log->dokumen_id = $model->id;
-                $log->controller = 'Peraturan';
+                $log->controller = 'Monografi';
                 $log->aksi = 'Tambah Lampiran';
                 $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data lampiran pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
@@ -800,7 +675,6 @@ class MonografiController extends Controller
             $dokumen_lampiran = UploadedFile::getInstance($model, 'dokumen_lampiran');
 
             if (!empty($dokumen_lampiran)) {
-                $model->dokumen_lampiran =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $dokumen_lampiran->name));
                 $model->dokumen_lampiran = FileHelper::sanitizeFilename($dokumen_lampiran->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->dokumen_lampiran;
                 $dokumen_lampiran->saveAs($path);
@@ -811,7 +685,7 @@ class MonografiController extends Controller
             if ($model->save()) {
                 $log = new LogPustakawan();
                 $log->dokumen_id = $model->id_dokumen;
-                $log->controller = 'Peraturan';
+                $log->controller = 'Monografi';
                 $log->aksi = 'Ubah Lampiran';
                 $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data lampiran pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
@@ -831,7 +705,7 @@ class MonografiController extends Controller
         $model->delete();
         $log = new LogPustakawan();
         $log->dokumen_id = $model->id_dokumen;
-        $log->controller = 'Peraturan';
+        $log->controller = 'Monografi';
         $log->aksi = 'Hapus Lampiran';
         $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data lampiran peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
         $log->save();
@@ -851,7 +725,7 @@ class MonografiController extends Controller
 
                 $log = new LogPustakawan();
                 $log->dokumen_id = $model->id_dokumen;
-                $log->controller = 'Peraturan';
+                $log->controller = 'Monografi';
                 $log->aksi = 'Tambah Peraturan Terkait';
                 $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah Data Monografi terkait pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
@@ -872,7 +746,7 @@ class MonografiController extends Controller
             if ($model->save()) {
                 $log = new LogPustakawan();
                 $log->dokumen_id = $model->id_dokumen;
-                $log->controller = 'Peraturan';
+                $log->controller = 'Monografi';
                 $log->aksi = 'Ubah Peraturan Terkait';
                 $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah Data Monografi terkait pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
@@ -892,7 +766,7 @@ class MonografiController extends Controller
         $model->delete();
         $log = new LogPustakawan();
         $log->dokumen_id = $model->id_dokumen;
-        $log->controller = 'Peraturan';
+        $log->controller = 'Monografi';
         $log->aksi = 'Hapus Peraturan Terkait';
         $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus Data Monografi terkait pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
         $log->save();
@@ -903,7 +777,7 @@ class MonografiController extends Controller
 
     /*---------- END PERATURAN TERKAIT -----------------*/
 
-    /*---------- BEGIN LAMPIRAN -----------------*/
+    /*---------- BEGIN DOKUMEN TERKAIT -----------------*/
 
     public function actionTambahDokumenTerkait($id)
     {
@@ -913,7 +787,6 @@ class MonografiController extends Controller
             $document_terkait = UploadedFile::getInstance($model, 'document_terkait');
 
             if (!empty($document_terkait)) {
-                $model->document_terkait =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $document_terkait->name));
                 $model->document_terkait = FileHelper::sanitizeFilename($document_terkait->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->document_terkait;
                 $document_terkait->saveAs($path);
@@ -922,7 +795,7 @@ class MonografiController extends Controller
             if ($model->save()) {
                 $log = new LogPustakawan();
                 $log->dokumen_id = $model->id_dokumen;
-                $log->controller = 'Peraturan';
+                $log->controller = 'Monografi';
                 $log->aksi = 'Dokumen Terkait';
                 $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data dokumen terkait peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
@@ -944,7 +817,7 @@ class MonografiController extends Controller
             if ($model->save()) {
                 $log = new LogPustakawan();
                 $log->dokumen_id = $id;
-                $log->controller = 'Peraturan';
+                $log->controller = 'Monografi';
                 $log->aksi = 'Tambah Dokumen Terkait';
                 $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data dokumen terkait pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
@@ -967,7 +840,6 @@ class MonografiController extends Controller
             $document_terkait = UploadedFile::getInstance($model, 'document_terkait');
 
             if (!empty($document_terkait)) {
-                $model->document_terkait =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $document_terkait->name));
                 $model->document_terkait = FileHelper::sanitizeFilename($document_terkait->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->document_terkait;
                 $document_terkait->saveAs($path);
@@ -978,7 +850,7 @@ class MonografiController extends Controller
 
                 $log = new LogPustakawan();
                 $log->dokumen_id = $model->id_dokumen;
-                $log->controller = 'Peraturan';
+                $log->controller = 'Monografi';
                 $log->aksi = 'Ubah Dokumen Terkait';
                 $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data dokumen terkait peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
@@ -998,7 +870,7 @@ class MonografiController extends Controller
         $model->delete();
         $log = new LogPustakawan();
         $log->dokumen_id = $model->id_dokumen;
-        $log->controller = 'Peraturan';
+        $log->controller = 'Monografi';
         $log->aksi = 'Hapus Dokumen Terkait';
         $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data dokumen terkait peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
         $log->save();
@@ -1018,7 +890,6 @@ class MonografiController extends Controller
             $hasil_uji_materi = UploadedFile::getInstance($model, 'hasil_uji_materi');
 
             if (!empty($hasil_uji_materi)) {
-                $model->hasil_uji_materi =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $hasil_uji_materi->name));
                 $model->hasil_uji_materi = FileHelper::sanitizeFilename($hasil_uji_materi->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->hasil_uji_materi;
                 $hasil_uji_materi->saveAs($path);
@@ -1027,7 +898,7 @@ class MonografiController extends Controller
             if ($model->save()) {
                 $log = new LogPustakawan();
                 $log->dokumen_id = $model->id_dokumen;
-                $log->controller = 'Peraturan';
+                $log->controller = 'Monografi';
                 $log->aksi = 'Tambah Uji Materi';
                 $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data uji materi pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
@@ -1050,7 +921,6 @@ class MonografiController extends Controller
             $hasil_uji_materi = UploadedFile::getInstance($model, 'hasil_uji_materi');
 
             if (!empty($hasil_uji_materi)) {
-                $model->hasil_uji_materi =  strtolower(preg_replace('/[^a-zA-Z0-9-_\.]/', '', $hasil_uji_materi->name));
                 $model->hasil_uji_materi = FileHelper::sanitizeFilename($hasil_uji_materi->name);
                 $path = Yii::getAlias('@common') . '/dokumen/' . $model->hasil_uji_materi;
                 $hasil_uji_materi->saveAs($path);
@@ -1060,7 +930,7 @@ class MonografiController extends Controller
             if ($model->save()) {
                 $log = new LogPustakawan();
                 $log->dokumen_id = $model->id_dokumen;
-                $log->controller = 'Peraturan';
+                $log->controller = 'Monografi';
                 $log->aksi = 'Ubah Uji Materi';
                 $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data uji materi peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
@@ -1080,7 +950,7 @@ class MonografiController extends Controller
         $model->delete();
         $log = new LogPustakawan();
         $log->dokumen_id = $model->id_dokumen;
-        $log->controller = 'Peraturan';
+        $log->controller = 'Monografi';
         $log->aksi = 'Hapus Uji Materi';
         $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data uji materi pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
         $log->save();
@@ -1099,7 +969,7 @@ class MonografiController extends Controller
             if ($model->save()) {
                 $log = new LogPustakawan();
                 $log->dokumen_id = $model->id_dokumen;
-                $log->controller = 'Peraturan';
+                $log->controller = 'Monografi';
                 $log->aksi = 'Tambah Status';
                 $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan tambah data status peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
@@ -1120,7 +990,7 @@ class MonografiController extends Controller
             if ($model->save()) {
                 $log = new LogPustakawan();
                 $log->dokumen_id = $model->id_dokumen;
-                $log->controller = 'Peraturan';
+                $log->controller = 'Monografi';
                 $log->aksi = 'Ubah Status';
                 $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan ubah data status peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
                 $log->save();
@@ -1140,7 +1010,7 @@ class MonografiController extends Controller
         $model->delete();
         $log = new LogPustakawan();
         $log->dokumen_id = $model->id_dokumen;
-        $log->controller = 'Peraturan';
+        $log->controller = 'Monografi';
         $log->aksi = 'Hapus Status';
         $log->keterangan = 'User ' . \Yii::$app->user->identity->username . ' melakukan hapus data status peraturan pada ' . $log->getTanggal2(date("Y-m-d H:i:s"));
         $log->save();
@@ -1184,8 +1054,6 @@ class MonografiController extends Controller
             $command = $query->createCommand();
             $data = $command->queryAll();
             $out['results'] = array_values($data);
-            // $data = Peraturan::find($id)->select('id, judul as text')->where(['like', 'judul', $q])->asArray()->all();
-            // $out['results'] = ArrayHelper::map($data); 
         } elseif ($id > 0) {
             $out['results'] = ['id' => $id, 'text' => $text];
         }

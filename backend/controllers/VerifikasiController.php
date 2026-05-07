@@ -22,9 +22,10 @@ use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
+use yii\base\UserException;
 
 /**
- * PeraturanController implements the CRUD actions for Peraturan model.
+ * VerifikasiController implements the CRUD actions for Peraturan model.
  */
 class VerifikasiController extends Controller
 {
@@ -50,10 +51,6 @@ class VerifikasiController extends Controller
     public function actionIndex($tahun=null)
     {
         $searchModel = new DokumenJdihSearch();
-        /*
-        $searchModel = new DokumenJdihSearch(['id'=>\Yii::$app->user->identity->direktorat_id]);
-        $dataProvider->query->andWhere(['id'=>[2,3,4]]);
-        */
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -66,10 +63,6 @@ class VerifikasiController extends Controller
     public function actionPeraturan($tahun=null)
     {
         $searchModel = new DokumenJdihSearch(['tahun_terbit'=>$tahun]);
-        /*
-        $searchModel = new DokumenJdihSearch(['id'=>\Yii::$app->user->identity->direktorat_id]);
-        $dataProvider->query->andWhere(['id'=>[2,3,4]]);
-        */
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->query->andWhere(['tipe_dokumen'=>1]);
         return $this->render('index-peraturan', [
@@ -128,10 +121,6 @@ class VerifikasiController extends Controller
     public function actionMonografi($tahun=null)
     {
         $searchModel = new DokumenJdihSearch(['tahun_terbit'=>$tahun]);
-        /*
-        $searchModel = new DokumenJdihSearch(['id'=>\Yii::$app->user->identity->direktorat_id]);
-        $dataProvider->query->andWhere(['id'=>[2,3,4]]);
-        */
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->query->andWhere(['tipe_dokumen'=>2]);
         return $this->render('index-monografi', [
@@ -143,10 +132,6 @@ class VerifikasiController extends Controller
     public function actionArtikel($tahun=null)
     {
         $searchModel = new DokumenJdihSearch(['tahun_terbit'=>$tahun]);
-        /*
-        $searchModel = new DokumenJdihSearch(['id'=>\Yii::$app->user->identity->direktorat_id]);
-        $dataProvider->query->andWhere(['id'=>[2,3,4]]);
-        */
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->query->andWhere(['tipe_dokumen'=>3]);
         return $this->render('index-artikel', [
@@ -158,10 +143,6 @@ class VerifikasiController extends Controller
     public function actionPutusan($tahun=null)
     {
         $searchModel = new DokumenJdihSearch(['tahun_terbit'=>$tahun]);
-        /*
-        $searchModel = new DokumenJdihSearch(['id'=>\Yii::$app->user->identity->direktorat_id]);
-        $dataProvider->query->andWhere(['id'=>[2,3,4]]);
-        */
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->query->andWhere(['tipe_dokumen'=>4]);
         return $this->render('index-putusan', [
@@ -315,12 +296,11 @@ class VerifikasiController extends Controller
                 Yii::$app->session->setFlash('danger', 'Produk Hukum tidak  diverifikasi');
                 return $this->redirect(['index']);
             } else {
-                print_r($model->getErrors());
+                Yii::error('Failed to unpublish document: ' . json_encode($model->getErrors()));
             }
         } else {
             $model = $this->findModel(\Yii::$app->user->identity->id);
             $model->is_publish = 0;
-            $model->save();
             if ($model->save()) {
                 Yii::$app->user->logout();
                 Yii::$app->session->setFlash('success', 'Account inactive');
@@ -334,16 +314,6 @@ class VerifikasiController extends Controller
      * @param integer $id
      * @return mixed
      */
-    // public function actionActive($id,$tahun)
-    // {
-    //     $model = $this->findModel($id);
-    //     $model->is_publish = 1;
-    //     $model->save();
-    //     Yii::$app->session->setFlash('success', 'Produk Hukum telah diverifikasi');
-    //      // return $this->redirect(['index','tahun'=>$tahun]);
-    //         return $this->redirect(['view', 'id' => $model->id]);
-    // }
-
     public function actionActive($id, $tahun)
     {
         $model = $this->findModel($id);
@@ -382,14 +352,6 @@ class VerifikasiController extends Controller
         if ($model->is_publish == 0) {
             $model->is_publish = 1;
             if ($model->save(false)) {
-                // $log = new LogAktifitas();
-                // $log->controller = Yii::$app->controller->id;
-                // $log->action = Yii::$app->controller->action->id;
-                // $log->user_id =   \Yii::$app->user->id;
-                // $log->data_id  = $id;
-                // $log->detail = 'user ' . \Yii::$app->user->identity->username . ' mempublish data Peraturan (<b>' . $model->judul . '</b>) pada tanggal ' . $model->getTanggal2(date("Y-m-d H:i:s"));
-
-                // $log->save(false);
                 Yii::$app->session->setFlash('success', 'Dokumen Hukum Berhasil dipublish');
                 return $this->redirect(['view', 'id' => $id]);
             } else {
@@ -406,14 +368,6 @@ class VerifikasiController extends Controller
         if ($model->is_publish == 1) {
             $model->is_publish = 0;
             if ($model->save(false)) {
-                // $log = new LogAktifitas();
-                // $log->controller = Yii::$app->controller->id;
-                // $log->action = Yii::$app->controller->action->id;
-                // $log->user_id =   \Yii::$app->user->id;
-                // $log->data_id  = $id;
-                // $log->detail = 'user ' . \Yii::$app->user->identity->username . ' Mempublish data Peraturan (<b>' . $model->judul . '</b>) pada tanggal ' . $model->getTanggal2(date("Y-m-d H:i:s"));
-
-                // $log->save(false);
                 Yii::$app->session->setFlash('success', 'Dokumen Berhasil dinonaktifkan');
                 return $this->redirect(['view', 'id' => $id]);
             } else {
