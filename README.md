@@ -2,21 +2,21 @@
 
 🇮🇩 ILDIS adalah sistem informasi dokumentasi hukum Indonesia yang dikembangkan untuk membantu anggota JDIHN (Jaringan Dokumentasi dan Informasi Hukum Nasional) mengelola data dokumen hukum secara mandiri, efisien, dan sesuai standar.
 
-## Quick Install
+## Pasang Cepat
 
-Install ILDIS with a single command (requires [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/)):
+Pasang ILDIS dengan satu perintah (memerlukan [Docker](https://docs.docker.com/engine/install/) dan [Docker Compose](https://docs.docker.com/compose/install/)):
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/bphndigitalservice/ildis/main/install.sh | bash
 ```
 
-For non-interactive installs (CI/automation):
+Untuk pemasangan non-interaktif (CI/otomatisasi):
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/bphndigitalservice/ildis/main/install.sh | bash -s -- --non-interactive
 ```
 
-To update an existing installation:
+Untuk memperbarui instalasi yang ada:
 
 ```bash
 ./install.sh --update

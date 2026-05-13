@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #
-# ILDIS Update Script (wrapper)
-# This script has been replaced by install.sh --update.
-# Kept for backward compatibility.
+# Skrip Pembaruan ILDIS (wrapper)
+# Skrip ini telah digantikan oleh install.sh --update.
+# Dipertahankan untuk kompatibilitas mundur.
 #
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -10,8 +10,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 if [ -f "${SCRIPT_DIR}/install.sh" ]; then
     exec "${SCRIPT_DIR}/install.sh" --update "$@"
 else
-    echo "ERROR: install.sh not found in ${SCRIPT_DIR}"
-    echo "Please download the latest release from:"
+    echo "KESALAHAN: install.sh tidak ditemukan di ${SCRIPT_DIR}"
+    echo "Unduh rilis terbaru dari:"
     echo "  https://github.com/bphndigitalservice/ildis"
     exit 1
 fi

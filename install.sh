@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 #
-# ILDIS One-Click Install
-# Deploy ILDIS with a single command:
+# ILDIS Pasang Sekali Klik
+# Pasang ILDIS dengan satu perintah:
 #   curl -fsSL https://raw.githubusercontent.com/bphndigitalservice/ildis/main/install.sh | bash
 #
-# Usage:
-#   ./install.sh                  Interactive install
-#   ./install.sh --non-interactive  Use env vars, no prompts
-#   ./install.sh --update          Update existing installation
-#   ./install.sh --help            Show help text
+# Penggunaan:
+#   ./install.sh                  Pasang interaktif
+#   ./install.sh --non-interactive  Gunakan env var, tanpa prompt
+#   ./install.sh --update          Perbarui instalasi yang ada
+#   ./install.sh --help            Tampilkan bantuan
 
 set -euo pipefail
 
@@ -39,8 +39,8 @@ NC='\033[0m'
 # ── Helper functions ────────────────────────────────────────────────────────
 info()    { echo -e "${BLUE}[INFO]${NC} $*"; }
 success() { echo -e "${GREEN}[OK]${NC} $*"; }
-warn()    { echo -e "${YELLOW}[WARN]${NC} $*"; }
-fail()    { echo -e "${RED}[FAIL]${NC} $*"; exit 1; }
+warn()    { echo -e "${YELLOW}[PERINGATAN]${NC} $*"; }
+fail()    { echo -e "${RED}[GAGAL]${NC} $*"; exit 1; }
 
 generate_random_key() {
     if command -v openssl &>/dev/null; then
@@ -118,8 +118,8 @@ while [[ $# -gt 0 ]]; do
             shift
             ;;
         *)
-            echo "Unknown option: $1"
-            echo "Run './install.sh --help' for usage."
+            echo "Opsi tidak dikenal: $1"
+            echo "Jalankan './install.sh --help' untuk penggunaan."
             exit 1
             ;;
     esac
@@ -127,30 +127,30 @@ done
 
 show_help() {
     cat <<'EOF'
-ILDIS One-Click Install — Deploy ILDIS with Docker
+ILDIS Pasang Sekali Klik — Pasang ILDIS dengan Docker
 
-Usage:
-  ./install.sh                      Interactive install
-  ./install.sh --non-interactive    Use env vars, no prompts
-  ./install.sh --update             Update existing installation
-  ./install.sh --dir /opt/ildis    Specify install directory
-  ./install.sh --db-type mariadb   Set DB type (mariadb|mysql|external)
-  ./install.sh --help               Show this help text
+Penggunaan:
+  ./install.sh                      Pasang interaktif
+  ./install.sh --non-interactive    Gunakan env var, tanpa prompt
+  ./install.sh --update             Perbarui instalasi yang ada
+  ./install.sh --dir /opt/ildis    Tentukan direktori instalasi
+  ./install.sh --db-type mariadb   Atur tipe DB (mariadb|mysql|external)
+  ./install.sh --help               Tampilkan bantuan ini
 
-Environment variables (for --non-interactive):
-  INSTALL_DIR        Install directory (default: /opt/ildis)
-  PORT               App port (default: 8080)
-  PUBLIC_DOMAIN      Public URL (default: http://localhost:8080)
-  DB_TYPE            Database type: mariadb, mysql, external
-  DB_HOST            Database host (for external)
-  DB_USER            Database user
-  DB_PASSWORD        Database password
-  DB_DATABASE        Database name (default: ildis_v4)
-  DB_DATABASE_PORT   Database port (default: 3306)
-  RECAPTCHA_SITE_KEY    reCAPTCHA site key
-  RECAPTCHA_SECRET_KEY  reCAPTCHA secret key
+Variabel lingkungan (untuk --non-interactive):
+  INSTALL_DIR        Direktori instalasi (bawaan: /opt/ildis)
+  PORT               Port aplikasi (bawaan: 8080)
+  PUBLIC_DOMAIN      URL publik (bawaan: http://localhost:8080)
+  DB_TYPE            Tipe database: mariadb, mysql, external
+  DB_HOST            Host database (untuk external)
+  DB_USER            Pengguna database
+  DB_PASSWORD        Kata sandi database
+  DB_DATABASE        Nama database (bawaan: ildis_v4)
+  DB_DATABASE_PORT   Port database (bawaan: 3306)
+  RECAPTCHA_SITE_KEY    Kunci situs reCAPTCHA
+  RECAPTCHA_SECRET_KEY  Kunci rahasia reCAPTCHA
 
-Examples:
+Contoh:
   curl -fsSL https://raw.githubusercontent.com/bphndigitalservice/ildis/main/install.sh | bash
   ./install.sh --non-interactive --db-type external
   ./install.sh --update
@@ -164,74 +164,74 @@ fi
 
 # ── Prerequisite checks ─────────────────────────────────────────────────────
 check_prerequisites() {
-    info "Checking prerequisites..."
+    info "Memeriksa prasyarat..."
 
     if ! command -v docker &>/dev/null; then
         echo ""
-        echo -e "${RED}Docker is not installed.${NC}"
+        echo -e "${RED}Docker belum terpasang.${NC}"
         echo ""
-        echo "Install Docker: https://docs.docker.com/engine/install/"
-        fail "Docker is required."
+        echo "Pasang Docker: https://docs.docker.com/engine/install/"
+        fail "Docker diperlukan."
     fi
 
     if ! docker compose version &>/dev/null 2>&1; then
         echo ""
-        echo -e "${RED}Docker Compose v2 is not available.${NC}"
+        echo -e "${RED}Docker Compose v2 tidak tersedia.${NC}"
         echo ""
-        echo "Install Docker Compose: https://docs.docker.com/compose/install/"
-        fail "Docker Compose v2 is required."
+        echo "Pasang Docker Compose: https://docs.docker.com/compose/install/"
+        fail "Docker Compose v2 diperlukan."
     fi
 
     local available_kb available_mb
     available_kb=$(df -k . | awk 'NR==2 {print $4}')
     available_mb=$((available_kb / 1024))
     if [ "${available_mb}" -lt "${MIN_DISK_MB}" ]; then
-        fail "Insufficient disk space: ${available_mb}MB available, ${MIN_DISK_MB}MB required."
+        fail "Ruang disk tidak cukup: ${available_mb}MB tersedia, ${MIN_DISK_MB}MB diperlukan."
     fi
-    success "Disk space: ${available_mb}MB available"
+    success "Ruang disk: ${available_mb}MB tersedia"
 
     local port="${PORT:-${DEFAULT_PORT}}"
     if command -v ss &>/dev/null; then
         if ss -tlnp 2>/dev/null | grep -q ":${port} "; then
-            warn "Port ${port} appears to be in use."
-            warn "You can change it with PORT= when running the script."
+            warn "Port ${port} tampaknya sedang digunakan."
+            warn "Anda dapat mengubahnya dengan PORT= saat menjalankan skrip."
         fi
     elif command -v lsof &>/dev/null; then
         if lsof -i ":${port}" &>/dev/null 2>&1; then
-            warn "Port ${port} appears to be in use."
+            warn "Port ${port} tampaknya sedang digunakan."
         fi
     fi
 
-    success "Prerequisites OK"
+    success "Prasyarat OK"
 }
 
 # ── Interactive wizard ───────────────────────────────────────────────────────
 run_wizard() {
     echo ""
     echo -e "${BOLD}╔══════════════════════════════════════════╗${NC}"
-    echo -e "${BOLD}║        ILDIS Installation Wizard         ║${NC}"
+    echo -e "${BOLD}║        Panduan Instalasi ILDIS            ║${NC}"
     echo -e "${BOLD}╚══════════════════════════════════════════╝${NC}"
     echo ""
 
-    INSTALL_DIR=$(prompt_value "Install directory" "${INSTALL_DIR:-${DEFAULT_INSTALL_DIR}}")
+    INSTALL_DIR=$(prompt_value "Direktori instalasi" "${INSTALL_DIR:-${DEFAULT_INSTALL_DIR}}")
     echo ""
 
-    PORT=$(prompt_value "App port" "${PORT:-${DEFAULT_PORT}}")
+    PORT=$(prompt_value "Port aplikasi" "${PORT:-${DEFAULT_PORT}}")
     echo ""
 
-    PUBLIC_DOMAIN=$(prompt_value "Public domain URL" "${PUBLIC_DOMAIN:-http://localhost:${PORT}}")
+    PUBLIC_DOMAIN=$(prompt_value "URL domain publik" "${PUBLIC_DOMAIN:-http://localhost:${PORT}}")
     echo ""
 
-    echo -e "${BOLD}Database configuration:${NC}"
-    echo "  1) MariaDB 10.11 (recommended, default)"
+    echo -e "${BOLD}Konfigurasi database:${NC}"
+    echo "  1) MariaDB 10.11 (disarankan, bawaan)"
     echo "  2) MySQL 8.0"
-    echo "  3) External database"
+    echo "  3) Database eksternal"
     echo ""
     if [ -n "${DB_TYPE_OVERRIDE}" ]; then
         DB_TYPE="${DB_TYPE_OVERRIDE}"
     else
         local db_choice
-        db_choice=$(prompt_value "Choose database type (1/2/3)" "1")
+        db_choice=$(prompt_value "Pilih tipe database (1/2/3)" "1")
         case "$db_choice" in
             2) DB_TYPE="mysql" ;;
             3) DB_TYPE="external" ;;
@@ -242,35 +242,35 @@ run_wizard() {
     DB_PASSWORD="${DB_PASSWORD:-}"
     if [ "${DB_TYPE}" = "external" ]; then
         echo ""
-        echo -e "${CYAN}External database selected. Provide connection details:${NC}"
-        DB_HOST=$(prompt_value "  Database host" "${DB_HOST:-}")
-        DB_DATABASE_PORT=$(prompt_value "  Database port" "${DB_DATABASE_PORT:-3306}")
-        DB_USER=$(prompt_value "  Database user" "${DB_USER:-ildis}")
-        DB_DATABASE=$(prompt_value "  Database name" "${DB_DATABASE:-ildis_v4}")
-        DB_PASSWORD=$(prompt_value "  Database password" "" "true")
+        echo -e "${CYAN}Database eksternal dipilih. Masukkan detail koneksi:${NC}"
+        DB_HOST=$(prompt_value "  Host database" "${DB_HOST:-}")
+        DB_DATABASE_PORT=$(prompt_value "  Port database" "${DB_DATABASE_PORT:-3306}")
+        DB_USER=$(prompt_value "  Pengguna database" "${DB_USER:-ildis}")
+        DB_DATABASE=$(prompt_value "  Nama database" "${DB_DATABASE:-ildis_v4}")
+        DB_PASSWORD=$(prompt_value "  Kata sandi database" "" "true")
         if [ -z "${DB_PASSWORD}" ]; then
-            fail "Database password is required for external database."
+            fail "Kata sandi database diperlukan untuk database eksternal."
         fi
     else
         local db_label="MariaDB 10.11"
         [ "${DB_TYPE}" = "mysql" ] && db_label="MySQL 8.0"
         echo ""
-        echo -e "${CYAN}${db_label} selected.${NC}"
+        echo -e "${CYAN}${db_label} dipilih.${NC}"
 
         if [ -z "${DB_PASSWORD}" ]; then
             DB_PASSWORD=$(generate_random_key)
-            echo -e "  Generated database password: ${YELLOW}${DB_PASSWORD}${NC}"
-            echo "  Save this password in a secure location!"
+            echo -e "  Kata sandi database dibuat: ${YELLOW}${DB_PASSWORD}${NC}"
+            echo "  Simpan kata sandi ini di tempat yang aman!"
         fi
-        DB_USER=$(prompt_value "  Database user" "${DB_USER:-ildis}")
-        DB_DATABASE=$(prompt_value "  Database name" "${DB_DATABASE:-ildis_v4}")
+        DB_USER=$(prompt_value "  Pengguna database" "${DB_USER:-ildis}")
+        DB_DATABASE=$(prompt_value "  Nama database" "${DB_DATABASE:-ildis_v4}")
     fi
     echo ""
 
-    echo -e "${BOLD}reCAPTCHA (optional — press Enter to skip):${NC}"
-    RECAPTCHA_SITE_KEY=$(prompt_value "  reCAPTCHA site key" "${RECAPTCHA_SITE_KEY:-}")
+    echo -e "${BOLD}reCAPTCHA (opsional — tekan Enter untuk lewati):${NC}"
+    RECAPTCHA_SITE_KEY=$(prompt_value "  Kunci situs reCAPTCHA" "${RECAPTCHA_SITE_KEY:-}")
     if [ -n "${RECAPTCHA_SITE_KEY}" ]; then
-        RECAPTCHA_SECRET_KEY=$(prompt_value "  reCAPTCHA secret key" "${RECAPTCHA_SECRET_KEY:-}")
+        RECAPTCHA_SECRET_KEY=$(prompt_value "  Kunci rahasia reCAPTCHA" "${RECAPTCHA_SECRET_KEY:-}")
     else
         RECAPTCHA_SECRET_KEY=""
     fi
@@ -284,23 +284,23 @@ run_wizard() {
 
     echo ""
     echo -e "${BOLD}════════════════════════════════════════════${NC}"
-    echo -e "${BOLD}Installation Summary:${NC}"
+    echo -e "${BOLD}Ringkasan Instalasi:${NC}"
     echo -e "${BOLD}════════════════════════════════════════════${NC}"
-    echo "  Directory:    ${INSTALL_DIR}"
-    echo "  App port:     ${PORT}"
-    echo "  Domain:       ${PUBLIC_DOMAIN}"
-    echo "  Database:     ${DB_TYPE}"
+    echo "  Direktori:   ${INSTALL_DIR}"
+    echo "  Port:        ${PORT}"
+    echo "  Domain:      ${PUBLIC_DOMAIN}"
+    echo "  Database:    ${DB_TYPE}"
     if [ "${DB_TYPE}" = "external" ]; then
-        echo "  DB host:      ${DB_HOST}:${DB_DATABASE_PORT}"
+        echo "  Host DB:     ${DB_HOST}:${DB_DATABASE_PORT}"
     fi
-    echo "  DB user:      ${DB_USER}"
-    echo "  DB name:      ${DB_DATABASE}"
-    echo "  reCAPTCHA:    $([ -n "${RECAPTCHA_SITE_KEY}" ] && echo "configured" || echo "skipped")"
+    echo "  Pengguna DB: ${DB_USER}"
+    echo "  Nama DB:     ${DB_DATABASE}"
+    echo "  reCAPTCHA:   $([ -n "${RECAPTCHA_SITE_KEY}" ] && echo "terkonfigurasi" || echo "dilewati")"
     echo ""
 
     if [ "${NON_INTERACTIVE}" = false ]; then
-        if ! confirm "Proceed with installation?" "y"; then
-            echo "Installation cancelled."
+        if ! confirm "Lanjutkan instalasi?" "y"; then
+            echo "Instalasi dibatalkan."
             exit 0
         fi
     fi
@@ -308,14 +308,14 @@ run_wizard() {
 
 # ── Generate .env file ──────────────────────────────────────────────────────
 generate_env() {
-    info "Generating ${ENV_FILE}..."
+    info "Membuat ${ENV_FILE}..."
 
     cat > "${INSTALL_DIR}/${ENV_FILE}" <<EOF
-# ILDIS Environment Configuration
-# Generated by install.sh on $(date -Iseconds 2>/dev/null || date)
-# Review and update as needed.
+# Konfigurasi Lingkungan ILDIS
+# Dibuat oleh install.sh pada $(date -Iseconds 2>/dev/null || date)
+# Periksa dan perbarui sesuai kebutuhan.
 
-# ── Application ──
+# ── Aplikasi ──
 YII_ENV=${YII_ENV}
 YII_DEBUG=${YII_DEBUG}
 PUBLIC_DOMAIN=${PUBLIC_DOMAIN}
@@ -328,25 +328,25 @@ DB_PASSWORD=${DB_PASSWORD}
 DB_DATABASE=${DB_DATABASE}
 DB_DATABASE_PORT=${DB_DATABASE_PORT:-3306}
 
-# ── Cookie validation (auto-generated) ──
+# ── Validasi cookie (dibuat otomatis) ──
 COOKIE_VALIDATION_KEY_BE=${COOKIE_VALIDATION_KEY_BE}
 COOKIE_VALIDATION_KEY_FE=${COOKIE_VALIDATION_KEY_FE}
 
-# ── reCAPTCHA (optional) ──
+# ── reCAPTCHA (opsional) ──
 RECAPTCHA_SITE_KEY=${RECAPTCHA_SITE_KEY:-}
 RECAPTCHA_SECRET_KEY=${RECAPTCHA_SECRET_KEY:-}
 
-# ── Docker image tag ──
+# ── Tag image Docker ──
 ILDIS_IMAGE_TAG=${ILDIS_IMAGE_TAG:-latest}
 EOF
 
     chmod 600 "${INSTALL_DIR}/${ENV_FILE}"
-    success "${ENV_FILE} generated"
+    success "${ENV_FILE} dibuat"
 }
 
 # ── Generate docker-compose.yml ─────────────────────────────────────────────
 generate_compose() {
-    info "Generating ${COMPOSE_FILE}..."
+    info "Membuat ${COMPOSE_FILE}..."
 
     local DB_IMAGE=""
     local DB_CONTAINER_NAME=""
@@ -513,7 +513,7 @@ volumes:
 EOF
     fi
 
-    success "${COMPOSE_FILE} generated"
+    success "${COMPOSE_FILE} dibuat"
 }
 
 # ── Install ──────────────────────────────────────────────────────────────────
@@ -523,19 +523,19 @@ do_install() {
     generate_env
     generate_compose
 
-    info "Pulling ILDIS Docker images..."
+    info "Mengunduh image Docker ILDIS..."
     if ! docker compose -f "${INSTALL_DIR}/${COMPOSE_FILE}" --env-file "${INSTALL_DIR}/${ENV_FILE}" pull 2>&1; then
-        fail "Failed to pull Docker images. Check your network connection and that the images exist at ${GHCR_IMAGE}."
+        fail "Gagal mengunduh image Docker. Periksa koneksi jaringan dan pastikan image tersedia di ${GHCR_IMAGE}."
     fi
-    success "Docker images pulled"
+    success "Image Docker berhasil diunduh"
 
-    info "Starting ILDIS..."
+    info "Memulai ILDIS..."
     if ! docker compose -f "${INSTALL_DIR}/${COMPOSE_FILE}" --env-file "${INSTALL_DIR}/${ENV_FILE}" up -d 2>&1; then
-        fail "Failed to start containers. Check logs: docker compose -f ${INSTALL_DIR}/${COMPOSE_FILE} logs"
+        fail "Gagal memulai container. Periksa log: docker compose -f ${INSTALL_DIR}/${COMPOSE_FILE} logs"
     fi
 
     if [ "${DB_TYPE}" != "external" ]; then
-        info "Waiting for database to be ready..."
+        info "Menunggu database siap..."
         local db_ready=false
         for i in $(seq 1 "${MYSQL_HEALTH_RETRIES}"); do
             if docker compose -f "${INSTALL_DIR}/${COMPOSE_FILE}" --env-file "${INSTALL_DIR}/${ENV_FILE}" exec -T db healthcheck.sh --connect --innodb_initialized &>/dev/null 2>&1 || \
@@ -543,62 +543,62 @@ do_install() {
                 db_ready=true
                 break
             fi
-            info "Database not ready, retrying... ($i/${MYSQL_HEALTH_RETRIES})"
+            info "Database belum siap, mencoba ulang... ($i/${MYSQL_HEALTH_RETRIES})"
             sleep "${MYSQL_HEALTH_INTERVAL}"
         done
         if [ "${db_ready}" = false ]; then
-            warn "Database did not become ready in time. Containers may need manual intervention."
+            warn "Database belum siap dalam waktu yang ditentukan. Container mungkin perlu penanganan manual."
         else
-            success "Database is ready"
+            success "Database siap"
         fi
     fi
 
     local app_port="${PORT:-${DEFAULT_PORT}}"
-    info "Waiting for ILDIS application on port ${app_port}..."
+    info "Menunggu aplikasi ILDIS di port ${app_port}..."
     local app_ready=false
     for i in $(seq 1 "${HEALTH_RETRIES}"); do
         if curl -sf "http://localhost:${app_port}/" >/dev/null 2>&1; then
             app_ready=true
             break
         fi
-        info "Application not ready, retrying... ($i/${HEALTH_RETRIES})"
+        info "Aplikasi belum siap, mencoba ulang... ($i/${HEALTH_RETRIES})"
         sleep "${HEALTH_INTERVAL}"
     done
 
     if [ "${app_ready}" = false ]; then
         echo ""
-        echo -e "${YELLOW}ILDIS containers are running but the app is not responding yet.${NC}"
-        echo "This may take a minute. Check status with:"
+        echo -e "${YELLOW}Container ILDIS berjalan tetapi aplikasi belum merespons.${NC}"
+        echo "Ini mungkin membutuhkan beberapa saat. Periksa status dengan:"
         echo "  docker compose -f ${INSTALL_DIR}/${COMPOSE_FILE} logs app"
         echo ""
-        echo "Once ready, visit: http://localhost:${app_port}"
+        echo "Jika sudah siap, kunjungi: http://localhost:${app_port}"
     else
-        success "ILDIS is responding"
+        success "ILDIS merespons"
     fi
 
-    info "Running database migrations..."
+    info "Menjalankan migrasi database..."
     if docker compose -f "${INSTALL_DIR}/${COMPOSE_FILE}" --env-file "${INSTALL_DIR}/${ENV_FILE}" exec -T app php yii migrate/up --interactive=0 --migrationPath=@console/migrations 2>&1; then
-        success "Database migrations applied"
+        success "Migrasi database berhasil diterapkan"
     else
-        warn "Migration command returned non-zero. This may be normal if no migrations are pending."
+        warn "Perintah migrasi mengembalikan non-zero. Ini mungkin normal jika tidak ada migrasi tertunda."
     fi
 
     echo ""
     echo -e "${GREEN}╔══════════════════════════════════════════╗${NC}"
-    echo -e "${GREEN}║      ILDIS Installed Successfully!        ║${NC}"
+    echo -e "${GREEN}║       ILDIS Berhasil Dipasang!            ║${NC}"
     echo -e "${GREEN}╚══════════════════════════════════════════╝${NC}"
     echo ""
-    echo "  URL:         http://localhost:${app_port}"
-    echo "  Directory:   ${INSTALL_DIR}"
-    echo "  Config:      ${INSTALL_DIR}/${ENV_FILE}"
-    echo "  Compose:     ${INSTALL_DIR}/${COMPOSE_FILE}"
+    echo "  URL:           http://localhost:${app_port}"
+    echo "  Direktori:     ${INSTALL_DIR}"
+    echo "  Konfigurasi:   ${INSTALL_DIR}/${ENV_FILE}"
+    echo "  Compose:        ${INSTALL_DIR}/${COMPOSE_FILE}"
     echo ""
-    echo "  Useful commands:"
-    echo "    docker compose -f ${INSTALL_DIR}/${COMPOSE_FILE} logs -f     # Follow logs"
-    echo "    docker compose -f ${INSTALL_DIR}/${COMPOSE_FILE} down        # Stop containers"
-    echo "    docker compose -f ${INSTALL_DIR}/${COMPOSE_FILE} pull        # Update images"
+    echo "  Perintah berguna:"
+    echo "    docker compose -f ${INSTALL_DIR}/${COMPOSE_FILE} logs -f     # Ikuti log"
+    echo "    docker compose -f ${INSTALL_DIR}/${COMPOSE_FILE} down        # Hentikan container"
+    echo "    docker compose -f ${INSTALL_DIR}/${COMPOSE_FILE} pull        # Perbarui image"
     echo ""
-    echo -e "  ${CYAN}To update ILDIS later, run: ./install.sh --update${NC}"
+    echo -e "  ${CYAN}Untuk memperbarui ILDIS, jalankan: ./install.sh --update${NC}"
     echo ""
 }
 
@@ -608,10 +608,10 @@ do_update() {
     local env_file="${INSTALL_DIR}/${ENV_FILE}"
 
     if [ ! -f "${compose_file}" ] || [ ! -f "${env_file}" ]; then
-        fail "No existing ILDIS installation found in ${INSTALL_DIR}. Run ./install.sh without --update for a fresh install."
+        fail "Instalasi ILDIS tidak ditemukan di ${INSTALL_DIR}. Jalankan ./install.sh tanpa --update untuk pemasangan baru."
     fi
 
-    info "Loading existing configuration..."
+    info "Memuat konfigurasi yang ada..."
     while IFS='=' read -r key value; do
         case "$key" in
             ''|\#*) continue ;;
@@ -626,7 +626,7 @@ do_update() {
 
     local latest_version="${ILDIS_IMAGE_TAG:-latest}"
     if [ "${latest_version}" = "latest" ]; then
-        info "Checking for latest version..."
+        info "Memeriksa versi terbaru..."
         if command -v curl &>/dev/null; then
             local release_info
             release_info=$(curl -sf "https://api.github.com/repos/${GITHUB_REPO}/releases/latest" 2>/dev/null || echo "{}")
@@ -636,14 +636,14 @@ do_update() {
     fi
 
     echo ""
-    echo -e "${BOLD}ILDIS Update${NC}"
-    echo "  Current version: ${current_version}"
-    echo "  Target version:  ${latest_version}"
+    echo -e "${BOLD}Pembaruan ILDIS${NC}"
+    echo "  Versi saat ini: ${current_version}"
+    echo "  Versi target:   ${latest_version}"
     echo ""
 
     if [ "${NON_INTERACTIVE}" = false ]; then
-        if ! confirm "Proceed with update?" "y"; then
-            echo "Update cancelled."
+        if ! confirm "Lanjutkan pembaruan?" "y"; then
+            echo "Pembaruan dibatalkan."
             exit 0
         fi
     fi
@@ -653,7 +653,7 @@ do_update() {
     local backup_file="${INSTALL_DIR}/${BACKUP_DIR}/ildis_${timestamp}.sql.gz"
     mkdir -p "${INSTALL_DIR}/${BACKUP_DIR}"
 
-    info "Creating database backup..."
+    info "Membuat cadangan database..."
     local db_host="${DB_HOST:-db}"
     local db_user="${DB_USER:-root}"
     local db_pass="${DB_PASSWORD:-}"
@@ -667,37 +667,37 @@ do_update() {
             backup_success=true
         fi
     else
-        warn "External database detected — skipping automatic backup."
-        warn "Ensure you have a backup before proceeding."
+        warn "Database eksternal terdeteksi — melewatkan cadangan otomatis."
+        warn "Pastikan Anda memiliki cadangan sebelum melanjutkan."
     fi
 
     if [ "${backup_success}" = true ]; then
-        success "Database backup saved: ${backup_file} ($(du -h "${backup_file}" | cut -f1))"
+        success "Cadangan database disimpan: ${backup_file} ($(du -h "${backup_file}" | cut -f1))"
     elif [ "${DB_TYPE:-mariadb}" != "external" ]; then
-        warn "Database backup failed. Continuing without backup."
-        warn "You can create a manual backup with:"
+        warn "Cadangan database gagal. Melanjutkan tanpa cadangan."
+        warn "Anda dapat membuat cadangan manual dengan:"
         warn "  docker compose -f ${compose_file} exec -T db mysqldump ..."
         if [ "${NON_INTERACTIVE}" = false ]; then
-            if ! confirm "Continue without backup?" "n"; then
-                echo "Update cancelled."
+            if ! confirm "Lanjutkan tanpa cadangan?" "n"; then
+                echo "Pembaruan dibatalkan."
                 exit 0
             fi
         fi
     fi
 
-    info "Pulling updated Docker images..."
+    info "Mengunduh image Docker terbaru..."
     if ! docker compose -f "${compose_file}" --env-file "${env_file}" pull 2>&1; then
-        fail "Failed to pull Docker images."
+        fail "Gagal mengunduh image Docker."
     fi
-    success "Images updated"
+    success "Image diperbarui"
 
-    info "Restarting ILDIS containers..."
+    info "Memulai ulang container ILDIS..."
     if ! docker compose -f "${compose_file}" --env-file "${env_file}" up -d 2>&1; then
-        fail "Failed to restart containers."
+        fail "Gagal memulai ulang container."
     fi
 
     if [ "${DB_TYPE:-mariadb}" != "external" ]; then
-        info "Waiting for database..."
+        info "Menunggu database..."
         local db_ready=false
         for i in $(seq 1 "${MYSQL_HEALTH_RETRIES}"); do
             if docker compose -f "${compose_file}" exec -T db healthcheck.sh --connect --innodb_initialized &>/dev/null 2>&1 || \
@@ -707,11 +707,11 @@ do_update() {
             fi
             sleep "${MYSQL_HEALTH_INTERVAL}"
         done
-        [ "${db_ready}" = true ] && success "Database is ready" || warn "Database not ready yet"
+        [ "${db_ready}" = true ] && success "Database siap" || warn "Database belum siap"
     fi
 
     local app_port="${PORT:-${DEFAULT_PORT}}"
-    info "Waiting for application on port ${app_port}..."
+    info "Menunggu aplikasi di port ${app_port}..."
 
     local app_ready=false
     for i in $(seq 1 "${HEALTH_RETRIES}"); do
@@ -724,30 +724,30 @@ do_update() {
 
     if [ "${app_ready}" = false ]; then
         echo ""
-        echo -e "${YELLOW}Application not responding after update.${NC}"
-        echo "Check logs: docker compose -f ${compose_file} logs app"
+        echo -e "${YELLOW}Aplikasi tidak merespons setelah pembaruan.${NC}"
+        echo "Periksa log: docker compose -f ${compose_file} logs app"
     else
-        success "Application is responding"
+        success "Aplikasi merespons"
     fi
 
-    info "Running database migrations..."
+    info "Menjalankan migrasi database..."
     if docker compose -f "${compose_file}" exec -T app php yii migrate/up --interactive=0 --migrationPath=@console/migrations 2>&1; then
-        success "Migrations applied"
+        success "Migrasi diterapkan"
     else
-        warn "Migration command returned non-zero. May be normal if none pending."
+        warn "Perintah migrasi mengembalikan non-zero. Mungkin normal jika tidak ada yang tertunda."
     fi
 
     echo "${latest_version}" > "${INSTALL_DIR}/${VERSION_FILE}"
 
     echo ""
     echo -e "${GREEN}╔══════════════════════════════════════════╗${NC}"
-    echo -e "${GREEN}║        ILDIS Updated Successfully!       ║${NC}"
+    echo -e "${GREEN}║       ILDIS Berhasil Diperbarui!          ║${NC}"
     echo -e "${GREEN}╚══════════════════════════════════════════╝${NC}"
     echo ""
-    echo "  Previous version: ${current_version}"
-    echo "  New version:       ${latest_version}"
+    echo "  Versi sebelumnya: ${current_version}"
+    echo "  Versi baru:        ${latest_version}"
     if [ "${backup_success}" = true ]; then
-        echo "  Backup file:       ${backup_file}"
+        echo "  File cadangan:     ${backup_file}"
     fi
     echo "  URL:                http://localhost:${app_port}"
     echo ""
@@ -770,7 +770,7 @@ detect_existing_install() {
 # ── Main ────────────────────────────────────────────────────────────────────
 main() {
     echo ""
-    echo -e "${BOLD}ILDIS — Indonesian Law Documentation Information System${NC}"
+    echo -e "${BOLD}ILDIS — Sistem Informasi Dokumentasi Hukum Indonesia${NC}"
     echo ""
 
     if [ "${ACTION}" = "update" ]; then
@@ -781,7 +781,7 @@ main() {
         elif [ -z "${INSTALL_DIR}" ]; then
             INSTALL_DIR="${DEFAULT_INSTALL_DIR}"
         fi
-        info "Updating ILDIS in ${INSTALL_DIR}"
+        info "Memperbarui ILDIS di ${INSTALL_DIR}"
         do_update
         return
     fi
