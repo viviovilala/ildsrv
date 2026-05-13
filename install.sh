@@ -204,3 +204,104 @@ check_prerequisites() {
 
     success "Prerequisites OK"
 }
+
+# ── Interactive wizard ───────────────────────────────────────────────────────
+run_wizard() {
+    echo ""
+    echo -e "${BOLD}╔══════════════════════════════════════════╗${NC}"
+    echo -e "${BOLD}║        ILDIS Installation Wizard         ║${NC}"
+    echo -e "${BOLD}╚══════════════════════════════════════════╝${NC}"
+    echo ""
+
+    INSTALL_DIR=$(prompt_value "Install directory" "${INSTALL_DIR:-${DEFAULT_INSTALL_DIR}}")
+    echo ""
+
+    PORT=$(prompt_value "App port" "${PORT:-${DEFAULT_PORT}}")
+    echo ""
+
+    PUBLIC_DOMAIN=$(prompt_value "Public domain URL" "${PUBLIC_DOMAIN:-http://localhost:${PORT}}")
+    echo ""
+
+    echo -e "${BOLD}Database configuration:${NC}"
+    echo "  1) MariaDB 10.11 (recommended, default)"
+    echo "  2) MySQL 8.0"
+    echo "  3) External database"
+    echo ""
+    if [ -n "${DB_TYPE_OVERRIDE}" ]; then
+        DB_TYPE="${DB_TYPE_OVERRIDE}"
+    else
+        local db_choice
+        db_choice=$(prompt_value "Choose database type (1/2/3)" "1")
+        case "$db_choice" in
+            2) DB_TYPE="mysql" ;;
+            3) DB_TYPE="external" ;;
+            *) DB_TYPE="mariadb" ;;
+        esac
+    fi
+
+    DB_PASSWORD="${DB_PASSWORD:-}"
+    if [ "${DB_TYPE}" = "external" ]; then
+        echo ""
+        echo -e "${CYAN}External database selected. Provide connection details:${NC}"
+        DB_HOST=$(prompt_value "  Database host" "${DB_HOST:-}")
+        DB_DATABASE_PORT=$(prompt_value "  Database port" "${DB_DATABASE_PORT:-3306}")
+        DB_USER=$(prompt_value "  Database user" "${DB_USER:-ildis}")
+        DB_DATABASE=$(prompt_value "  Database name" "${DB_DATABASE:-ildis_v4}")
+        DB_PASSWORD=$(prompt_value "  Database password" "" "true")
+        if [ -z "${DB_PASSWORD}" ]; then
+            fail "Database password is required for external database."
+        fi
+    else
+        local db_label="MariaDB 10.11"
+        [ "${DB_TYPE}" = "mysql" ] && db_label="MySQL 8.0"
+        echo ""
+        echo -e "${CYAN}${db_label} selected.${NC}"
+
+        if [ -z "${DB_PASSWORD}" ]; then
+            DB_PASSWORD=$(generate_random_key)
+            echo -e "  Generated database password: ${YELLOW}${DB_PASSWORD}${NC}"
+            echo "  Save this password in a secure location!"
+        fi
+        DB_USER=$(prompt_value "  Database user" "${DB_USER:-ildis}")
+        DB_DATABASE=$(prompt_value "  Database name" "${DB_DATABASE:-ildis_v4}")
+    fi
+    echo ""
+
+    echo -e "${BOLD}reCAPTCHA (optional — press Enter to skip):${NC}"
+    RECAPTCHA_SITE_KEY=$(prompt_value "  reCAPTCHA site key" "${RECAPTCHA_SITE_KEY:-}")
+    if [ -n "${RECAPTCHA_SITE_KEY}" ]; then
+        RECAPTCHA_SECRET_KEY=$(prompt_value "  reCAPTCHA secret key" "${RECAPTCHA_SECRET_KEY:-}")
+    else
+        RECAPTCHA_SECRET_KEY=""
+    fi
+    echo ""
+
+    COOKIE_VALIDATION_KEY_BE="${COOKIE_VALIDATION_KEY_BE:-$(generate_random_key)}"
+    COOKIE_VALIDATION_KEY_FE="${COOKIE_VALIDATION_KEY_FE:-$(generate_random_key)}"
+
+    YII_ENV="${YII_ENV:-prod}"
+    YII_DEBUG="${YII_DEBUG:-false}"
+
+    echo ""
+    echo -e "${BOLD}════════════════════════════════════════════${NC}"
+    echo -e "${BOLD}Installation Summary:${NC}"
+    echo -e "${BOLD}════════════════════════════════════════════${NC}"
+    echo "  Directory:    ${INSTALL_DIR}"
+    echo "  App port:     ${PORT}"
+    echo "  Domain:       ${PUBLIC_DOMAIN}"
+    echo "  Database:     ${DB_TYPE}"
+    if [ "${DB_TYPE}" = "external" ]; then
+        echo "  DB host:      ${DB_HOST}:${DB_DATABASE_PORT}"
+    fi
+    echo "  DB user:      ${DB_USER}"
+    echo "  DB name:      ${DB_DATABASE}"
+    echo "  reCAPTCHA:    $([ -n "${RECAPTCHA_SITE_KEY}" ] && echo "configured" || echo "skipped")"
+    echo ""
+
+    if [ "${NON_INTERACTIVE}" = false ]; then
+        if ! confirm "Proceed with installation?" "y"; then
+            echo "Installation cancelled."
+            exit 0
+        fi
+    fi
+}
