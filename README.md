@@ -57,6 +57,19 @@ ILDIS adalah aplikasi terbuka yang memungkinkan instansi pemerintah pusat maupun
    ```
 6. Jalankan _Debugger_ menu dan pilih `Launch Built-in web server` dan lanjutkan pengembangan.
 
+### Menggunakan Docker (Production)
+
+1. Salin `.env.example` ke `.env` dan sesuaikan konfigurasi.
+2. Jalankan `docker compose up -d` — container akan otomatis menjalankan database migration saat pertama kali startup.
+3. Aplikasi tersedia di `http://localhost:8080`.
+
+Untuk update ke versi terbaru:
+```bash
+./update.sh              # Update ke versi terbaru
+./update.sh --check      # Cek versi yang tersedia
+./update.sh --help       # Lihat semua opsi
+```
+
 ## 📝 TODO
 
 - [x] Membuat instalasi di _production_ lebih mudah (misalnya dengan Docker atau installer GUI sederhana)
@@ -64,7 +77,7 @@ ILDIS adalah aplikasi terbuka yang memungkinkan instansi pemerintah pusat maupun
 - [x] Panduan pengembangan lokal
 - [x] Update ke Versi Yii 2.0.52
 - [x] Update ke PHP 8.1
-- [ ] Migration Script untuk database yang sudah ada
+- [x] Migration Script untuk database yang sudah ada
 - [ ] Headless mode untuk flexibilitas frontend
 - [ ] Dokumentasi API yang lebih lengkap
 
