@@ -1,3 +1,9 @@
+## [4.3.2](https://github.com/bphndigitalservice/ildis/compare/v4.3.1...v4.3.2) (2026-05-26)
+
+### Bug Fixes
+
+* **install:** use mkdir probe instead of -w to detect /opt writability ([d892a26](https://github.com/bphndigitalservice/ildis/commit/d892a26c6c536bf2194f8bba3b2ae4177b219689))
+
 ## [4.3.1](https://github.com/bphndigitalservice/ildis/compare/v4.3.0...v4.3.1) (2026-05-26)
 
 ### Bug Fixes
