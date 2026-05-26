@@ -73,6 +73,29 @@ confirm() {
     [[ "$REPLY" =~ ^[Yy]$ ]]
 }
 
+# Petunjuk mengubah reCAPTCHA setelah instalasi (ditampilkan di akhir install & di komentar .env)
+print_recaptcha_env_help() {
+    local env_path="${1:-${INSTALL_DIR}/${ENV_FILE}}"
+    echo ""
+    echo -e "${BOLD}reCAPTCHA (login backend/CMS):${NC}"
+    echo "  File:     ${env_path}"
+    echo "  Variabel: RECAPTCHA_ENABLED, RECAPTCHA_SITE_KEY, RECAPTCHA_SECRET_KEY"
+    echo ""
+    echo "  Nonaktifkan (lokal/dev, tanpa Google):"
+    echo "    RECAPTCHA_ENABLED=false"
+    echo "    RECAPTCHA_SITE_KEY="
+    echo "    RECAPTCHA_SECRET_KEY="
+    echo ""
+    echo "  Aktifkan (production):"
+    echo "    RECAPTCHA_ENABLED=true"
+    echo "    RECAPTCHA_SITE_KEY=<kunci situs dari Google reCAPTCHA v3>"
+    echo "    RECAPTCHA_SECRET_KEY=<kunci rahasia>"
+    echo ""
+    echo "  Setelah mengubah .env, muat ulang container aplikasi:"
+    echo "    ${COMPOSE_CMD} -f ${INSTALL_DIR}/${COMPOSE_FILE} --env-file ${env_path} up -d app"
+    echo ""
+}
+
 prompt_value() {
     local prompt="$1"
     local default="$2"
@@ -186,8 +209,9 @@ Variabel lingkungan (untuk --non-interactive):
   DB_PASSWORD        Kata sandi database
   DB_DATABASE        Nama database (bawaan: ildis_v4)
   DB_DATABASE_PORT   Port database (bawaan: 3306)
-  RECAPTCHA_SITE_KEY    Kunci situs reCAPTCHA
-  RECAPTCHA_SECRET_KEY  Kunci rahasia reCAPTCHA
+  RECAPTCHA_ENABLED     true|false — aktifkan reCAPTCHA di login backend (bawaan: false)
+  RECAPTCHA_SITE_KEY    Kunci situs reCAPTCHA v3 (wajib jika RECAPTCHA_ENABLED=true)
+  RECAPTCHA_SECRET_KEY  Kunci rahasia reCAPTCHA (wajib jika RECAPTCHA_ENABLED=true)
 
 Contoh:
   curl -fsSL https://raw.githubusercontent.com/bphndigitalservice/ildis/main/install.sh | bash
@@ -319,11 +343,21 @@ run_wizard() {
     fi
     echo ""
 
-    echo -e "${BOLD}reCAPTCHA (opsional — tekan Enter untuk lewati):${NC}"
-    RECAPTCHA_SITE_KEY=$(prompt_value "  Kunci situs reCAPTCHA" "${RECAPTCHA_SITE_KEY:-}")
-    if [ -n "${RECAPTCHA_SITE_KEY}" ]; then
-        RECAPTCHA_SECRET_KEY=$(prompt_value "  Kunci rahasia reCAPTCHA" "${RECAPTCHA_SECRET_KEY:-}")
+    echo -e "${BOLD}reCAPTCHA v3 (halaman login backend/CMS):${NC}"
+    echo "  Untuk instal lokal/dev, pilih tidak — menghindari error grecaptcha tanpa kunci Google."
+    if confirm "  Aktifkan reCAPTCHA pada login backend?" "n"; then
+        RECAPTCHA_ENABLED=true
+        RECAPTCHA_SITE_KEY=$(prompt_value "  Kunci situs reCAPTCHA" "${RECAPTCHA_SITE_KEY:-}")
+        RECAPTCHA_SECRET_KEY=$(prompt_value "  Kunci rahasia reCAPTCHA" "${RECAPTCHA_SECRET_KEY:-}" "true")
+        if [ -z "${RECAPTCHA_SITE_KEY}" ] || [ -z "${RECAPTCHA_SECRET_KEY}" ]; then
+            warn "Kunci reCAPTCHA kosong — reCAPTCHA dinonaktifkan."
+            RECAPTCHA_ENABLED=false
+            RECAPTCHA_SITE_KEY=""
+            RECAPTCHA_SECRET_KEY=""
+        fi
     else
+        RECAPTCHA_ENABLED=false
+        RECAPTCHA_SITE_KEY=""
         RECAPTCHA_SECRET_KEY=""
     fi
     echo ""
@@ -347,7 +381,11 @@ run_wizard() {
     fi
     echo "  Pengguna DB: ${DB_USER}"
     echo "  Nama DB:     ${DB_DATABASE}"
-    echo "  reCAPTCHA:   $([ -n "${RECAPTCHA_SITE_KEY}" ] && echo "terkonfigurasi" || echo "dilewati")"
+    if [ "${RECAPTCHA_ENABLED}" = true ]; then
+        echo "  reCAPTCHA:   aktif"
+    else
+        echo "  reCAPTCHA:   nonaktif (ubah di .env bila diperlukan)"
+    fi
     echo ""
 
     if [ "${NON_INTERACTIVE}" = false ]; then
@@ -370,6 +408,7 @@ generate_env() {
 # ── Aplikasi ──
 YII_ENV=${YII_ENV}
 YII_DEBUG=${YII_DEBUG}
+PORT=${PORT:-${DEFAULT_PORT}}
 PUBLIC_DOMAIN=${PUBLIC_DOMAIN}
 
 # ── Database ──
@@ -384,7 +423,10 @@ DB_DATABASE_PORT=${DB_DATABASE_PORT:-3306}
 COOKIE_VALIDATION_KEY_BE=${COOKIE_VALIDATION_KEY_BE}
 COOKIE_VALIDATION_KEY_FE=${COOKIE_VALIDATION_KEY_FE}
 
-# ── reCAPTCHA (opsional) ──
+# ── reCAPTCHA (login backend/CMS) ──
+# RECAPTCHA_ENABLED: true | false
+# Ubah kapan saja, lalu: docker compose --env-file .env up -d app
+RECAPTCHA_ENABLED=${RECAPTCHA_ENABLED:-false}
 RECAPTCHA_SITE_KEY=${RECAPTCHA_SITE_KEY:-}
 RECAPTCHA_SECRET_KEY=${RECAPTCHA_SECRET_KEY:-}
 
@@ -407,14 +449,14 @@ generate_compose() {
     if [ "${DB_TYPE}" = "mariadb" ]; then
         DB_IMAGE="mariadb:10.11"
         DB_CONTAINER_NAME="ildis_mariadb"
-        DB_HEALTHCHECK='test: [ "CMD-SHELL", "healthcheck.sh --connect --innodb_initialized" ]
+        DB_HEALTHCHECK='      test: [ "CMD-SHELL", "healthcheck.sh --connect --innodb_initialized" ]
       interval: 10s
       timeout: 5s
       retries: 5'
     elif [ "${DB_TYPE}" = "mysql" ]; then
         DB_IMAGE="mysql:8.0"
         DB_CONTAINER_NAME="ildis_mysql"
-        DB_HEALTHCHECK='test: [ "CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD}" ]
+        DB_HEALTHCHECK='      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD}" ]
       interval: 10s
       timeout: 5s
       retries: 5'
@@ -448,6 +490,7 @@ services:
       - PUBLIC_DOMAIN=${PUBLIC_DOMAIN:-http://localhost:8080}
       - COOKIE_VALIDATION_KEY_BE=${COOKIE_VALIDATION_KEY_BE}
       - COOKIE_VALIDATION_KEY_FE=${COOKIE_VALIDATION_KEY_FE}
+      - RECAPTCHA_ENABLED=${RECAPTCHA_ENABLED:-false}
       - RECAPTCHA_SITE_KEY=${RECAPTCHA_SITE_KEY:-}
       - RECAPTCHA_SECRET_KEY=${RECAPTCHA_SECRET_KEY:-}
       - PHP_DISPLAY_ERRORS=Off
@@ -526,6 +569,7 @@ ${DB_HEALTHCHECK}
       - PUBLIC_DOMAIN=\${PUBLIC_DOMAIN:-http://localhost:8080}
       - COOKIE_VALIDATION_KEY_BE=\${COOKIE_VALIDATION_KEY_BE}
       - COOKIE_VALIDATION_KEY_FE=\${COOKIE_VALIDATION_KEY_FE}
+      - RECAPTCHA_ENABLED=\${RECAPTCHA_ENABLED:-false}
       - RECAPTCHA_SITE_KEY=\${RECAPTCHA_SITE_KEY:-}
       - RECAPTCHA_SECRET_KEY=\${RECAPTCHA_SECRET_KEY:-}
       - PHP_DISPLAY_ERRORS=Off
@@ -568,6 +612,98 @@ EOF
     success "${COMPOSE_FILE} dibuat"
 }
 
+# ── Patch production image for Yii migrations ─────────────────────────────────
+# GHCR images may ship with migrationPath-only config and older migration files.
+patch_app_for_migrations() {
+    info "Menyesuaikan migrasi di container (wajib untuk image production saat ini)..."
+
+    run_compose exec -T app sed -i \
+        "s/'autoInstallTables' => true/'autoInstallTables' => false/" \
+        /var/www/frontend/config/main.php 2>/dev/null || true
+
+    local app_main="/var/www/console/config/main.php"
+    if ! run_compose exec -T app grep -q "migrationNamespaces" "${app_main}" 2>/dev/null; then
+        run_compose exec -T app sed -i \
+            "s|'migrationPath' => '@console/migrations',|'migrationNamespaces' => ['console\\\\migrations'],\n            'migrationPath' => null,|" \
+            "${app_main}" || warn "Gagal memperbarui konfigurasi migrate di ${app_main}"
+    fi
+
+    local report_mig="/var/www/console/migrations/m250514_121356_create_table_report.php"
+    if run_compose exec -T app test -f "${report_mig}" 2>/dev/null; then
+        run_compose exec -T app sed -i \
+            's/$this->string(100)->notNull()/$this->text()->notNull()/g; s/$this->string()->notNull()/$this->text()->notNull()/g' \
+            "${report_mig}" 2>/dev/null || true
+    fi
+
+    local visitor_files=(
+        m260507_000001_create_table_visitor_log.php
+        m260507_000002_create_table_visitor_stats.php
+        m260507_000003_insert_visitor_report_menu.php
+    )
+    local f
+    for f in "${visitor_files[@]}"; do
+        run_compose exec -T app sh -c "
+            file=/var/www/console/migrations/${f}
+            if [ -f \"\$file\" ] && ! grep -q 'namespace console' \"\$file\"; then
+                sed -i '1a\\
+\\
+namespace console\\\\migrations;\\
+' \"\$file\"
+            fi
+        " 2>/dev/null || true
+    done
+
+    local script_dir repo_mig cid
+    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    repo_mig="${script_dir}/console/migrations"
+    if [ -d "${repo_mig}" ]; then
+        cid="$(run_compose ps -q app 2>/dev/null | head -1)"
+        if [ -n "${cid}" ]; then
+            for f in m250514_121345_create_table_pcounter_save.php \
+                m250514_121346_create_table_pcounter_users.php \
+                m250514_121356_create_table_report.php "${visitor_files[@]}"; do
+                if [ -f "${repo_mig}/${f}" ]; then
+                    docker cp "${repo_mig}/${f}" "${cid}:/var/www/console/migrations/${f}" 2>/dev/null || true
+                fi
+            done
+        fi
+    fi
+
+    patch_recaptcha_support
+
+    success "Penyesuaian migrasi selesai"
+}
+
+# Image GHCR belum membaca RECAPTCHA_ENABLED — salin/sisipkan patch login backend.
+patch_recaptcha_support() {
+    info "Menyesuaikan reCAPTCHA di container (RECAPTCHA_ENABLED dari .env)..."
+
+    local cid script_dir copied=false
+    cid="$(run_compose ps -q app 2>/dev/null | head -1)"
+    [ -z "${cid}" ] && return 0
+
+    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    local rel
+    for rel in common/config/params.php common/models/LoginForm.php backend/views/site/login.php; do
+        if [ -f "${script_dir}/${rel}" ]; then
+            if docker cp "${script_dir}/${rel}" "${cid}:/var/www/${rel}" 2>/dev/null; then
+                copied=true
+            fi
+        fi
+    done
+
+    if [ "${copied}" = false ]; then
+        local patch_php="${script_dir}/scripts/patch-recaptcha-container.php"
+        if [ -f "${patch_php}" ]; then
+            docker cp "${patch_php}" "${cid}:/tmp/patch-recaptcha-container.php" 2>/dev/null || true
+            run_compose exec -T app php /tmp/patch-recaptcha-container.php 2>/dev/null \
+                || warn "Patch reCAPTCHA fallback gagal — jalankan install dari folder repo lengkap."
+        else
+            warn "File patch reCAPTCHA tidak ada. Clone repo penuh lalu jalankan scripts/patch-docker-migrations.sh"
+        fi
+    fi
+}
+
 # ── Install ──────────────────────────────────────────────────────────────────
 do_install() {
     mkdir -p "${INSTALL_DIR}"
@@ -605,6 +741,28 @@ do_install() {
         fi
     fi
 
+    patch_app_for_migrations
+
+    info "Menghentikan app sementara untuk migrasi database..."
+    run_compose stop app 2>/dev/null || true
+
+    info "Menjalankan migrasi database..."
+    local migrate_ok=false
+    if run_compose run --rm --no-deps -T app php /var/www/yii migrate/up --interactive=0 2>&1; then
+        migrate_ok=true
+    elif run_compose start app 2>/dev/null && sleep 3 && \
+        run_compose exec -T app php /var/www/yii migrate/up --interactive=0 2>&1; then
+        migrate_ok=true
+    fi
+    if [ "${migrate_ok}" = true ]; then
+        success "Migrasi database berhasil diterapkan"
+    else
+        warn "Migrasi gagal. Jalankan: bash $(dirname "${BASH_SOURCE[0]}")/scripts/patch-docker-migrations.sh && migrate manual."
+    fi
+
+    info "Menyalakan kembali aplikasi..."
+    run_compose up -d app 2>/dev/null || true
+
     local app_port="${PORT:-${DEFAULT_PORT}}"
     info "Menunggu aplikasi ILDIS di port ${app_port}..."
     local app_ready=false
@@ -620,19 +778,10 @@ do_install() {
     if [ "${app_ready}" = false ]; then
         echo ""
         echo -e "${YELLOW}Container ILDIS berjalan tetapi aplikasi belum merespons.${NC}"
-        echo "Ini mungkin membutuhkan beberapa saat. Periksa status dengan:"
-        echo "  ${COMPOSE_CMD} -f ${INSTALL_DIR}/${COMPOSE_FILE} logs app"
-        echo ""
-        echo "Jika sudah siap, kunjungi: http://localhost:${app_port}"
+        echo "Periksa log: ${COMPOSE_CMD} -f ${INSTALL_DIR}/${COMPOSE_FILE} logs app"
+        echo "URL: http://localhost:${app_port}"
     else
-        success "ILDIS merespons"
-    fi
-
-    info "Menjalankan migrasi database..."
-    if run_compose exec -T app php yii migrate/up --interactive=0 --migrationPath=@console/migrations 2>&1; then
-        success "Migrasi database berhasil diterapkan"
-    else
-        warn "Perintah migrasi mengembalikan non-zero. Ini mungkin normal jika tidak ada migrasi tertunda."
+        success "ILDIS merespons di http://localhost:${app_port}"
     fi
 
     echo ""
@@ -651,7 +800,7 @@ do_install() {
     echo "    ${COMPOSE_CMD} -f ${INSTALL_DIR}/${COMPOSE_FILE} pull          # Perbarui image"
     echo ""
     echo -e "  ${CYAN}Untuk memperbarui ILDIS, jalankan: ./install.sh --update${NC}"
-    echo ""
+    print_recaptcha_env_help "${INSTALL_DIR}/${ENV_FILE}"
 }
 
 # ── Update ───────────────────────────────────────────────────────────────────
@@ -783,7 +932,7 @@ do_update() {
     fi
 
     info "Menjalankan migrasi database..."
-    if run_compose_update "${compose_file}" "${env_file}" exec -T app php yii migrate/up --interactive=0 --migrationPath=@console/migrations 2>&1; then
+    if run_compose_update "${compose_file}" "${env_file}" exec -T app php yii migrate/up --interactive=0 2>&1; then
         success "Migrasi diterapkan"
     else
         warn "Perintah migrasi mengembalikan non-zero. Mungkin normal jika tidak ada yang tertunda."
@@ -873,6 +1022,7 @@ main() {
         YII_DEBUG="${YII_DEBUG:-false}"
         COOKIE_VALIDATION_KEY_BE="${COOKIE_VALIDATION_KEY_BE:-$(generate_random_key)}"
         COOKIE_VALIDATION_KEY_FE="${COOKIE_VALIDATION_KEY_FE:-$(generate_random_key)}"
+        RECAPTCHA_ENABLED="${RECAPTCHA_ENABLED:-false}"
         RECAPTCHA_SITE_KEY="${RECAPTCHA_SITE_KEY:-}"
         RECAPTCHA_SECRET_KEY="${RECAPTCHA_SECRET_KEY:-}"
     else

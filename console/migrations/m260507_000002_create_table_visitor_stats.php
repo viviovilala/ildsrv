@@ -1,5 +1,7 @@
 <?php
 
+namespace console\migrations;
+
 use yii\db\Migration;
 
 class m260507_000002_create_table_visitor_stats extends Migration
