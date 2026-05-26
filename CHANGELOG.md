@@ -1,3 +1,9 @@
+## [4.3.1](https://github.com/bphndigitalservice/ildis/compare/v4.3.0...v4.3.1) (2026-05-26)
+
+### Bug Fixes
+
+* **install:** fallback to current directory when /opt/ildis is not writable ([6c167a6](https://github.com/bphndigitalservice/ildis/commit/6c167a64c7e3f5dc2c892e8f39f8abe9d1d35bd2))
+
 ## [4.3.0](https://github.com/bphndigitalservice/ildis/compare/v4.2.1...v4.3.0) (2026-05-26)
 
 ### Features
