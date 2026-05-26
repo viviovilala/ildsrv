@@ -1,3 +1,5 @@
+## [4.2.1](https://github.com/bphndigitalservice/ildis/compare/v4.2.0...v4.2.1) (2026-05-26)
+
 ## [4.2.0](https://github.com/bphndigitalservice/ildis/compare/v4.1.4...v4.2.0) (2026-05-25)
 
 ### ⚠ BREAKING CHANGES
