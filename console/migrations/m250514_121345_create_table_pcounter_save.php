@@ -13,6 +13,10 @@ class m250514_121345_create_table_pcounter_save extends Migration
             $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
         }
 
+        if ($this->db->getTableSchema('{{%pcounter_save}}', true) !== null) {
+            return;
+        }
+
         $this->createTable(
             '{{%pcounter_save}}',
             [

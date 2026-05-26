@@ -26,7 +26,10 @@ return [
         ],
         'migrate' => [
             'class' => 'yii\console\controllers\MigrateController',
-            'migrationPath' => '@console/migrations',
+            'migrationNamespaces' => [
+                'console\migrations',
+            ],
+            'migrationPath' => null,
         ],
     ],
     'components' => [

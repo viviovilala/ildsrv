@@ -27,7 +27,7 @@ return [
             // You can setup these options:
             'tableUsers' => 'pcounter_users',
             'tableSave' => 'pcounter_save',
-            'autoInstallTables' => true,
+            'autoInstallTables' => false,
             'onlineTime' => 10, // min
         ],
 

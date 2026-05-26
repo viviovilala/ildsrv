@@ -370,6 +370,7 @@ generate_env() {
 # ── Aplikasi ──
 YII_ENV=${YII_ENV}
 YII_DEBUG=${YII_DEBUG}
+PORT=${PORT:-${DEFAULT_PORT}}
 PUBLIC_DOMAIN=${PUBLIC_DOMAIN}
 
 # ── Database ──
@@ -407,14 +408,14 @@ generate_compose() {
     if [ "${DB_TYPE}" = "mariadb" ]; then
         DB_IMAGE="mariadb:10.11"
         DB_CONTAINER_NAME="ildis_mariadb"
-        DB_HEALTHCHECK='test: [ "CMD-SHELL", "healthcheck.sh --connect --innodb_initialized" ]
+        DB_HEALTHCHECK='      test: [ "CMD-SHELL", "healthcheck.sh --connect --innodb_initialized" ]
       interval: 10s
       timeout: 5s
       retries: 5'
     elif [ "${DB_TYPE}" = "mysql" ]; then
         DB_IMAGE="mysql:8.0"
         DB_CONTAINER_NAME="ildis_mysql"
-        DB_HEALTHCHECK='test: [ "CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD}" ]
+        DB_HEALTHCHECK='      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD}" ]
       interval: 10s
       timeout: 5s
       retries: 5'
@@ -568,6 +569,66 @@ EOF
     success "${COMPOSE_FILE} dibuat"
 }
 
+# ── Patch production image for Yii migrations ─────────────────────────────────
+# GHCR images may ship with migrationPath-only config and older migration files.
+patch_app_for_migrations() {
+    info "Menyesuaikan migrasi di container (wajib untuk image production saat ini)..."
+
+    run_compose exec -T app sed -i \
+        "s/'autoInstallTables' => true/'autoInstallTables' => false/" \
+        /var/www/frontend/config/main.php 2>/dev/null || true
+
+    local app_main="/var/www/console/config/main.php"
+    if ! run_compose exec -T app grep -q "migrationNamespaces" "${app_main}" 2>/dev/null; then
+        run_compose exec -T app sed -i \
+            "s|'migrationPath' => '@console/migrations',|'migrationNamespaces' => ['console\\\\migrations'],\n            'migrationPath' => null,|" \
+            "${app_main}" || warn "Gagal memperbarui konfigurasi migrate di ${app_main}"
+    fi
+
+    local report_mig="/var/www/console/migrations/m250514_121356_create_table_report.php"
+    if run_compose exec -T app test -f "${report_mig}" 2>/dev/null; then
+        run_compose exec -T app sed -i \
+            's/$this->string(100)->notNull()/$this->text()->notNull()/g; s/$this->string()->notNull()/$this->text()->notNull()/g' \
+            "${report_mig}" 2>/dev/null || true
+    fi
+
+    local visitor_files=(
+        m260507_000001_create_table_visitor_log.php
+        m260507_000002_create_table_visitor_stats.php
+        m260507_000003_insert_visitor_report_menu.php
+    )
+    local f
+    for f in "${visitor_files[@]}"; do
+        run_compose exec -T app sh -c "
+            file=/var/www/console/migrations/${f}
+            if [ -f \"\$file\" ] && ! grep -q 'namespace console' \"\$file\"; then
+                sed -i '1a\\
+\\
+namespace console\\\\migrations;\\
+' \"\$file\"
+            fi
+        " 2>/dev/null || true
+    done
+
+    local script_dir repo_mig cid
+    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    repo_mig="${script_dir}/console/migrations"
+    if [ -d "${repo_mig}" ]; then
+        cid="$(run_compose ps -q app 2>/dev/null | head -1)"
+        if [ -n "${cid}" ]; then
+            for f in m250514_121345_create_table_pcounter_save.php \
+                m250514_121346_create_table_pcounter_users.php \
+                m250514_121356_create_table_report.php "${visitor_files[@]}"; do
+                if [ -f "${repo_mig}/${f}" ]; then
+                    docker cp "${repo_mig}/${f}" "${cid}:/var/www/console/migrations/${f}" 2>/dev/null || true
+                fi
+            done
+        fi
+    fi
+
+    success "Penyesuaian migrasi selesai"
+}
+
 # ── Install ──────────────────────────────────────────────────────────────────
 do_install() {
     mkdir -p "${INSTALL_DIR}"
@@ -605,6 +666,28 @@ do_install() {
         fi
     fi
 
+    patch_app_for_migrations
+
+    info "Menghentikan app sementara untuk migrasi database..."
+    run_compose stop app 2>/dev/null || true
+
+    info "Menjalankan migrasi database..."
+    local migrate_ok=false
+    if run_compose run --rm --no-deps -T app php /var/www/yii migrate/up --interactive=0 2>&1; then
+        migrate_ok=true
+    elif run_compose start app 2>/dev/null && sleep 3 && \
+        run_compose exec -T app php /var/www/yii migrate/up --interactive=0 2>&1; then
+        migrate_ok=true
+    fi
+    if [ "${migrate_ok}" = true ]; then
+        success "Migrasi database berhasil diterapkan"
+    else
+        warn "Migrasi gagal. Jalankan: bash $(dirname "${BASH_SOURCE[0]}")/scripts/patch-docker-migrations.sh && migrate manual."
+    fi
+
+    info "Menyalakan kembali aplikasi..."
+    run_compose up -d app 2>/dev/null || true
+
     local app_port="${PORT:-${DEFAULT_PORT}}"
     info "Menunggu aplikasi ILDIS di port ${app_port}..."
     local app_ready=false
@@ -620,19 +703,10 @@ do_install() {
     if [ "${app_ready}" = false ]; then
         echo ""
         echo -e "${YELLOW}Container ILDIS berjalan tetapi aplikasi belum merespons.${NC}"
-        echo "Ini mungkin membutuhkan beberapa saat. Periksa status dengan:"
-        echo "  ${COMPOSE_CMD} -f ${INSTALL_DIR}/${COMPOSE_FILE} logs app"
-        echo ""
-        echo "Jika sudah siap, kunjungi: http://localhost:${app_port}"
+        echo "Periksa log: ${COMPOSE_CMD} -f ${INSTALL_DIR}/${COMPOSE_FILE} logs app"
+        echo "URL: http://localhost:${app_port}"
     else
-        success "ILDIS merespons"
-    fi
-
-    info "Menjalankan migrasi database..."
-    if run_compose exec -T app php yii migrate/up --interactive=0 --migrationPath=@console/migrations 2>&1; then
-        success "Migrasi database berhasil diterapkan"
-    else
-        warn "Perintah migrasi mengembalikan non-zero. Ini mungkin normal jika tidak ada migrasi tertunda."
+        success "ILDIS merespons di http://localhost:${app_port}"
     fi
 
     echo ""
@@ -783,7 +857,7 @@ do_update() {
     fi
 
     info "Menjalankan migrasi database..."
-    if run_compose_update "${compose_file}" "${env_file}" exec -T app php yii migrate/up --interactive=0 --migrationPath=@console/migrations 2>&1; then
+    if run_compose_update "${compose_file}" "${env_file}" exec -T app php yii migrate/up --interactive=0 2>&1; then
         success "Migrasi diterapkan"
     else
         warn "Perintah migrasi mengembalikan non-zero. Mungkin normal jika tidak ada yang tertunda."
