@@ -73,6 +73,29 @@ confirm() {
     [[ "$REPLY" =~ ^[Yy]$ ]]
 }
 
+# Petunjuk mengubah reCAPTCHA setelah instalasi (ditampilkan di akhir install & di komentar .env)
+print_recaptcha_env_help() {
+    local env_path="${1:-${INSTALL_DIR}/${ENV_FILE}}"
+    echo ""
+    echo -e "${BOLD}reCAPTCHA (login backend/CMS):${NC}"
+    echo "  File:     ${env_path}"
+    echo "  Variabel: RECAPTCHA_ENABLED, RECAPTCHA_SITE_KEY, RECAPTCHA_SECRET_KEY"
+    echo ""
+    echo "  Nonaktifkan (lokal/dev, tanpa Google):"
+    echo "    RECAPTCHA_ENABLED=false"
+    echo "    RECAPTCHA_SITE_KEY="
+    echo "    RECAPTCHA_SECRET_KEY="
+    echo ""
+    echo "  Aktifkan (production):"
+    echo "    RECAPTCHA_ENABLED=true"
+    echo "    RECAPTCHA_SITE_KEY=<kunci situs dari Google reCAPTCHA v3>"
+    echo "    RECAPTCHA_SECRET_KEY=<kunci rahasia>"
+    echo ""
+    echo "  Setelah mengubah .env, muat ulang container aplikasi:"
+    echo "    ${COMPOSE_CMD} -f ${INSTALL_DIR}/${COMPOSE_FILE} --env-file ${env_path} up -d app"
+    echo ""
+}
+
 prompt_value() {
     local prompt="$1"
     local default="$2"
@@ -186,8 +209,9 @@ Variabel lingkungan (untuk --non-interactive):
   DB_PASSWORD        Kata sandi database
   DB_DATABASE        Nama database (bawaan: ildis_v4)
   DB_DATABASE_PORT   Port database (bawaan: 3306)
-  RECAPTCHA_SITE_KEY    Kunci situs reCAPTCHA
-  RECAPTCHA_SECRET_KEY  Kunci rahasia reCAPTCHA
+  RECAPTCHA_ENABLED     true|false — aktifkan reCAPTCHA di login backend (bawaan: false)
+  RECAPTCHA_SITE_KEY    Kunci situs reCAPTCHA v3 (wajib jika RECAPTCHA_ENABLED=true)
+  RECAPTCHA_SECRET_KEY  Kunci rahasia reCAPTCHA (wajib jika RECAPTCHA_ENABLED=true)
 
 Contoh:
   curl -fsSL https://raw.githubusercontent.com/bphndigitalservice/ildis/main/install.sh | bash
@@ -319,11 +343,21 @@ run_wizard() {
     fi
     echo ""
 
-    echo -e "${BOLD}reCAPTCHA (opsional — tekan Enter untuk lewati):${NC}"
-    RECAPTCHA_SITE_KEY=$(prompt_value "  Kunci situs reCAPTCHA" "${RECAPTCHA_SITE_KEY:-}")
-    if [ -n "${RECAPTCHA_SITE_KEY}" ]; then
-        RECAPTCHA_SECRET_KEY=$(prompt_value "  Kunci rahasia reCAPTCHA" "${RECAPTCHA_SECRET_KEY:-}")
+    echo -e "${BOLD}reCAPTCHA v3 (halaman login backend/CMS):${NC}"
+    echo "  Untuk instal lokal/dev, pilih tidak — menghindari error grecaptcha tanpa kunci Google."
+    if confirm "  Aktifkan reCAPTCHA pada login backend?" "n"; then
+        RECAPTCHA_ENABLED=true
+        RECAPTCHA_SITE_KEY=$(prompt_value "  Kunci situs reCAPTCHA" "${RECAPTCHA_SITE_KEY:-}")
+        RECAPTCHA_SECRET_KEY=$(prompt_value "  Kunci rahasia reCAPTCHA" "${RECAPTCHA_SECRET_KEY:-}" "true")
+        if [ -z "${RECAPTCHA_SITE_KEY}" ] || [ -z "${RECAPTCHA_SECRET_KEY}" ]; then
+            warn "Kunci reCAPTCHA kosong — reCAPTCHA dinonaktifkan."
+            RECAPTCHA_ENABLED=false
+            RECAPTCHA_SITE_KEY=""
+            RECAPTCHA_SECRET_KEY=""
+        fi
     else
+        RECAPTCHA_ENABLED=false
+        RECAPTCHA_SITE_KEY=""
         RECAPTCHA_SECRET_KEY=""
     fi
     echo ""
@@ -347,7 +381,11 @@ run_wizard() {
     fi
     echo "  Pengguna DB: ${DB_USER}"
     echo "  Nama DB:     ${DB_DATABASE}"
-    echo "  reCAPTCHA:   $([ -n "${RECAPTCHA_SITE_KEY}" ] && echo "terkonfigurasi" || echo "dilewati")"
+    if [ "${RECAPTCHA_ENABLED}" = true ]; then
+        echo "  reCAPTCHA:   aktif"
+    else
+        echo "  reCAPTCHA:   nonaktif (ubah di .env bila diperlukan)"
+    fi
     echo ""
 
     if [ "${NON_INTERACTIVE}" = false ]; then
@@ -385,7 +423,10 @@ DB_DATABASE_PORT=${DB_DATABASE_PORT:-3306}
 COOKIE_VALIDATION_KEY_BE=${COOKIE_VALIDATION_KEY_BE}
 COOKIE_VALIDATION_KEY_FE=${COOKIE_VALIDATION_KEY_FE}
 
-# ── reCAPTCHA (opsional) ──
+# ── reCAPTCHA (login backend/CMS) ──
+# RECAPTCHA_ENABLED: true | false
+# Ubah kapan saja, lalu: docker compose --env-file .env up -d app
+RECAPTCHA_ENABLED=${RECAPTCHA_ENABLED:-false}
 RECAPTCHA_SITE_KEY=${RECAPTCHA_SITE_KEY:-}
 RECAPTCHA_SECRET_KEY=${RECAPTCHA_SECRET_KEY:-}
 
@@ -449,6 +490,7 @@ services:
       - PUBLIC_DOMAIN=${PUBLIC_DOMAIN:-http://localhost:8080}
       - COOKIE_VALIDATION_KEY_BE=${COOKIE_VALIDATION_KEY_BE}
       - COOKIE_VALIDATION_KEY_FE=${COOKIE_VALIDATION_KEY_FE}
+      - RECAPTCHA_ENABLED=${RECAPTCHA_ENABLED:-false}
       - RECAPTCHA_SITE_KEY=${RECAPTCHA_SITE_KEY:-}
       - RECAPTCHA_SECRET_KEY=${RECAPTCHA_SECRET_KEY:-}
       - PHP_DISPLAY_ERRORS=Off
@@ -527,6 +569,7 @@ ${DB_HEALTHCHECK}
       - PUBLIC_DOMAIN=\${PUBLIC_DOMAIN:-http://localhost:8080}
       - COOKIE_VALIDATION_KEY_BE=\${COOKIE_VALIDATION_KEY_BE}
       - COOKIE_VALIDATION_KEY_FE=\${COOKIE_VALIDATION_KEY_FE}
+      - RECAPTCHA_ENABLED=\${RECAPTCHA_ENABLED:-false}
       - RECAPTCHA_SITE_KEY=\${RECAPTCHA_SITE_KEY:-}
       - RECAPTCHA_SECRET_KEY=\${RECAPTCHA_SECRET_KEY:-}
       - PHP_DISPLAY_ERRORS=Off
@@ -626,7 +669,39 @@ namespace console\\\\migrations;\\
         fi
     fi
 
+    patch_recaptcha_support
+
     success "Penyesuaian migrasi selesai"
+}
+
+# Image GHCR belum membaca RECAPTCHA_ENABLED — salin/sisipkan patch login backend.
+patch_recaptcha_support() {
+    info "Menyesuaikan reCAPTCHA di container (RECAPTCHA_ENABLED dari .env)..."
+
+    local cid script_dir copied=false
+    cid="$(run_compose ps -q app 2>/dev/null | head -1)"
+    [ -z "${cid}" ] && return 0
+
+    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    local rel
+    for rel in common/config/params.php common/models/LoginForm.php backend/views/site/login.php; do
+        if [ -f "${script_dir}/${rel}" ]; then
+            if docker cp "${script_dir}/${rel}" "${cid}:/var/www/${rel}" 2>/dev/null; then
+                copied=true
+            fi
+        fi
+    done
+
+    if [ "${copied}" = false ]; then
+        local patch_php="${script_dir}/scripts/patch-recaptcha-container.php"
+        if [ -f "${patch_php}" ]; then
+            docker cp "${patch_php}" "${cid}:/tmp/patch-recaptcha-container.php" 2>/dev/null || true
+            run_compose exec -T app php /tmp/patch-recaptcha-container.php 2>/dev/null \
+                || warn "Patch reCAPTCHA fallback gagal — jalankan install dari folder repo lengkap."
+        else
+            warn "File patch reCAPTCHA tidak ada. Clone repo penuh lalu jalankan scripts/patch-docker-migrations.sh"
+        fi
+    fi
 }
 
 # ── Install ──────────────────────────────────────────────────────────────────
@@ -725,7 +800,7 @@ do_install() {
     echo "    ${COMPOSE_CMD} -f ${INSTALL_DIR}/${COMPOSE_FILE} pull          # Perbarui image"
     echo ""
     echo -e "  ${CYAN}Untuk memperbarui ILDIS, jalankan: ./install.sh --update${NC}"
-    echo ""
+    print_recaptcha_env_help "${INSTALL_DIR}/${ENV_FILE}"
 }
 
 # ── Update ───────────────────────────────────────────────────────────────────
@@ -947,6 +1022,7 @@ main() {
         YII_DEBUG="${YII_DEBUG:-false}"
         COOKIE_VALIDATION_KEY_BE="${COOKIE_VALIDATION_KEY_BE:-$(generate_random_key)}"
         COOKIE_VALIDATION_KEY_FE="${COOKIE_VALIDATION_KEY_FE:-$(generate_random_key)}"
+        RECAPTCHA_ENABLED="${RECAPTCHA_ENABLED:-false}"
         RECAPTCHA_SITE_KEY="${RECAPTCHA_SITE_KEY:-}"
         RECAPTCHA_SECRET_KEY="${RECAPTCHA_SECRET_KEY:-}"
     else
