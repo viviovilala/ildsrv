@@ -6,6 +6,8 @@ use yii\helpers\Url;
 
 
 
+use common\components\DocumentGroup;
+use common\models\DocumentType;
 use mdm\admin\components\Helper;
 use mdm\admin\components\MenuHelper;
 ?>
@@ -52,6 +54,26 @@ use mdm\admin\components\MenuHelper;
         // $items2 = MenuHelper::getAssignedMenu(Yii::$app->user->id);
         $items2 = MenuHelper::getAssignedMenu(Yii::$app->user->id, null, $callback, true);
 
+        $puuSidebarItems = [];
+        $puuTypes = DocumentType::findByGroup(DocumentGroup::LEGISLATION_FORMATION);
+        if ($puuTypes && Yii::$app->user->can('/document-group/legislation-formation')) {
+            $puuSidebarItems = [
+                [
+                    'label' => DocumentGroup::label(DocumentGroup::LEGISLATION_FORMATION),
+                    'icon' => 'file-text-o',
+                    'items' => array_map(static function (DocumentType $t) {
+                        return [
+                            'label' => $t->name,
+                            'url' => [
+                                '/monografi/index',
+                                'MonografiSearch[documentTypeId]' => $t->id,
+                            ],
+                        ];
+                    }, $puuTypes),
+                ],
+            ];
+        }
+
         //$items = $menuItems + $items2;
         ?>
 
@@ -69,6 +91,12 @@ use mdm\admin\components\MenuHelper;
             ]
         )
         ?>
+        <?php if (!empty($puuSidebarItems)) : ?>
+            <?= Menu::widget([
+                'options' => ['class' => 'sidebar-menu'],
+                'items' => $puuSidebarItems,
+            ]) ?>
+        <?php endif; ?>
 
     </section>
     <!-- /.sidebar -->

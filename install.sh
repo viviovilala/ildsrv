@@ -39,6 +39,7 @@ SSL_CERT_PATH="ssl/server.crt"
 SSL_KEY_PATH="ssl/server.key"
 ADMIN_USERNAME=""
 ADMIN_PASSWORD=""
+DB_PORT_EXPOSE=""
 
 COMPOSE_CMD=""
 CONTAINER_RUNTIME=""
@@ -207,6 +208,10 @@ while [[ $# -gt 0 ]]; do
             ADMIN_PASSWORD="$2"
             shift 2
             ;;
+        --db-port)
+            DB_PORT_EXPOSE="$2"
+            shift 2
+            ;;
         --help|-h)
             ACTION="help"
             shift
@@ -235,6 +240,7 @@ Penggunaan:
   ./install.sh --ssl-email user@example.com  Email untuk Let's Encrypt
   ./install.sh --admin-username admin   Username superadmin
   ./install.sh --admin-password secret   Password superadmin
+  ./install.sh --db-port 3306           Ekspos port database ke host
   ./install.sh --help               Tampilkan bantuan ini
 
 Container runtime:
@@ -260,6 +266,7 @@ Variabel lingkungan (untuk --non-interactive):
   SSL_KEY_PATH              Path kunci privat SSL relatif terhadap INSTALL_DIR (bawaan: ssl/server.key)
   ADMIN_USERNAME            Username superadmin (bawaan: admin)
   ADMIN_PASSWORD            Password superadmin (wajib)
+  DB_PORT_EXPOSE            Port host untuk ekspos database (contoh: 3306, kosongkan untuk tidak ekspos)
   RECAPTCHA_ENABLED         true|false — aktifkan reCAPTCHA di login backend (bawaan: false)
   RECAPTCHA_SITE_KEY        Kunci situs reCAPTCHA v3 (wajib jika RECAPTCHA_ENABLED=true)
   RECAPTCHA_SECRET_KEY      Kunci rahasia reCAPTCHA (wajib jika RECAPTCHA_ENABLED=true)
@@ -473,6 +480,14 @@ run_wizard() {
     done
     echo ""
 
+    if [ "${DB_TYPE}" != "external" ]; then
+        echo -e "${BOLD}Port Database (opsional):${NC}"
+        echo "  Ekspos database ke host agar bisa diakses dari luar container (mis. dengan MySQL Workbench)."
+        echo "  Kosongkan jika tidak perlu."
+        DB_PORT_EXPOSE=$(prompt_value "  Port database ke host (contoh: 3306, kosongkan untuk tidak ekspos)" "${DB_PORT_EXPOSE:-}")
+        echo ""
+    fi
+
     echo -e "${BOLD}reCAPTCHA v3 (halaman login backend/CMS):${NC}"
     echo "  Untuk instal lokal/dev, pilih tidak — menghindari error grecaptcha tanpa kunci Google."
     if confirm "  Aktifkan reCAPTCHA pada login backend?" "n"; then
@@ -511,6 +526,9 @@ run_wizard() {
     fi
     echo "  Pengguna DB: ${DB_USER}"
     echo "  Nama DB:     ${DB_DATABASE}"
+    if [ -n "${DB_PORT_EXPOSE}" ] && [ "${DB_TYPE}" != "external" ]; then
+        echo "  Port DB ke host: ${DB_PORT_EXPOSE}:3306"
+    fi
     echo "  Superadmin:  ${ADMIN_USERNAME}"
     if [ "${REVERSE_PROXY}" = true ]; then
         echo "  Reverse proxy: ya (SSL ditangani reverse proxy)"
@@ -589,6 +607,11 @@ SSL_EMAIL=${SSL_EMAIL}
 # ── Superadmin ──
 # ADMIN_USERNAME dan ADMIN_PASSWORD tidak disimpan di .env untuk keamanan.
 # Superadmin dibuat saat instalasi melalui perintah console.
+
+# ── Port database ke host ──
+# Kosongkan jika tidak perlu ekspos database ke luar container.
+# Contoh: DB_PORT_EXPOSE=3306
+DB_PORT_EXPOSE=${DB_PORT_EXPOSE}
 EOF
 
     chmod 600 "${INSTALL_DIR}/${ENV_FILE}"
@@ -629,6 +652,13 @@ generate_compose() {
     local traefik_ports=""
     local network_def=""
     local extra_volumes=""
+    local db_ports=""
+
+    if [ -n "${DB_PORT_EXPOSE}" ] && [ "${DB_TYPE}" != "external" ]; then
+        db_ports="
+    ports:
+      - \"${DB_PORT_EXPOSE}:3306\""
+    fi
 
     extra_volumes="
       - ./nginx/default.conf:/etc/nginx/http.d/default.conf:ro
@@ -799,7 +829,7 @@ services:
       - mysql_data:/var/lib/mysql
     healthcheck:
 ${DB_HEALTHCHECK}
-
+${db_ports}
   app:
     image: ghcr.io/bphndigitalservice/ildis:\${ILDIS_IMAGE_TAG:-latest}
     container_name: ildis_app
@@ -937,6 +967,7 @@ services:
       - mysql_data:/var/lib/mysql
     healthcheck:
 ${DB_HEALTHCHECK}
+${db_ports}
     networks:
       - ildis_net
 ${traefik_service}
@@ -1495,6 +1526,9 @@ do_install() {
     echo "  Frontend:      ${frontend_url}"
     echo "  Backend/CMS:   ${backend_url}"
     echo "  Superadmin:    ${ADMIN_USERNAME}"
+    if [ -n "${DB_PORT_EXPOSE}" ] && [ "${DB_TYPE}" != "external" ]; then
+        echo "  DB (host):     localhost:${DB_PORT_EXPOSE}"
+    fi
     echo ""
     echo "  Direktori:     ${INSTALL_DIR}"
     echo "  Konfigurasi:   ${INSTALL_DIR}/${ENV_FILE}"

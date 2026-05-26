@@ -12,13 +12,16 @@ use backend\models\Monografi;
  */
 class MonografiSearch extends Monografi
 {
+    /** @var int|null Virtual filter: document_type.id → exact jenis_peraturan match */
+    public $documentTypeId;
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'tipe_dokumen', 'daerah', 'hit_see', 'hit_download', 'is_publish'], 'integer'],
+            [['id', 'tipe_dokumen', 'daerah', 'hit_see', 'hit_download', 'is_publish', 'documentTypeId'], 'integer'],
             [['judul', 'teu', 'nomor_peraturan', 'sumber_perolehan', 'nomor_panggil', 'bentuk_peraturan', 'singkatan_jenis', 'cetakan', 'tempat_terbit', 'penerbit', 'tanggal_penetapan', 'deskripsi_fisik', 'sumber', 'isbn', 'bahasa', 'bidang_hukum', 'nomor_induk_buku', 'jenis_peraturan', 'singkatan_bentuk', 'tipe_koleksi_nomor_eksemplar', 'pola_nomor_eksemplar', 'jumlah_eksemplar', 'kala_terbit', 'tahun_terbit', 'tanggal_dibacakan', 'pernyataan_tanggung_jawab', 'edisi', 'gmd', 'judul_seri', 'klasifikasi', 'info_detil_spesifik', 'abstrak', 'gambar_sampul', 'label', 'sembunyikan_di_opac', 'promosikan_ke_beranda', 'status_terakhir', 'status', 'integrasi', '_created_by', '_updated_by', 'created_at', 'updated_at', 'inisiatif', 'pemrakarsa', 'tanggal_pengundangan', 'penandatanganan', 'lembaga_peradilan', 'pemohon', 'termohon', 'jenis_perkara', 'sub_klasifikasi', 'amar_status', 'berkekuatan_hukum_tetap', 'urusan_pemerintahan', 'catatan_status_peraturan'], 'safe'],
         ];
     }
@@ -125,6 +128,15 @@ class MonografiSearch extends Monografi
             ->andFilterWhere(['like', 'berkekuatan_hukum_tetap', $this->berkekuatan_hukum_tetap])
             ->andFilterWhere(['like', 'urusan_pemerintahan', $this->urusan_pemerintahan])
             ->andFilterWhere(['like', 'catatan_status_peraturan', $this->catatan_status_peraturan]);
+
+        if ($this->documentTypeId) {
+            $type = \common\models\DocumentType::findOne($this->documentTypeId);
+            if ($type) {
+                $query->andWhere(['jenis_peraturan' => $type->name]);
+            } else {
+                $query->andWhere('0=1');
+            }
+        }
 
         return $dataProvider;
     }
