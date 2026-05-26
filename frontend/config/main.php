@@ -48,18 +48,13 @@ return [
         'user' => [
             'identityClass' => 'common\models\Member',
             'enableAutoLogin' => true,
-            'identityCookie' => [
-                'name' => '_identity-frontend',
-                'httpOnly' => true,
-                'secure' => ildis_cookie_secure(),
-                'sameSite' => 'Lax',
-            ],
+            'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true, 'secure' => getenv('YII_ENV') === 'prod', 'sameSite' => 'Lax'],
         ],
         'session' => [
             'name' => 'ildis-frontend',
             'cookieParams' => [
                 'httponly' => true,
-                'secure' => ildis_cookie_secure(),
+                'secure' => getenv('YII_ENV') === 'prod',
                 'sameSite' => 'Lax',
             ],
         ],

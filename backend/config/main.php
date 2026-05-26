@@ -59,18 +59,13 @@ return [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => false,
             'authTimeout' => 300,
-            'identityCookie' => [
-                'name' => '_identity-backend',
-                'httpOnly' => true,
-                'secure' => ildis_cookie_secure(),
-                'sameSite' => 'Strict',
-            ],
+            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true, 'secure' => getenv('YII_ENV') === 'prod', 'sameSite' => 'Strict'],
         ],
         'session' => [
             'name' => 'ildis-backend',
             'cookieParams' => [
                 'httponly' => true,
-                'secure' => ildis_cookie_secure(),
+                'secure' => getenv('YII_ENV') === 'prod',
                 'sameSite' => 'Strict',
             ],
         ],
@@ -80,14 +75,6 @@ return [
                 [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
-                ],
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning', 'info'],
-                    'categories' => ['login', 'login.*'],
-                    'logFile' => '@runtime/logs/login.log',
-                    'logVars' => [],
-                    'maxFileSize' => 10240,
                 ],
             ],
         ],

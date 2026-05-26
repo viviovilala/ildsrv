@@ -78,53 +78,10 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-            $duration = $this->rememberMe ? self::REMEMBER_ME_DURATION : 0;
-            $loggedIn = Yii::$app->user->login($this->getUser(), $duration);
-            if ($loggedIn) {
-                $this->logLoginEvent('backend_login_success', [
-                    'user_id' => Yii::$app->user->id,
-                    'duration' => $duration,
-                ]);
-            } else {
-                $this->logLoginEvent('backend_login_session_failed', [
-                    'reason' => 'Yii::$app->user->login() returned false after validation',
-                    'user_id' => $this->getUser()->id ?? null,
-                ]);
-            }
-
-            return $loggedIn;
+            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? self::REMEMBER_ME_DURATION : 0);
         }
 
-        $this->logLoginEvent('backend_login_validation_failed', [
-            'reason' => 'validation',
-        ]);
-
         return false;
-    }
-
-    /**
-     * Writes structured login diagnostics to runtime/logs/login.log (category: login).
-     */
-    public function logLoginEvent(string $event, array $context = []): void
-    {
-        $user = $this->getUser();
-        $payload = array_merge([
-            'event' => $event,
-            'username' => $this->username,
-            'errors' => $this->getErrors(),
-            'recaptcha_enabled' => !empty(Yii::$app->params['recaptcha.enabled']),
-            'identity_class' => Yii::$app->has('user') ? Yii::$app->user->identityClass : null,
-            'cookie_secure' => function_exists('ildis_cookie_secure') ? ildis_cookie_secure() : null,
-            'request_is_secure' => Yii::$app->request->isSecureConnection ?? null,
-            'user_found' => $user !== null,
-            'user_status' => $user->status ?? null,
-            'user_suspended_until' => $user->suspended_until ?? null,
-            'session_cookie_secure' => Yii::$app->session->cookieParams['secure'] ?? null,
-            'remote_addr' => Yii::$app->request->userIP ?? null,
-        ], $context);
-
-        $level = strpos($event, 'success') !== false ? 'info' : 'warning';
-        Yii::{$level}($payload, 'login');
     }
 
     protected function getUser()
