@@ -426,6 +426,8 @@ DB_DATABASE_PORT=${DB_DATABASE_PORT:-3306}
 # ── Validasi cookie (dibuat otomatis) ──
 COOKIE_VALIDATION_KEY_BE=${COOKIE_VALIDATION_KEY_BE}
 COOKIE_VALIDATION_KEY_FE=${COOKIE_VALIDATION_KEY_FE}
+# false untuk http://localhost; true jika PUBLIC_DOMAIN memakai https
+COOKIE_SECURE=$([ "${PUBLIC_DOMAIN#https://}" != "${PUBLIC_DOMAIN}" ] && echo true || echo false)
 
 # ── reCAPTCHA (login backend/CMS) ──
 # RECAPTCHA_ENABLED: true | false

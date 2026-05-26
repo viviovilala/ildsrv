@@ -23,9 +23,5 @@ return [
         //'class' => 'yii\web\DbSession',
         //'sessionTable' => 'YiiSession',
         //],
-        'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => false,
-        ],
     ],
 ];
