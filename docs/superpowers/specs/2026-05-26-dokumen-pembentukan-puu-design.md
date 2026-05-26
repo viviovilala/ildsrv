@@ -28,7 +28,7 @@ Discovered in `console/migrations/seed_data.sql`:
 
 - The `document` table is polymorphic — Peraturan (`tipe_dokumen=1`), Monografi (2), Artikel (3), Putusan (4) all share it.
 - The `document_type` table stores hierarchical sub-types keyed by `parent_id`.
-- Six of the eight menu children from the design mockup **already exist** as Monografi sub-types (`parent_id = 2`): NASKAH AKADEMIK KEMENKUMHAM (76), NASKAH AKADEMIK (77), PENELITIAN HUKUM (78), PENGKAJIAN HUKUM (79), PENGKAJIAN KONSTITUSI (80), ANALISIS DAN EVALUASI (83), RANCANGAN PERATURAN PERUNDANG-UNDANGAN (84, with descendants 93–99).
+- Six of the eight menu children from the design mockup **already exist** as Monografi sub-types (`parent_id = 2`): NASKAH AKADEMIK KEMENKUMHAM (76, renamed to `NASKAH AKADEMIK KEMENKUM`), NASKAH AKADEMIK (77), PENELITIAN HUKUM (78), PENGKAJIAN HUKUM (79), PENGKAJIAN KONSTITUSI (80), ANALISIS DAN EVALUASI (83), RANCANGAN PERATURAN PERUNDANG-UNDANGAN (84, with descendants 93–99).
 - One existing row needs renaming: `Risalah Rapat` (147) → `RISALAH PEMBAHASAN`.
 - One new row needs inserting: `PROGRAM PENYUSUNAN PUU`.
 
@@ -58,7 +58,7 @@ After the migration runs, these eight `document_type` rows have `document_group_
 
 | id  | name                                       | source                            |
 |-----|--------------------------------------------|-----------------------------------|
-| 76  | `NASKAH AKADEMIK KEMENKUMHAM`              | existing, retagged                |
+| 76  | `NASKAH AKADEMIK KEMENKUM`                 | existing, renamed + retagged      |
 | 77  | `NASKAH AKADEMIK`                          | existing, retagged                |
 | 78  | `PENELITIAN HUKUM`                         | existing, retagged                |
 | 79  | `PENGKAJIAN HUKUM`                         | existing, retagged                |
@@ -76,7 +76,7 @@ Untagged Monografi sub-types (`BUKU HUKUM`, `KOMPENDIUM HUKUM`, `REFERENSI`, `LO
 
 | id  | name (DB) | `slug` |
 |-----|-----------|--------|
-| 76  | `NASKAH AKADEMIK KEMENKUMHAM` | `naskah-akademik-kemenkumham` |
+| 76  | `NASKAH AKADEMIK KEMENKUM` | `naskah-akademik-kemenkum` |
 | 77  | `NASKAH AKADEMIK` | `naskah-akademik` |
 | 78  | `PENELITIAN HUKUM` | `penelitian-hukum` |
 | 79  | `PENGKAJIAN HUKUM` | `pengkajian-hukum` |
@@ -105,7 +105,12 @@ public function safeUp()
     $this->createIndex('idx_document_type_slug', '{{%document_type}}', 'slug', true);
 
     $tagged = [
-        76 => ['document_group_label' => 'legislation_formation', 'slug' => 'naskah-akademik-kemenkumham'],
+        76 => [
+            'name' => 'NASKAH AKADEMIK KEMENKUM',
+            'singkatan' => 'NASKAH AKADEMIK KEMENKUM',
+            'document_group_label' => 'legislation_formation',
+            'slug' => 'naskah-akademik-kemenkum',
+        ],
         77 => ['document_group_label' => 'legislation_formation', 'slug' => 'naskah-akademik'],
         78 => ['document_group_label' => 'legislation_formation', 'slug' => 'penelitian-hukum'],
         79 => ['document_group_label' => 'legislation_formation', 'slug' => 'pengkajian-hukum'],
@@ -116,6 +121,12 @@ public function safeUp()
     foreach ($tagged as $id => $attrs) {
         $this->update('{{%document_type}}', $attrs, ['id' => $id]);
     }
+
+    // Documents store sub-type as jenis_peraturan string (not FK); keep in sync with rename.
+    $this->update('{{%document}}',
+        ['jenis_peraturan' => 'NASKAH AKADEMIK KEMENKUM'],
+        ['jenis_peraturan' => 'NASKAH AKADEMIK KEMENKUMHAM']
+    );
 
     $this->db->createCommand()->update('{{%document_type}}',
         ['name' => 'RISALAH PEMBAHASAN',
@@ -167,6 +178,7 @@ Idempotency guards:
 - `update` calls produce the same end state on re-run.
 - `PROGRAM PENYUSUNAN PUU` insert is gated by an existence check.
 - The Risalah rename is gated on `name = 'Risalah Rapat'`, so if an admin already edited the name we leave it alone.
+- Row 76 rename (`KEMENKUMHAM` → `KEMENKUM`) runs unconditionally on id 76; matching `document.jenis_peraturan` rows are updated in the same migration.
 
 **Layer B — `seed_data.sql` update.** Modify the existing `INSERT INTO document_type` block (around line 13723) to include the new column value for the seven affected rows and append the new PROGRAM PENYUSUNAN PUU row. This keeps fresh installs accurate when bootstrapping from the SQL dump before migrations run.
 
@@ -441,7 +453,7 @@ Public URL examples (slug-based, no numeric ids in the path):
 |-------------------------------|-----|
 | Group landing (all 8)         | `/dokumen-pembentukan-puu` |
 | Naskah Akademik                 | `/dokumen-pembentukan-puu/naskah-akademik` |
-| Naskah Akademik Kemenkumham      | `/dokumen-pembentukan-puu/naskah-akademik-kemenkumham` |
+| Naskah Akademik Kemenkum         | `/dokumen-pembentukan-puu/naskah-akademik-kemenkum` |
 | Rancangan PUU (+ descendants)   | `/dokumen-pembentukan-puu/rancangan-puu` |
 | Penelitian Hukum                | `/dokumen-pembentukan-puu/penelitian-hukum` |
 | Pengkajian Hukum                | `/dokumen-pembentukan-puu/pengkajian-hukum` |
@@ -526,7 +538,7 @@ Reuses the existing `dokumen/view` route. No new detail view needed because the 
 
 ## 9. Open questions
 
-1. **Naskah Akademik double row.** The menu will render both row 76 (`NASKAH AKADEMIK KEMENKUMHAM`) and row 77 (`NASKAH AKADEMIK`) as separate sub-items. The mockup shows one entry `Naskah Akademik/Keterangan/Penjelasan/Urgensi/Konsepsi`. Default behavior: keep both. Alternative: tag only row 77 and rename it. Decide after seeing the rendered menu.
+1. **Naskah Akademik double row.** The menu will render both row 76 (`NASKAH AKADEMIK KEMENKUM`) and row 77 (`NASKAH AKADEMIK`) as separate sub-items. The mockup shows one entry `Naskah Akademik/Keterangan/Penjelasan/Urgensi/Konsepsi`. Default behavior: keep both. Alternative: tag only row 77 and rename it. Decide after seeing the rendered menu.
 
 2. **Sort order.** Default is alphabetical (`ORDER BY name ASC`). Mockup order is workflow-based, not alphabetical. If alphabetical proves confusing, add a `sort_order` column on `document_type` or hardcode order in `DocumentGroup` config.
 
