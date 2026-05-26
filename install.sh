@@ -81,7 +81,7 @@ confirm() {
     else
         choices="[y/N]"
     fi
-    read -rp "${prompt} ${choices} " REPLY
+    read -rp "${prompt} ${choices} " REPLY </dev/tty
     REPLY="${REPLY:-$default}"
     [[ "$REPLY" =~ ^[Yy]$ ]]
 }
@@ -118,11 +118,11 @@ prompt_value() {
         return
     fi
     if [ "$is_secret" = true ]; then
-        read -rsp "${prompt} [generated]: " REPLY
+        read -rsp "${prompt} [generated]: " REPLY </dev/tty
         echo ""
         REPLY="${REPLY:-$default}"
     else
-        read -rp "${prompt} [${default}]: " REPLY
+        read -rp "${prompt} [${default}]: " REPLY </dev/tty
         REPLY="${REPLY:-$default}"
     fi
     echo "$REPLY"
@@ -452,7 +452,7 @@ run_wizard() {
     echo -e "${BOLD}Superadmin (akun pertama):${NC}"
     ADMIN_USERNAME=$(prompt_value "  Nama pengguna superadmin" "${ADMIN_USERNAME:-admin}")
     while true; do
-        read -rsp "  Kata sandi superadmin: " ADMIN_PASSWORD
+        read -rsp "  Kata sandi superadmin: " ADMIN_PASSWORD </dev/tty
         echo ""
         if [ -z "${ADMIN_PASSWORD}" ]; then
             echo -e "  ${RED}Kata sandi tidak boleh kosong.${NC}"
@@ -463,7 +463,7 @@ run_wizard() {
             continue
         fi
         local pw_confirm
-        read -rsp "  Konfirmasi kata sandi: " pw_confirm
+        read -rsp "  Konfirmasi kata sandi: " pw_confirm </dev/tty
         echo ""
         if [ "${ADMIN_PASSWORD}" != "${pw_confirm}" ]; then
             echo -e "  ${RED}Kata sandi tidak cocok.${NC}"
