@@ -452,7 +452,8 @@ run_wizard() {
     echo -e "${BOLD}Superadmin (akun pertama):${NC}"
     ADMIN_USERNAME=$(prompt_value "  Nama pengguna superadmin" "${ADMIN_USERNAME:-admin}")
     while true; do
-        ADMIN_PASSWORD=$(prompt_value "  Kata sandi superadmin" "" "true")
+        read -rsp "  Kata sandi superadmin: " ADMIN_PASSWORD
+        echo ""
         if [ -z "${ADMIN_PASSWORD}" ]; then
             echo -e "  ${RED}Kata sandi tidak boleh kosong.${NC}"
             continue
@@ -462,7 +463,8 @@ run_wizard() {
             continue
         fi
         local pw_confirm
-        pw_confirm=$(prompt_value "  Konfirmasi kata sandi" "" "true")
+        read -rsp "  Konfirmasi kata sandi: " pw_confirm
+        echo ""
         if [ "${ADMIN_PASSWORD}" != "${pw_confirm}" ]; then
             echo -e "  ${RED}Kata sandi tidak cocok.${NC}"
             continue
