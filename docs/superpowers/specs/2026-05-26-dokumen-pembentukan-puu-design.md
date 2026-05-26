@@ -44,8 +44,13 @@ A single nullable string column on `document_type`:
 ALTER TABLE `document_type`
   ADD COLUMN `document_group_label` VARCHAR(64) NULL DEFAULT NULL
     AFTER `singkatan`,
-  ADD INDEX `idx_document_group_label` (`document_group_label`);
+  ADD COLUMN `slug` VARCHAR(128) NULL DEFAULT NULL
+    AFTER `document_group_label`,
+  ADD INDEX `idx_document_group_label` (`document_group_label`),
+  ADD UNIQUE INDEX `idx_document_type_slug` (`slug`);
 ```
+
+`slug` is used for **public frontend URLs only** (e.g. `/dokumen-pembentukan-puu/penelitian-hukum`). Values are lowercase kebab-case, stable if an admin renames the display `name`, and unique across `document_type`. Backend admin menu links continue to use `documentTypeId` (numeric) in query strings — no need to expose slugs in the admin UI.
 
 ### 4.2 Tagged rows
 
@@ -65,7 +70,23 @@ After the migration runs, these eight `document_type` rows have `document_group_
 
 The value `legislation_formation` is an English snake_case slug. Display label `Dokumen Pembentukan PUU` lives in a PHP enum (`common/components/DocumentGroup.php`).
 
-Untagged Monografi sub-types (`BUKU HUKUM`, `KOMPENDIUM HUKUM`, `REFERENSI`, `LOKAKARYA`, etc.) are unaffected.
+Untagged Monografi sub-types (`BUKU HUKUM`, `KOMPENDIUM HUKUM`, `REFERENSI`, `LOKAKARYA`, etc.) are unaffected (`document_group_label` and `slug` remain `NULL`).
+
+### 4.2.1 Slugs for tagged rows (frontend URLs)
+
+| id  | name (DB) | `slug` |
+|-----|-----------|--------|
+| 76  | `NASKAH AKADEMIK KEMENKUMHAM` | `naskah-akademik-kemenkumham` |
+| 77  | `NASKAH AKADEMIK` | `naskah-akademik` |
+| 78  | `PENELITIAN HUKUM` | `penelitian-hukum` |
+| 79  | `PENGKAJIAN HUKUM` | `pengkajian-hukum` |
+| 80  | `PENGKAJIAN KONSTITUSI` | `pengkajian-konstitusi` |
+| 83  | `ANALISIS DAN EVALUASI` | `analisis-dan-evaluasi` |
+| 84  | `RANCANGAN PERATURAN PERUNDANG-UNDANGAN` | `rancangan-puu` |
+| 147 | `RISALAH PEMBAHASAN` | `risalah-pembahasan` |
+| new | `PROGRAM PENYUSUNAN PUU` | `program-penyusunan-puu` |
+
+`rancangan-puu` is a short public slug for the long type name; it is **not** auto-derived from `name` so the URL stays readable. New rows inserted later should set `slug` explicitly (or via admin form); optional helper: `yii\helpers\Inflector::slug()` as a default when `slug` is empty on save.
 
 ### 4.3 Migration strategy
 
@@ -78,16 +99,29 @@ public function safeUp()
 {
     $this->addColumn('{{%document_type}}', 'document_group_label',
         $this->string(64)->null()->defaultValue(null)->after('singkatan'));
+    $this->addColumn('{{%document_type}}', 'slug',
+        $this->string(128)->null()->defaultValue(null)->after('document_group_label'));
     $this->createIndex('idx_document_group_label', '{{%document_type}}', 'document_group_label');
+    $this->createIndex('idx_document_type_slug', '{{%document_type}}', 'slug', true);
 
-    $this->update('{{%document_type}}',
-        ['document_group_label' => 'legislation_formation'],
-        ['id' => [76, 77, 78, 79, 80, 83, 84]]);
+    $tagged = [
+        76 => ['document_group_label' => 'legislation_formation', 'slug' => 'naskah-akademik-kemenkumham'],
+        77 => ['document_group_label' => 'legislation_formation', 'slug' => 'naskah-akademik'],
+        78 => ['document_group_label' => 'legislation_formation', 'slug' => 'penelitian-hukum'],
+        79 => ['document_group_label' => 'legislation_formation', 'slug' => 'pengkajian-hukum'],
+        80 => ['document_group_label' => 'legislation_formation', 'slug' => 'pengkajian-konstitusi'],
+        83 => ['document_group_label' => 'legislation_formation', 'slug' => 'analisis-dan-evaluasi'],
+        84 => ['document_group_label' => 'legislation_formation', 'slug' => 'rancangan-puu'],
+    ];
+    foreach ($tagged as $id => $attrs) {
+        $this->update('{{%document_type}}', $attrs, ['id' => $id]);
+    }
 
     $this->db->createCommand()->update('{{%document_type}}',
         ['name' => 'RISALAH PEMBAHASAN',
          'singkatan' => 'RISALAH PEMBAHASAN',
-         'document_group_label' => 'legislation_formation'],
+         'document_group_label' => 'legislation_formation',
+         'slug' => 'risalah-pembahasan'],
         ['id' => 147, 'name' => 'Risalah Rapat']
     )->execute();
 
@@ -100,6 +134,7 @@ public function safeUp()
             'name' => 'PROGRAM PENYUSUNAN PUU',
             'singkatan' => 'PROGRAM PENYUSUNAN PUU',
             'document_group_label' => 'legislation_formation',
+            'slug' => 'program-penyusunan-puu',
             'integrasi' => 1, 'created_by' => 1, 'updated_by' => 1,
         ]);
     }
@@ -114,9 +149,14 @@ public function safeDown()
          'document_group_label' => null],
         ['id' => 147]);
     $this->update('{{%document_type}}',
-        ['document_group_label' => null],
+        ['document_group_label' => null, 'slug' => null],
         ['id' => [76, 77, 78, 79, 80, 83, 84]]);
+    $this->update('{{%document_type}}',
+        ['slug' => null],
+        ['id' => 147]);
+    $this->dropIndex('idx_document_type_slug', '{{%document_type}}');
     $this->dropIndex('idx_document_group_label', '{{%document_type}}');
+    $this->dropColumn('{{%document_type}}', 'slug');
     $this->dropColumn('{{%document_type}}', 'document_group_label');
 }
 ```
@@ -187,6 +227,14 @@ class DocumentType extends ActiveRecord
             ->all();
     }
 
+    public static function findBySlugInGroup(string $slug, string $groupSlug): ?self
+    {
+        return static::findOne([
+            'slug' => $slug,
+            'document_group_label' => $groupSlug,
+        ]);
+    }
+
     public function descendantTypeIds(): array
     {
         $ids = [$this->id];
@@ -220,7 +268,7 @@ class DocumentType extends ActiveRecord
 
 Existing `backend\models\TipeDokumen` and `backend\models\JenisPeraturan` are unchanged — they continue to serve their current admin-form roles. The new `common\models\DocumentType` is used only for the menu-rendering and group-filtering paths described in §5.3 and §6.
 
-Also add `document_group_label` to `safeAttributes()` of the existing `backend\models\TipeDokumen` so admins can edit it via the existing `TipeDokumen` form.
+Also add `document_group_label` and `slug` to `safeAttributes()` / validation rules on `backend\models\TipeDokumen` so admins can edit them via the existing form (`slug` unique, max 128, pattern `[\w-]+`).
 
 ### 5.3 How sub-type filtering works (important data shape)
 
@@ -305,8 +353,7 @@ Insert one new permission row in the `auth_item` table: `/document-group/legisla
     'options' => ['class' => 'dropdown'],
     'items' => array_map(fn($t) => [
         'label' => ucwords(strtolower($t->name)),
-        'url'   => ['dokumen/legislation-formation',
-                    'dokumen_type_id' => $t->id],
+        'url'   => ['dokumen/legislation-formation', 'slug' => $t->slug],
     ], \common\models\DocumentType::findByGroup(
            \common\components\DocumentGroup::LEGISLATION_FORMATION)),
 ],
@@ -319,16 +366,16 @@ Insert one new permission row in the `auth_item` table: `/document-group/legisla
 `frontend/controllers/DokumenController.php`
 
 ```php
-public function actionLegislationFormation($dokumen_type_id = null)
+public function actionLegislationFormation($slug = null)
 {
-    $type = $dokumen_type_id
-        ? \common\models\DocumentType::findOne($dokumen_type_id)
+    $group = \common\components\DocumentGroup::LEGISLATION_FORMATION;
+    $type = $slug
+        ? \common\models\DocumentType::findBySlugInGroup($slug, $group)
         : null;
 
-    if ($type && $type->document_group_label !==
-        \common\components\DocumentGroup::LEGISLATION_FORMATION) {
+    if ($slug && !$type) {
         throw new \yii\web\NotFoundHttpException(
-            'Tipe dokumen tidak termasuk Dokumen Pembentukan PUU.'
+            'Tipe dokumen tidak ditemukan.'
         );
     }
 
@@ -385,17 +432,25 @@ Row 84 (`RANCANGAN PERATURAN PERUNDANG-UNDANGAN`) has children 93–99 (Rancanga
 
 ```php
 'dokumen-pembentukan-puu' => 'dokumen/legislation-formation',
-'dokumen-pembentukan-puu/<dokumen_type_id:\d+>' => 'dokumen/legislation-formation',
+'dokumen-pembentukan-puu/<slug:[\w-]+>' => 'dokumen/legislation-formation',
 ```
 
-Public URL examples:
+Public URL examples (slug-based, no numeric ids in the path):
 
-| Menu child                  | URL                              |
-|-----------------------------|----------------------------------|
-| Group landing (all 8)       | `/dokumen-pembentukan-puu`       |
-| Naskah Akademik             | `/dokumen-pembentukan-puu/77`    |
-| Rancangan PUU (+ descendants) | `/dokumen-pembentukan-puu/84`  |
-| Penelitian Hukum            | `/dokumen-pembentukan-puu/78`    |
+| Menu child                    | URL |
+|-------------------------------|-----|
+| Group landing (all 8)         | `/dokumen-pembentukan-puu` |
+| Naskah Akademik                 | `/dokumen-pembentukan-puu/naskah-akademik` |
+| Naskah Akademik Kemenkumham      | `/dokumen-pembentukan-puu/naskah-akademik-kemenkumham` |
+| Rancangan PUU (+ descendants)   | `/dokumen-pembentukan-puu/rancangan-puu` |
+| Penelitian Hukum                | `/dokumen-pembentukan-puu/penelitian-hukum` |
+| Pengkajian Hukum                | `/dokumen-pembentukan-puu/pengkajian-hukum` |
+| Pengkajian Konstitusi           | `/dokumen-pembentukan-puu/pengkajian-konstitusi` |
+| Analisis Dan Evaluasi           | `/dokumen-pembentukan-puu/analisis-dan-evaluasi` |
+| Program Penyusunan PUU          | `/dokumen-pembentukan-puu/program-penyusunan-puu` |
+| Risalah Pembahasan              | `/dokumen-pembentukan-puu/risalah-pembahasan` |
+
+`findBySlugInGroup()` ensures a slug that belongs to another group (or an untagged type) returns 404, not a cross-group leak.
 
 ### 6.5 New view
 
@@ -421,7 +476,7 @@ Reuses the existing `dokumen/view` route. No new detail view needed because the 
 | File | Change |
 |------|--------|
 | `console/migrations/seed_data.sql` | Update INSERT VALUES for the 7 tagged rows; append the new PROGRAM PENYUSUNAN PUU row |
-| `backend/models/TipeDokumen.php` | Add `document_group_label` to safe attributes + rules so admins can edit it via the existing form |
+| `backend/models/TipeDokumen.php` | Add `document_group_label` + `slug` to safe attributes + rules (unique slug) |
 | `backend/models/MonografiSearch.php` | Add virtual attribute `documentTypeId` that resolves to an exact `jenis_peraturan = (name)` filter (see §5.4) |
 | `frontend/models/DokumenSearch.php` | Add `searchByTypeNames(array $names, array $params)` (see §6.2) |
 | `backend/views/layouts/leftside.php` | Append dynamic group block after RBAC menu |
@@ -449,12 +504,13 @@ Reuses the existing `dokumen/view` route. No new detail view needed because the 
    - Click "Penelitian Hukum" → URL contains `MonografiSearch[documentTypeId]=78` → grid shows only `tipe_dokumen=2 AND jenis_peraturan='PENELITIAN HUKUM'` rows.
 3. **Frontend group landing**
    - GET `/dokumen-pembentukan-puu` returns 200 and renders listing of all 8 tagged sub-types (jenis_peraturan IN the group's name set).
-4. **Frontend child page**
-   - GET `/dokumen-pembentukan-puu/78` returns 200 with `jenis_peraturan='PENELITIAN HUKUM'` docs only.
-5. **Rancangan PUU descendants**
-   - GET `/dokumen-pembentukan-puu/84` returns docs with `jenis_peraturan IN ('RANCANGAN PERATURAN PERUNDANG-UNDANGAN', 'RANCANGAN PERATURAN DAERAH', 'RANCANGAN PERATURAN DAERAH PROVINSI', 'RANCANGAN PERATURAN DAERAH KABUPATEN', 'RANCANGAN PERATURAN DAERAH KOTA', 'RANCANGAN PERATURAN GUBERNUR', 'RANCANGAN PERATURAN BUPATI', 'RANCANGAN PERATURAN WALIKOTA')`.
-6. **Untagged document_type is rejected**
-   - GET `/dokumen-pembentukan-puu/75` (BUKU HUKUM, not tagged) returns 404.
+4. **Frontend child page (slug)**
+   - GET `/dokumen-pembentukan-puu/penelitian-hukum` returns 200 with `jenis_peraturan='PENELITIAN HUKUM'` docs only.
+5. **Rancangan PUU descendants (slug)**
+   - GET `/dokumen-pembentukan-puu/rancangan-puu` returns docs with `jenis_peraturan IN ('RANCANGAN PERATURAN PERUNDANG-UNDANGAN', 'RANCANGAN PERATURAN DAERAH', …)`.
+6. **Untagged or unknown slug returns 404**
+   - GET `/dokumen-pembentukan-puu/buku-hukum` (no such slug in group) returns 404.
+   - GET `/dokumen-pembentukan-puu/78` (numeric id in path, not a slug) returns 404 unless a row is deliberately given slug `78` (we do not).
 7. **DocumentTypeId validator rejects unknown IDs**
    - `MonografiSearch[documentTypeId]=999999` (non-existent row) returns an empty grid, not a 500.
 
