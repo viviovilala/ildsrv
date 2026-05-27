@@ -60,8 +60,8 @@ use mdm\admin\components\MenuHelper;
                 return [
                     'label' => $t->name,
                     'url' => [
-                        '/monografi/index',
-                        'MonografiSearch[documentTypeId]' => $t->id,
+                        '/dokumen-pembentukan-puu/index',
+                        'DokumenPembentukanPuuSearch[documentTypeId]' => $t->id,
                     ],
                 ];
             }, $puuTypes);
