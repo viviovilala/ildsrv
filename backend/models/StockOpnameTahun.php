@@ -7,6 +7,7 @@ use yii\db\ActiveRecord;
 use yii\db\Expression;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 use yii\behaviors\SluggableBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -25,6 +26,7 @@ class StockOpnameTahun extends \yii\db\ActiveRecord
         return [
             [['tahun', 'created_at', 'updated_at'], 'safe'],
             [['created_by', 'updated_by'], 'integer'],
+            [['tahun'], 'match', 'pattern' => '/^\d{4}$/', 'message' => 'Tahun harus berupa 4 digit angka'],
         ];
     }
 
@@ -118,6 +120,18 @@ class StockOpnameTahun extends \yii\db\ActiveRecord
     {
         $buku = Monografi::find()->where(['tipe_dokumen' => 2])->count();
         return $buku;
+    }
+
+    public static function tahunList($startYear = 1900, $endYear = null)
+    {
+        if ($endYear === null) {
+            $endYear = date('Y') + 1;
+        }
+        return ArrayHelper::map(
+            array_combine(range($endYear, $startYear), range($endYear, $startYear)),
+            function ($v) { return $v; },
+            function ($v) { return $v; }
+        );
     }
 
     public function getEksemplar($id)

@@ -47,7 +47,7 @@ use kartik\datecontrol\DateControl;
         <?= $form->field($model, 'judul')->textarea(['placeholder' => 'tulis lengkap judul artikel', 'rows' => 6]) ?>
 
 
-        <?= $form->field($model, 'tahun_terbit')->textInput(['placeholder' => 'tulis tahun artikel', 'maxlength' => 4])->label('Tahun') ?>
+        <?= $form->field($model, 'tahun_terbit')->dropDownList(\backend\models\Peraturan::tahunList(), ['prompt' => 'Pilih Tahun'])->label('Tahun') ?>
 
 
         <?= $form->field($model, 'tanggal_penetapan')->widget(

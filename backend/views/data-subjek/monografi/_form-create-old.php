@@ -53,7 +53,7 @@ use kartik\datecontrol\DateControl;
 
                     <?= $form->field($model, 'judul')->textarea(['placeholder' => 'tulis lengkap judul peraturan', 'rows' => 6]) ?>
 
-                    <?= $form->field($model, 'tahun_terbit')->textInput(['placeholder' => 'tulis tahun peraturan', 'maxlength' => 4])->label('Tahun Terbit') ?>
+                    <?= $form->field($model, 'tahun_terbit')->dropDownList(\backend\models\Peraturan::tahunList(), ['prompt' => 'Pilih Tahun'])->label('Tahun Terbit') ?>
 
                     <?= $form->field($model, 'penerbit')->textInput(['placeholder' => 'tulis penerbit', 'maxlength' => true])->label('penerbit') ?>
 

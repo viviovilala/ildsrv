@@ -8,6 +8,7 @@ use yii\db\Expression;
 use yii\behaviors\SluggableBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 
 
 /**
@@ -96,6 +97,7 @@ class Peraturan extends \yii\db\ActiveRecord
         return [
             [['jenis_peraturan', 'bentuk_peraturan', 'nomor_peraturan', 'tahun_terbit', 'tanggal_penetapan', 'judul'], 'required'],
             [['tipe_dokumen', 'daerah', 'hit_see', 'hit_download', 'integrasi'], 'integer'],
+            [['tahun_terbit'], 'match', 'pattern' => '/^\d{4}$/', 'message' => 'Tahun harus berupa 4 digit angka'],
             [['judul', 'teu', 'bentuk_peraturan', 'singkatan_jenis', 'tempat_terbit', 'penerbit', 'sumber', 'bahasa', 'bidang_hukum', 'pernyataan_tanggung_jawab'], 'string'],
             [['tanggal_penetapan', 'tanggal_dibacakan', 'created_at', 'updated_at', 'tanggal_pengundangan'], 'safe'],
             [['nomor_peraturan', 'nomor_panggil', 'cetakan', 'deskripsi_fisik', 'isbn', 'nomor_induk_buku', 'jenis_peraturan', 'singkatan_bentuk', 'tipe_koleksi_nomor_eksemplar', 'pola_nomor_eksemplar', 'slug', 'jumlah_eksemplar', 'kala_terbit', 'tahun_terbit', 'edisi', 'gmd', 'judul_seri', 'klasifikasi', 'info_detil_spesifik', 'abstrak', 'gambar_sampul', 'label', 'sembunyikan_di_opac', 'promosikan_ke_beranda', 'status_terakhir', 'status', '_created_by', '_updated_by', 'inisiatif', 'pemrakarsa', 'penandatanganan', 'lembaga_peradilan', 'pemohon', 'termohon', 'jenis_perkara', 'sub_klasifikasi', 'amar_status', 'berkekuatan_hukum_tetap', 'urusan_pemerintahan', 'catatan_status_peraturan'], 'string', 'max' => 255],
@@ -271,6 +273,19 @@ class Peraturan extends \yii\db\ActiveRecord
         }
         //return $jenis->name;
     }
+
+    public static function tahunList($startYear = 1900, $endYear = null)
+    {
+        if ($endYear === null) {
+            $endYear = date('Y') + 1;
+        }
+        return ArrayHelper::map(
+            array_combine(range($endYear, $startYear), range($endYear, $startYear)),
+            function ($v) { return $v; },
+            function ($v) { return $v; }
+        );
+    }
+
     public function getLampiran($id)
     {
         if (!empty($id)) {
