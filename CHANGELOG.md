@@ -1,3 +1,14 @@
+## [4.5.0](https://github.com/bphndigitalservice/ildis/compare/v4.4.1...v4.5.0) (2026-05-28)
+
+### Features
+
+* replace year text inputs with dropdown selection in document forms ([7949da4](https://github.com/bphndigitalservice/ildis/commit/7949da46c02176909dd8d25b54b8393fc045e29e))
+
+### Bug Fixes
+
+* add missing actionPasswordReset for admin user password reset ([5944a71](https://github.com/bphndigitalservice/ildis/commit/5944a71981ab0826b4e020aacb4a443f8cccae25))
+* **menu:** double menu ([516ed61](https://github.com/bphndigitalservice/ildis/commit/516ed6118d5241bc2bd880053c245ec5d1196ecb))
+
 ## [4.4.1](https://github.com/bphndigitalservice/ildis/compare/v4.4.0...v4.4.1) (2026-05-28)
 
 ## [4.4.0](https://github.com/bphndigitalservice/ildis/compare/v4.3.4...v4.4.0) (2026-05-28)
