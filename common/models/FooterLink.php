@@ -65,4 +65,16 @@ class FooterLink extends ActiveRecord
     {
         return $this->hasOne(FooterSection::class, ['id' => 'section_id']);
     }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        Yii::$app->cache->delete('footer_sections_active');
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        Yii::$app->cache->delete('footer_sections_active');
+    }
 }

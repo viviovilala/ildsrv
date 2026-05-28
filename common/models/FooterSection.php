@@ -69,10 +69,27 @@ class FooterSection extends ActiveRecord
 
     public static function getActiveSections()
     {
-        return self::find()
-            ->where(['status' => 1])
-            ->orderBy(['sort_order' => SORT_ASC])
-            ->with('activeLinks')
-            ->all();
+        $db = self::getDb();
+        $duration = 3600;
+
+        return $db->cache(function ($db) {
+            return self::find()
+                ->where(['status' => 1])
+                ->orderBy(['sort_order' => SORT_ASC])
+                ->with('activeLinks')
+                ->all();
+        }, $duration);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        Yii::$app->cache->delete('footer_sections_active');
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        Yii::$app->cache->delete('footer_sections_active');
     }
 }
