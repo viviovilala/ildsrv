@@ -1577,6 +1577,11 @@ do_install() {
     fi
 
     print_recaptcha_env_help "${INSTALL_DIR}/${ENV_FILE}"
+
+    # Safety net: ensure install.sh is available on disk for future updates
+    if [ ! -f "${INSTALL_DIR}/install.sh" ]; then
+        cp "${BASH_SOURCE[0]}" "${INSTALL_DIR}/install.sh" 2>/dev/null && chmod +x "${INSTALL_DIR}/install.sh" && success "install.sh disalin ke ${INSTALL_DIR}/"
+    fi
 }
 
 # ── Update ───────────────────────────────────────────────────────────────────
@@ -1622,6 +1627,13 @@ do_update() {
         fi
     else
         warn "curl tidak ditemukan. Melewatkan pembaruan install.sh."
+    fi
+
+    # Ensure install.sh is saved to installation directory for future updates
+    local self_path
+    self_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
+    if [ ! -f "${INSTALL_DIR}/install.sh" ]; then
+        cp "${self_path}" "${INSTALL_DIR}/install.sh" 2>/dev/null && chmod +x "${INSTALL_DIR}/install.sh" && success "install.sh disalin ke ${INSTALL_DIR}/"
     fi
 
     info "Memuat konfigurasi yang ada..."
@@ -1799,6 +1811,23 @@ main() {
     echo ""
     echo -e "${BOLD}ILDIS — Sistem Informasi Dokumentasi Hukum Indonesia${NC}"
     echo ""
+
+    # Self-save: if running via pipe (curl | bash), save to disk before continuing
+    SELF_SOURCE="${BASH_SOURCE[0]}"
+    if [ ! -f "${SELF_SOURCE}" ] || [ ! -s "${SELF_SOURCE}" ]; then
+        SAVE_DIR="${INSTALL_DIR:-${DEFAULT_INSTALL_DIR}}"
+        mkdir -p "${SAVE_DIR}"
+        SAVE_PATH="${SAVE_DIR}/install.sh"
+        info "Menyimpan install.sh ke ${SAVE_PATH}..."
+        if curl -fsSL "https://raw.githubusercontent.com/${GITHUB_REPO}/main/install.sh" -o "${SAVE_PATH}" 2>/dev/null && [ -s "${SAVE_PATH}" ]; then
+            chmod +x "${SAVE_PATH}"
+            success "install.sh disimpan"
+            exec "${SAVE_PATH}" "$@"
+        else
+            rm -f "${SAVE_PATH}" 2>/dev/null || true
+            warn "Tidak dapat mengunduh install.sh. Melanjutkan dari pipe."
+        fi
+    fi
 
     if [ "${ACTION}" = "update" ]; then
         # Detect container runtime for update mode
