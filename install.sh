@@ -1057,6 +1057,14 @@ EOF
 patch_app_for_migrations() {
     info "Menyesuaikan migrasi di container (wajib untuk image production saat ini)..."
 
+    # Skip jika image sudah contain fix (marker file exists)
+    if run_compose exec -T app test -f /var/www/.ildis_patched 2>/dev/null; then
+        info "Image sudah di-patch, melewati..."
+        return 0
+    fi
+
+    warn "Runtime patching masih diperlukan. Update ke image terbaru untuk menghilangkan kebutuhan patching."
+
     run_compose exec -T app sed -i \
         "s/'autoInstallTables' => true/'autoInstallTables' => false/" \
         /var/www/frontend/config/main.php 2>/dev/null || true
@@ -1110,6 +1118,9 @@ namespace console\\\\migrations;\\
     fi
 
     patch_recaptcha_support
+
+    # Tandai bahwa patch sudah di-apply (untuk image lama yang tidak punya marker)
+    run_compose exec -T app touch /var/www/.ildis_patched 2>/dev/null || true
 
     success "Penyesuaian migrasi selesai"
 }
