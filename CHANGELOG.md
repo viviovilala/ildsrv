@@ -1,3 +1,22 @@
+## [4.6.1](https://github.com/bphndigitalservice/ildis/compare/v4.6.0...v4.6.1) (2026-05-28)
+
+### Bug Fixes
+
+* add .ildis_patched marker to skip runtime patching on new images ([41c60b2](https://github.com/bphndigitalservice/ildis/commit/41c60b2af11c74d5857f0aedcffc515d66183ba7))
+* add stop_grace_period and healthcheck to cron service in generated compose ([e79241b](https://github.com/bphndigitalservice/ildis/commit/e79241b6caca3788e1128196af1f82eaf0b09ca4))
+* add wait-for-db entrypoint, healthcheck, and retry to cron container ([82a9653](https://github.com/bphndigitalservice/ildis/commit/82a9653680a194ad5031139a435071f1a91e3024))
+* atomic write + error handling in FeedController::actionGenerateDocument ([5d4ca48](https://github.com/bphndigitalservice/ildis/commit/5d4ca483128497f64298cdddd33dc0fb546126a0))
+* non-fatal migration failure in ildis-init to prevent php-fpm crash ([2d39843](https://github.com/bphndigitalservice/ildis/commit/2d39843d7609a572ce5f21ed38a8c8e3cc1b8bad))
+* ordered update flow - stop cron first, migrate, then restart cron ([3388f34](https://github.com/bphndigitalservice/ildis/commit/3388f34f2189dd94a23664caafb9e1582760ad44))
+* review fixes - typo regression, init message logic, healthcheck -s flag, app restart after patching ([8778bda](https://github.com/bphndigitalservice/ildis/commit/8778bda7a0eebd46b760ca57a5187a315fa0c5e4))
+* self-heal update.sh downloads install.sh if missing ([da024fd](https://github.com/bphndigitalservice/ildis/commit/da024fdfd65f66a75d5692b4a46c210961d197f2))
+* self-save install.sh to disk when run via pipe ([96e6551](https://github.com/bphndigitalservice/ildis/commit/96e6551f6b4f11be637f653f176b1947f663f268))
+* skip runtime patching when image contains .ildis_patched marker ([77e5f9e](https://github.com/bphndigitalservice/ildis/commit/77e5f9e5de1bb66f096f7b6d93c3f306f778751c))
+
+### Documentation
+
+* add design spec and implementation plan for install/update/cron robustness fix ([0e7c4f0](https://github.com/bphndigitalservice/ildis/commit/0e7c4f0b094226b3b26fe68f3e3a2e7366358050))
+
 ## [4.6.0](https://github.com/bphndigitalservice/ildis/compare/v4.5.0...v4.6.0) (2026-05-28)
 
 ### Features
