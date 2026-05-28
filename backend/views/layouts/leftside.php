@@ -76,7 +76,31 @@ use mdm\admin\components\MenuHelper;
             $found = false;
             foreach ($items2 as $i => $item) {
                 if ($item['label'] === 'Dokumen Hukum') {
-                    $items2[$i]['items'][] = $puuGroup;
+                    $existingPuuGroupIndex = null;
+                    foreach (($items2[$i]['items'] ?? []) as $childIndex => $child) {
+                        if (($child['label'] ?? null) === 'Dokumen Penyusunan PUU') {
+                            $existingPuuGroupIndex = $childIndex;
+                            break;
+                        }
+                    }
+
+                    if ($existingPuuGroupIndex !== null) {
+                        $existingItems = $items2[$i]['items'][$existingPuuGroupIndex]['items'] ?? [];
+                        $existingLabels = array_map(static function (array $menuItem) {
+                            return $menuItem['label'] ?? null;
+                        }, $existingItems);
+
+                        foreach ($puuChildren as $childItem) {
+                            if (!in_array($childItem['label'], $existingLabels, true)) {
+                                $existingItems[] = $childItem;
+                            }
+                        }
+
+                        $items2[$i]['items'][$existingPuuGroupIndex]['items'] = $existingItems;
+                    } else {
+                        $items2[$i]['items'][] = $puuGroup;
+                    }
+
                     $found = true;
                     break;
                 }
