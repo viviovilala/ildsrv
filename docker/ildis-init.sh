@@ -28,9 +28,9 @@ fi
 s6-echo "[ildis-init] Applying database migrations..."
 
 if ! php /var/www/yii migrate/up --interactive=0; then
-    s6-echo "[ildis-init] ERROR: Database migrations failed."
-    s6-echo "[ildis-init] Check logs for details. Application may not function correctly."
-    exit 1
+    s6-echo "[ildis-init] WARNING: Database migrations failed."
+    s6-echo "[ildis-init] Application will start. Run migrate manually when DB is ready:"
+    s6-echo "[ildis-init]   php /var/www/yii migrate/up --interactive=0"
 fi
 
 s6-echo "[ildis-init] Database migrations applied successfully."
