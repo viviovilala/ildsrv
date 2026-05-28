@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id_dokumen')->textInput() ?>
 
-    <?= $form->field($model, 'tahun')->textInput() ?>
+    <?= $form->field($model, 'tahun')->dropDownList(\backend\models\StockOpnameTahun::tahunList(), ['prompt' => 'Pilih Tahun']) ?>
 
     <?= $form->field($model, 'jumlah_eksemplar')->textInput() ?>
 

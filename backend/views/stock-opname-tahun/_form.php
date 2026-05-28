@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="box-body">
 
-            <?= $form->field($model, 'tahun')->textInput() ?>
+            <?= $form->field($model, 'tahun')->dropDownList(\backend\models\StockOpnameTahun::tahunList(), ['prompt' => 'Pilih Tahun']) ?>
 
 
             <div class="form-group">

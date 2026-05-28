@@ -56,7 +56,7 @@ use kartik\datecontrol\DateControl;
 
                 <?= $form->field($model, 'lembaga_peradilan')->textInput(['placeholder' => 'tulis tempat pengadilan', 'maxlength' => true])->label('Tempat Pengadilan') ?>
 
-                <?= $form->field($model, 'tahun_terbit')->textInput(['placeholder' => 'tulis tahun peraturan', 'maxlength' => 4])->label('Tahun') ?>
+                <?= $form->field($model, 'tahun_terbit')->dropDownList(\backend\models\Peraturan::tahunList(), ['prompt' => 'Pilih Tahun'])->label('Tahun') ?>
 
                 <?= $form->field($model, 'tempat_terbit')->widget(\kartik\widgets\Select2::classname(), [
                     'data' => \yii\helpers\ArrayHelper::map(\backend\models\Daerah::find()->asArray()->all(), 'nama', 'nama'),

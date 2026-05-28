@@ -38,7 +38,7 @@ use kartik\datecontrol\DateControl;
         ?>
         <?= $form->field($model, 'singkatan_jenis')->textInput(['maxlength' => true]) ?>
         <?= $form->field($model, 'nomor_peraturan')->textInput(['maxlength' => true]) ?>
-        <?= $form->field($model, 'tahun_terbit')->textInput(['maxlength' => 4])->label('Tahun') ?>
+        <?= $form->field($model, 'tahun_terbit')->dropDownList(\backend\models\Peraturan::tahunList(), ['prompt' => 'Pilih Tahun'])->label('Tahun') ?>
         <?= $form->field($model, 'judul')->textarea(['rows' => 6]) ?>
 
         <?= $form->field($model, 'bidang_hukum')->dropDownList(

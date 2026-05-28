@@ -70,7 +70,7 @@ $jenis = \backend\models\JenisPeraturan::find()->where(['name' => $model->jenis_
 
                 <?= $form->field($model, 'nomor_peraturan')->textInput(['placeholder' => 'tulis nomor peraturan', 'maxlength' => true]) ?>
 
-                <?= $form->field($model, 'tahun_terbit')->textInput(['placeholder' => 'tulis tahun peraturan', 'maxlength' => 4])->label('Tahun') ?>
+                <?= $form->field($model, 'tahun_terbit')->dropDownList(\backend\models\Peraturan::tahunList(), ['prompt' => 'Pilih Tahun'])->label('Tahun') ?>
 
 
                 <?=

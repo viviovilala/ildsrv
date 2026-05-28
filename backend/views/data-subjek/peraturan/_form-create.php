@@ -75,7 +75,7 @@ use yii\helpers\Url;
 
             <?= $form->field($model, 'nomor_peraturan')->textInput(['placeholder' => 'tulis nomor peraturan', 'maxlength' => true]) ?>
 
-            <?= $form->field($model, 'tahun_terbit')->textInput(['placeholder' => 'tulis tahun peraturan', 'maxlength' => 4])->label('Tahun') ?>
+            <?= $form->field($model, 'tahun_terbit')->dropDownList(\backend\models\Peraturan::tahunList(), ['prompt' => 'Pilih Tahun'])->label('Tahun') ?>
 
             <?= $form->field($model, 'tempat_terbit')->textInput(['placeholder' => 'tulis tempat penetapan', 'maxlength' => true])->label('Tempat Penetapan') ?>
 
