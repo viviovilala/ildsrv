@@ -803,6 +803,13 @@ COMPOSEEOF
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_DATABASE=${DB_DATABASE:-ildis_v4}
       - DB_DATABASE_PORT=${DB_DATABASE_PORT:-3306}
+    stop_grace_period: 30s
+    healthcheck:
+      test: ["CMD", "test", "-f", "/var/www/feed/document.json"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
 
 volumes:
   runtime:
@@ -886,6 +893,13 @@ ${db_ports}
       - DB_PASSWORD=\${DB_PASSWORD}
       - DB_DATABASE=\${DB_DATABASE:-ildis_v4}
       - DB_DATABASE_PORT=\${DB_DATABASE_PORT:-3306}
+    stop_grace_period: 30s
+    healthcheck:
+      test: ["CMD", "test", "-f", "/var/www/feed/document.json"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
 
 volumes:
   mysql_data:
@@ -950,6 +964,13 @@ services:${traefik_service}
       - DB_PASSWORD=\${DB_PASSWORD}
       - DB_DATABASE=\${DB_DATABASE:-ildis_v4}
       - DB_DATABASE_PORT=\${DB_DATABASE_PORT:-3306}
+    stop_grace_period: 30s
+    healthcheck:
+      test: ["CMD", "test", "-f", "/var/www/feed/document.json"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
 COMPOSEEOF
         else
             cat > "${INSTALL_DIR}/${COMPOSE_FILE}" <<EOF
@@ -1025,6 +1046,13 @@ ${traefik_service}
       - DB_PASSWORD=\${DB_PASSWORD}
       - DB_DATABASE=\${DB_DATABASE:-ildis_v4}
       - DB_DATABASE_PORT=\${DB_DATABASE_PORT:-3306}
+    stop_grace_period: 30s
+    healthcheck:
+      test: ["CMD", "test", "-f", "/var/www/feed/document.json"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
     networks:
       - ildis_net
 EOF
@@ -1056,6 +1084,14 @@ EOF
 # GHCR images may ship with migrationPath-only config and older migration files.
 patch_app_for_migrations() {
     info "Menyesuaikan migrasi di container (wajib untuk image production saat ini)..."
+
+    # Skip jika image sudah contain fix (marker file exists)
+    if run_compose exec -T app test -f /var/www/.ildis_patched 2>/dev/null; then
+        info "Image sudah di-patch, melewati..."
+        return 0
+    fi
+
+    warn "Runtime patching masih diperlukan. Update ke image terbaru untuk menghilangkan kebutuhan patching."
 
     run_compose exec -T app sed -i \
         "s/'autoInstallTables' => true/'autoInstallTables' => false/" \
@@ -1110,6 +1146,9 @@ namespace console\\\\migrations;\\
     fi
 
     patch_recaptcha_support
+
+    # Tandai bahwa patch sudah di-apply (untuk image lama yang tidak punya marker)
+    run_compose exec -T app touch /var/www/.ildis_patched 2>/dev/null || true
 
     success "Penyesuaian migrasi selesai"
 }
@@ -1577,6 +1616,11 @@ do_install() {
     fi
 
     print_recaptcha_env_help "${INSTALL_DIR}/${ENV_FILE}"
+
+    # Safety net: ensure install.sh is available on disk for future updates
+    if [ ! -f "${INSTALL_DIR}/install.sh" ]; then
+        cp "${BASH_SOURCE[0]}" "${INSTALL_DIR}/install.sh" 2>/dev/null && chmod +x "${INSTALL_DIR}/install.sh" && success "install.sh disalin ke ${INSTALL_DIR}/"
+    fi
 }
 
 # ── Update ───────────────────────────────────────────────────────────────────
@@ -1622,6 +1666,13 @@ do_update() {
         fi
     else
         warn "curl tidak ditemukan. Melewatkan pembaruan install.sh."
+    fi
+
+    # Ensure install.sh is saved to installation directory for future updates
+    local self_path
+    self_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
+    if [ ! -f "${INSTALL_DIR}/install.sh" ]; then
+        cp "${self_path}" "${INSTALL_DIR}/install.sh" 2>/dev/null && chmod +x "${INSTALL_DIR}/install.sh" && success "install.sh disalin ke ${INSTALL_DIR}/"
     fi
 
     info "Memuat konfigurasi yang ada..."
@@ -1718,8 +1769,14 @@ do_update() {
         generate_traefik_config
     fi
 
+    info "Menghentikan cron container (mencegah write setengah jadi)..."
+    run_compose_update "${compose_file}" "${env_file}" stop cron 2>/dev/null || true
+
+    info "Menghentikan aplikasi..."
+    run_compose_update "${compose_file}" "${env_file}" stop app 2>/dev/null || true
+
     info "Memulai ulang container ILDIS..."
-    if ! run_compose_update "${compose_file}" "${env_file}" up -d 2>&1; then
+    if ! run_compose_update "${compose_file}" "${env_file}" up -d --force-recreate app 2>&1; then
         fail "Gagal memulai ulang container."
     fi
 
@@ -1757,12 +1814,28 @@ do_update() {
         success "Aplikasi merespons"
     fi
 
+    local patch_needed=false
+    if ! run_compose_update "${compose_file}" "${env_file}" exec -T app test -f /var/www/.ildis_patched 2>/dev/null; then
+        patch_needed=true
+    fi
+
+    patch_app_for_migrations
+
+    if [ "${patch_needed}" = true ]; then
+        info "Restarting app after patching..."
+        run_compose_update "${compose_file}" "${env_file}" restart app 2>/dev/null || true
+        sleep 3
+    fi
+
     info "Menjalankan migrasi database..."
     if run_compose_update "${compose_file}" "${env_file}" exec -T app php yii migrate/up --interactive=0 2>&1; then
         success "Migrasi diterapkan"
     else
         warn "Perintah migrasi mengembalikan non-zero. Mungkin normal jika tidak ada yang tertunda."
     fi
+
+    info "Memulai cron container..."
+    run_compose_update "${compose_file}" "${env_file}" up -d --force-recreate cron 2>&1 || true
 
     echo "${latest_version}" > "${INSTALL_DIR}/${VERSION_FILE}"
 
@@ -1799,6 +1872,23 @@ main() {
     echo ""
     echo -e "${BOLD}ILDIS — Sistem Informasi Dokumentasi Hukum Indonesia${NC}"
     echo ""
+
+    # Self-save: if running via pipe (curl | bash), save to disk before continuing
+    SELF_SOURCE="${BASH_SOURCE[0]}"
+    if [ ! -f "${SELF_SOURCE}" ] || [ ! -s "${SELF_SOURCE}" ]; then
+        SAVE_DIR="${INSTALL_DIR:-${DEFAULT_INSTALL_DIR}}"
+        mkdir -p "${SAVE_DIR}"
+        SAVE_PATH="${SAVE_DIR}/install.sh"
+        info "Menyimpan install.sh ke ${SAVE_PATH}..."
+        if curl -fsSL "https://raw.githubusercontent.com/${GITHUB_REPO}/main/install.sh" -o "${SAVE_PATH}" 2>/dev/null && [ -s "${SAVE_PATH}" ]; then
+            chmod +x "${SAVE_PATH}"
+            success "install.sh disimpan"
+            exec "${SAVE_PATH}" "$@"
+        else
+            rm -f "${SAVE_PATH}" 2>/dev/null || true
+            warn "Tidak dapat mengunduh install.sh. Melanjutkan dari pipe."
+        fi
+    fi
 
     if [ "${ACTION}" = "update" ]; then
         # Detect container runtime for update mode
