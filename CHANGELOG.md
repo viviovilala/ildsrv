@@ -1,3 +1,9 @@
+## [4.6.2](https://github.com/bphndigitalservice/ildis/compare/v4.6.1...v4.6.2) (2026-05-29)
+
+### Bug Fixes
+
+* quote PHP_ERROR_REPORTING value to fix YAML parse error ([58adc86](https://github.com/bphndigitalservice/ildis/commit/58adc86e66773133eb09eb9b54e86520d1a8f320))
+
 ## [4.6.1](https://github.com/bphndigitalservice/ildis/compare/v4.6.0...v4.6.1) (2026-05-28)
 
 ### Bug Fixes
