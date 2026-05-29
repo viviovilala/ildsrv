@@ -782,7 +782,7 @@ COMPOSEEOF
       - RECAPTCHA_SITE_KEY=${RECAPTCHA_SITE_KEY:-}
       - RECAPTCHA_SECRET_KEY=${RECAPTCHA_SECRET_KEY:-}
       - PHP_DISPLAY_ERRORS=Off
-      - PHP_ERROR_REPORTING=E_ALL & ~E_DEPRECATED
+      - PHP_ERROR_REPORTING="E_ALL & ~E_DEPRECATED"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost/" ]
       interval: 30s
@@ -869,7 +869,7 @@ ${db_ports}
       - RECAPTCHA_SITE_KEY=\${RECAPTCHA_SITE_KEY:-}
       - RECAPTCHA_SECRET_KEY=\${RECAPTCHA_SECRET_KEY:-}
       - PHP_DISPLAY_ERRORS=Off
-      - PHP_ERROR_REPORTING=E_ALL & ~E_DEPRECATED
+      - PHP_ERROR_REPORTING="E_ALL & ~E_DEPRECATED"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost/" ]
       interval: 30s
@@ -943,7 +943,7 @@ services:${traefik_service}
       - RECAPTCHA_SITE_KEY=\${RECAPTCHA_SITE_KEY:-}
       - RECAPTCHA_SECRET_KEY=\${RECAPTCHA_SECRET_KEY:-}
       - PHP_DISPLAY_ERRORS=Off
-      - PHP_ERROR_REPORTING=E_ALL & ~E_DEPRECATED
+      - PHP_ERROR_REPORTING="E_ALL & ~E_DEPRECATED"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost/" ]
       interval: 30s
@@ -1022,7 +1022,7 @@ ${traefik_service}
       - RECAPTCHA_SITE_KEY=\${RECAPTCHA_SITE_KEY:-}
       - RECAPTCHA_SECRET_KEY=\${RECAPTCHA_SECRET_KEY:-}
       - PHP_DISPLAY_ERRORS=Off
-      - PHP_ERROR_REPORTING=E_ALL & ~E_DEPRECATED
+      - PHP_ERROR_REPORTING="E_ALL & ~E_DEPRECATED"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost/" ]
       interval: 30s
