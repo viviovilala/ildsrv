@@ -1,3 +1,9 @@
+## [4.6.3](https://github.com/bphndigitalservice/ildis/compare/v4.6.2...v4.6.3) (2026-05-31)
+
+### Bug Fixes
+
+* generate lampiran URL and abstract values in document.json feed ([b307003](https://github.com/bphndigitalservice/ildis/commit/b3070031c8d592669c1b80818e077d2cf2501194))
+
 ## [4.6.2](https://github.com/bphndigitalservice/ildis/compare/v4.6.1...v4.6.2) (2026-05-29)
 
 ### Bug Fixes
