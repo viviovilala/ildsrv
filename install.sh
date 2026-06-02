@@ -1874,7 +1874,7 @@ main() {
     echo ""
 
     # Self-save: if running via pipe (curl | bash), save to disk before continuing
-    SELF_SOURCE="${BASH_SOURCE[0]}"
+    SELF_SOURCE="${BASH_SOURCE[0]:-}"
     if [ ! -f "${SELF_SOURCE}" ] || [ ! -s "${SELF_SOURCE}" ]; then
         SAVE_DIR="${INSTALL_DIR:-${DEFAULT_INSTALL_DIR}}"
         mkdir -p "${SAVE_DIR}"
