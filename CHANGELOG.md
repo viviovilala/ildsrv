@@ -1,3 +1,9 @@
+## [4.6.4](https://github.com/bphndigitalservice/ildis/compare/v4.6.3...v4.6.4) (2026-06-02)
+
+### Bug Fixes
+
+* handle unbound BASH_SOURCE when running via pipe (curl | bash) ([afb3328](https://github.com/bphndigitalservice/ildis/commit/afb3328b7879594a058985a769452a9715954d06))
+
 ## [4.6.3](https://github.com/bphndigitalservice/ildis/compare/v4.6.2...v4.6.3) (2026-05-31)
 
 ### Bug Fixes
