@@ -1,3 +1,9 @@
+## [4.9.2](https://github.com/bphndigitalservice/ildis/compare/v4.9.1...v4.9.2) (2026-06-11)
+
+### Refactoring
+
+* update Apache configuration for jdih.kemenkum.go.id ([47dd8a9](https://github.com/bphndigitalservice/ildis/commit/47dd8a95853c980eaa6781baf8e06c4a9d170575))
+
 ## [4.9.1](https://github.com/bphndigitalservice/ildis/compare/v4.9.0...v4.9.1) (2026-06-11)
 
 ### Bug Fixes
