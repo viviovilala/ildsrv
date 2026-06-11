@@ -1,3 +1,9 @@
+## [4.9.0](https://github.com/bphndigitalservice/ildis/compare/v4.8.0...v4.9.0) (2026-06-11)
+
+### Features
+
+* enhance document detail view and styling ([af5dd46](https://github.com/bphndigitalservice/ildis/commit/af5dd46975d66172753c20f5828a97b98bc62477))
+
 ## [4.8.0](https://github.com/bphndigitalservice/ildis/compare/v4.7.1...v4.8.0) (2026-06-11)
 
 ### Features
