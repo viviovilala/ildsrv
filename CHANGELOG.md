@@ -1,3 +1,9 @@
+## [4.7.1](https://github.com/bphndigitalservice/ildis/compare/v4.7.0...v4.7.1) (2026-06-11)
+
+### Bug Fixes
+
+* update view-putusan.php to reflect correct model properties ([03ca37d](https://github.com/bphndigitalservice/ildis/commit/03ca37d5d1f0bbf0afd436a9089e0c367e0e0956))
+
 ## [4.7.0](https://github.com/bphndigitalservice/ildis/compare/v4.6.7...v4.7.0) (2026-06-11)
 
 ### Features
