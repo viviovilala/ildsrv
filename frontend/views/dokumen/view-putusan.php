@@ -65,7 +65,7 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                             <label class="text-muted small text-uppercase font-weight-700 mb-1 d-block tracking-wider">Amar Putusan</label>
                             <div class="text-dark font-weight-600">
                                 <span class="badge bg-info bg-opacity-10 text-info px-3 py-1 rounded-pill">
-                                    <?= Html::encode($model->amar_putusan ?: '-') ?>
+                                    <?= Html::encode($model->amar_status ?: '-') ?>
                                 </span>
                             </div>
                         </div>
@@ -75,11 +75,11 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                         </div>
                         <div class="col-sm-6">
                             <label class="text-muted small text-uppercase font-weight-700 mb-1 d-block tracking-wider">Tingkat Proses</label>
-                            <div class="text-dark font-weight-600"><?= Html::encode($model->tingkat_proses ?: '-') ?></div>
+                            <div class="text-dark font-weight-600"><?= Html::encode($model->sub_klasifikasi ?: '-') ?></div>
                         </div>
                         <div class="col-sm-6">
                             <label class="text-muted small text-uppercase font-weight-700 mb-1 d-block tracking-wider">Tanggal Musyawarah</label>
-                            <div class="text-dark font-weight-600"><?= $model->tanggal_musyawarah ? \common\components\DateHelper::formatIndonesian($model->tanggal_musyawarah) : '-' ?></div>
+                            <div class="text-dark font-weight-600"><?= $model->tanggal_penetapan ? \common\components\DateHelper::formatIndonesian($model->tanggal_penetapan) : '-' ?></div>
                         </div>
                         <div class="col-sm-6">
                             <label class="text-muted small text-uppercase font-weight-700 mb-1 d-block tracking-wider">Tanggal Dibacakan</label>
