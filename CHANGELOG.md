@@ -1,3 +1,9 @@
+## [4.8.0](https://github.com/bphndigitalservice/ildis/compare/v4.7.1...v4.8.0) (2026-06-11)
+
+### Features
+
+* enhance Apache configuration and frontend styling ([f5752e6](https://github.com/bphndigitalservice/ildis/commit/f5752e68ec12eecf2f4efa99315d2eefa67a9363))
+
 ## [4.7.1](https://github.com/bphndigitalservice/ildis/compare/v4.7.0...v4.7.1) (2026-06-11)
 
 ### Bug Fixes
