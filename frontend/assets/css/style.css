@@ -1206,3 +1206,71 @@ section {
 .results-list .item:last-child {
     margin-bottom: 0 !important;
 }
+
+/* Dokumen detail view — long text overflow */
+.dokumen-view-wrapper h1 {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.dokumen-view-wrapper .metadata-value,
+.dokumen-view-wrapper .text-dark.font-weight-600 {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.dokumen-view-wrapper .lampiran-link {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 100%;
+    text-align: left;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    height: auto;
+}
+
+.dokumen-view-wrapper .lampiran-link__icon {
+    flex-shrink: 0;
+    margin-top: 0.15em;
+}
+
+.dokumen-view-wrapper .lampiran-link__name {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.45;
+}
+
+.dokumen-view-wrapper .subjek-badge {
+    white-space: normal;
+    word-break: break-word;
+    text-align: left;
+    max-width: 100%;
+    line-height: 1.4;
+}
+
+.dokumen-view-wrapper .teu-table td {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+@media screen and (max-width: 576px) {
+    .dokumen-view-wrapper .teu-table tr {
+        display: block;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .dokumen-view-wrapper .teu-table td {
+        display: block;
+        width: 100%;
+        padding-left: 0 !important;
+    }
+
+    .dokumen-view-wrapper .teu-table td:last-child {
+        padding-top: 0;
+        padding-bottom: 0.75rem;
+        color: #64748b;
+    }
+}

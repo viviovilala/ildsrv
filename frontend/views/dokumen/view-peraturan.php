@@ -183,7 +183,7 @@ $this->registerJs('<script type="application/ld+json">' . Json::encode($ldJson) 
                                 $teu = DataPengarang::find()->where(['id_dokumen' => $model->id])->all();
                                 if (!empty($teu)): ?>
                                     <div class="table-responsive">
-                                        <table class="table table-sm table-borderless align-middle mb-0">
+                                        <table class="table table-sm table-borderless align-middle mb-0 teu-table">
                                             <tbody class="small">
                                                 <?php foreach ($teu as $data): ?>
                                                     <tr class="border-bottom border-light">
@@ -205,7 +205,7 @@ $this->registerJs('<script type="application/ld+json">' . Json::encode($ldJson) 
                                 if (!empty($subjek)): ?>
                                     <div class="d-flex flex-wrap gap-2">
                                         <?php foreach ($subjek as $data): ?>
-                                            <span class="badge bg-light text-dark border px-3 py-2 font-weight-500 rounded-pill">
+                                            <span class="badge bg-light text-dark border px-3 py-2 font-weight-500 rounded-pill subjek-badge">
                                                 <?= Html::encode($data->subyek) ?>
                                             </span>
                                         <?php endforeach; ?>
@@ -231,12 +231,18 @@ $this->registerJs('<script type="application/ld+json">' . Json::encode($ldJson) 
                             <?php
                             $lampiran = DataLampiran::find()->where(['id_dokumen' => $model->id])->all();
                             if (!empty($lampiran)): 
-                                foreach ($lampiran as $data): ?>
-                                    <?= Html::a('<i class="ti-file mr-2"></i> ' . Html::encode($data['dokumen_lampiran']), ['/common/dokumen/' . $data->dokumen_lampiran], [
-                                        'class' => 'btn btn-outline-primary text-left font-weight-600 rounded-3 py-2 px-3',
-                                        'target' => '_blank',
-                                        'title' => 'Lihat Lampiran'
-                                    ]) ?>
+                                foreach ($lampiran as $data):
+                                    $fileName = $data['dokumen_lampiran'];
+                                ?>
+                                    <?= Html::a(
+                                        '<i class="ti-file lampiran-link__icon" aria-hidden="true"></i><span class="lampiran-link__name">' . Html::encode($fileName) . '</span>',
+                                        ['/common/dokumen/' . $data->dokumen_lampiran],
+                                        [
+                                            'class' => 'lampiran-link btn btn-outline-primary font-weight-600 rounded-3 py-2 px-3',
+                                            'target' => '_blank',
+                                            'title' => Html::encode($fileName),
+                                        ]
+                                    ) ?>
                                 <?php endforeach; ?>
                             <?php endif; ?>
 

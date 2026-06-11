@@ -189,18 +189,82 @@ $totalTidakBerlaku  = Dokumen::find()->where(['status' => 'Tidak Berlaku', 'is_p
     }
 
     /* Koleksi Kami Cards */
-    .hover-card {
-        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    .koleksi-card {
+        background: #ffffff;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
         border: 1px solid rgba(0, 0, 0, 0.05) !important;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
     }
 
-    .hover-card:hover {
-        transform: translateY(-8px) !important;
-        box-shadow: 0 15px 30px rgba(26, 39, 82, 0.1) !important;
+    .koleksi-card__icon-box {
+        width: 70px;
+        height: 70px;
+        background-color: rgba(26, 39, 82, 0.05);
     }
 
-    .koleksi-cards-section .icon-box i {
+    .koleksi-card__icon {
+        font-size: 2rem;
+        color: #1a2752;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .koleksi-card__title {
+        color: #1a2752;
+    }
+
+    .koleksi-card__desc {
+        color: #64748b;
+        line-height: 1.5;
+    }
+
+    .koleksi-card__count {
+        color: #1a2752;
+        font-size: 1.75rem;
+    }
+
+    .koleksi-card__divider {
+        border-color: #f1f5f9 !important;
+    }
+
+    .koleksi-card-link:hover .koleksi-card,
+    .koleksi-card-link:focus-visible .koleksi-card {
+        background: #1a2752;
+        box-shadow: 0 12px 28px rgba(26, 39, 82, 0.22);
+        transform: translateY(-6px);
+    }
+
+    .koleksi-card-link:hover .koleksi-card__title,
+    .koleksi-card-link:hover .koleksi-card__count {
+        color: #ffffff;
+    }
+
+    .koleksi-card-link:hover .koleksi-card__desc {
+        color: #cbd5e1;
+    }
+
+    .koleksi-card-link:hover .koleksi-card__icon-box {
+        background-color: rgba(255, 193, 7, 0.15);
+    }
+
+    .koleksi-card-link:hover .koleksi-card__icon {
+        color: #ffc107;
+    }
+
+    .koleksi-card-link:hover .koleksi-card__divider {
+        border-color: rgba(255, 255, 255, 0.12) !important;
+    }
+
+    .koleksi-status-card {
+        background: #ffffff;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        border: 1px solid rgba(0, 0, 0, 0.05) !important;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .koleksi-status-link:hover .koleksi-status-card,
+    .koleksi-status-link:focus-visible .koleksi-status-card {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(26, 39, 82, 0.1);
     }
 </style>
 
@@ -260,33 +324,33 @@ $totalTidakBerlaku  = Dokumen::find()->where(['status' => 'Tidak Berlaku', 'is_p
                         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-5 justify-content-center">
                             <!-- Peraturan -->
                             <div class="col">
-                                <a href="<?= Url::to(['dokumen/peraturan']) ?>" class="text-decoration-none">
-                                    <div class="card h-100 border-0 rounded hover-card" style="background: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                                <a href="<?= Url::to(['dokumen/peraturan']) ?>" class="text-decoration-none koleksi-card-link d-block h-100">
+                                    <div class="card h-100 border-0 rounded koleksi-card">
                                         <div class="card-body p-4 text-center d-flex flex-column h-100">
-                                            <div class="icon-box mb-4 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 70px; height: 70px; background-color: rgba(26, 39, 82, 0.05);">
-                                                <i class="bi bi-file-earmark-text" style="font-size: 2rem; color: #1a2752;"></i>
+                                            <div class="koleksi-card__icon-box mb-4 mx-auto rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-file-earmark-text koleksi-card__icon"></i>
                                             </div>
-                                            <h5 class="card-title font-weight-bold text-dark mb-3">Peraturan</h5>
-                                            <p class="card-text small flex-grow-1" style="color: #64748b; line-height: 1.5;">Peraturan Perundang-undangan tingkat pusat hingga daerah.</p>
-                                            <div class="mt-3 pt-3 border-top border-light">
-                                                <h3 class="font-weight-bold mb-0" style="color: #1a2752; font-size: 1.75rem;"><?= number_format($totalPeraturan) ?></h3>
+                                            <h5 class="koleksi-card__title font-weight-bold mb-3">Peraturan</h5>
+                                            <p class="koleksi-card__desc small flex-grow-1">Peraturan Perundang-undangan tingkat pusat hingga daerah.</p>
+                                            <div class="mt-3 pt-3 border-top koleksi-card__divider">
+                                                <h3 class="koleksi-card__count font-weight-bold mb-0"><?= number_format($totalPeraturan) ?></h3>
                                             </div>
                                         </div>
                                     </div>
                                 </a>
                             </div>
-                            <!-- Monografi - Highlighted -->
+                            <!-- Monografi -->
                             <div class="col">
-                                <a href="<?= Url::to(['dokumen/monografi']) ?>" class="text-decoration-none">
-                                    <div class="card h-100 border-0 rounded hover-card" style="background: #1a2752; box-shadow: 0 10px 25px rgba(26, 39, 82, 0.15); transform: translateY(-3px);">
+                                <a href="<?= Url::to(['dokumen/monografi']) ?>" class="text-decoration-none koleksi-card-link d-block h-100">
+                                    <div class="card h-100 border-0 rounded koleksi-card">
                                         <div class="card-body p-4 text-center d-flex flex-column h-100">
-                                            <div class="icon-box mb-4 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 70px; height: 70px; background-color: rgba(255, 193, 7, 0.1);">
-                                                <i class="bi bi-book" style="font-size: 2rem; color: #ffc107;"></i>
+                                            <div class="koleksi-card__icon-box mb-4 mx-auto rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-book koleksi-card__icon"></i>
                                             </div>
-                                            <h5 class="card-title font-weight-bold text-white mb-3">Monografi Hukum</h5>
-                                            <p class="card-text small flex-grow-1" style="color: #cbd5e1; line-height: 1.5;">Buku, naskah akademik, dan hasil kajian hukum.</p>
-                                            <div class="mt-3 pt-3 border-top" style="border-color: rgba(255,255,255,0.1) !important;">
-                                                <h3 class="font-weight-bold text-white mb-0" style="font-size: 1.75rem;"><?= number_format($totalMonografi) ?></h3>
+                                            <h5 class="koleksi-card__title font-weight-bold mb-3">Monografi Hukum</h5>
+                                            <p class="koleksi-card__desc small flex-grow-1">Buku, naskah akademik, dan hasil kajian hukum.</p>
+                                            <div class="mt-3 pt-3 border-top koleksi-card__divider">
+                                                <h3 class="koleksi-card__count font-weight-bold mb-0"><?= number_format($totalMonografi) ?></h3>
                                             </div>
                                         </div>
                                     </div>
@@ -294,16 +358,16 @@ $totalTidakBerlaku  = Dokumen::find()->where(['status' => 'Tidak Berlaku', 'is_p
                             </div>
                             <!-- Artikel Hukum -->
                             <div class="col">
-                                <a href="<?= Url::to(['dokumen/artikel']) ?>" class="text-decoration-none">
-                                    <div class="card h-100 border-0 rounded hover-card" style="background: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                                <a href="<?= Url::to(['dokumen/artikel']) ?>" class="text-decoration-none koleksi-card-link d-block h-100">
+                                    <div class="card h-100 border-0 rounded koleksi-card">
                                         <div class="card-body p-4 text-center d-flex flex-column h-100">
-                                            <div class="icon-box mb-4 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 70px; height: 70px; background-color: rgba(26, 39, 82, 0.05);">
-                                                <i class="bi bi-journal-text" style="font-size: 2rem; color: #1a2752;"></i>
+                                            <div class="koleksi-card__icon-box mb-4 mx-auto rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-journal-text koleksi-card__icon"></i>
                                             </div>
-                                            <h5 class="card-title font-weight-bold text-dark mb-3">Artikel Hukum</h5>
-                                            <p class="card-text small flex-grow-1" style="color: #64748b; line-height: 1.5;">Artikel dan jurnal hukum cetak maupun elektronik.</p>
-                                            <div class="mt-3 pt-3 border-top border-light">
-                                                <h3 class="font-weight-bold mb-0" style="color: #1a2752; font-size: 1.75rem;"><?= number_format($totalArtikel) ?></h3>
+                                            <h5 class="koleksi-card__title font-weight-bold mb-3">Artikel Hukum</h5>
+                                            <p class="koleksi-card__desc small flex-grow-1">Artikel dan jurnal hukum cetak maupun elektronik.</p>
+                                            <div class="mt-3 pt-3 border-top koleksi-card__divider">
+                                                <h3 class="koleksi-card__count font-weight-bold mb-0"><?= number_format($totalArtikel) ?></h3>
                                             </div>
                                         </div>
                                     </div>
@@ -311,16 +375,16 @@ $totalTidakBerlaku  = Dokumen::find()->where(['status' => 'Tidak Berlaku', 'is_p
                             </div>
                             <!-- Putusan -->
                             <div class="col">
-                                <a href="<?= Url::to(['dokumen/putusan']) ?>" class="text-decoration-none">
-                                    <div class="card h-100 border-0 rounded hover-card" style="background: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                                <a href="<?= Url::to(['dokumen/putusan']) ?>" class="text-decoration-none koleksi-card-link d-block h-100">
+                                    <div class="card h-100 border-0 rounded koleksi-card">
                                         <div class="card-body p-4 text-center d-flex flex-column h-100">
-                                            <div class="icon-box mb-4 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 70px; height: 70px; background-color: rgba(26, 39, 82, 0.05);">
-                                                <i class="bi bi-bank" style="font-size: 2rem; color: #1a2752;"></i>
+                                            <div class="koleksi-card__icon-box mb-4 mx-auto rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-bank koleksi-card__icon"></i>
                                             </div>
-                                            <h5 class="card-title font-weight-bold text-dark mb-3">Putusan</h5>
-                                            <p class="card-text small flex-grow-1" style="color: #64748b; line-height: 1.5;">Dokumen putusan pengadilan yang bernilai yurisprudensi.</p>
-                                            <div class="mt-3 pt-3 border-top border-light">
-                                                <h3 class="font-weight-bold mb-0" style="color: #1a2752; font-size: 1.75rem;"><?= number_format($totalPutusan) ?></h3>
+                                            <h5 class="koleksi-card__title font-weight-bold mb-3">Putusan</h5>
+                                            <p class="koleksi-card__desc small flex-grow-1">Dokumen putusan pengadilan yang bernilai yurisprudensi.</p>
+                                            <div class="mt-3 pt-3 border-top koleksi-card__divider">
+                                                <h3 class="koleksi-card__count font-weight-bold mb-0"><?= number_format($totalPutusan) ?></h3>
                                             </div>
                                         </div>
                                     </div>
@@ -332,8 +396,8 @@ $totalTidakBerlaku  = Dokumen::find()->where(['status' => 'Tidak Berlaku', 'is_p
                         <div class="row justify-content-center g-4">
                             <!-- Peraturan Berlaku -->
                             <div class="col-md-5">
-                                <a href="<?= Url::to(['dokumen/berlaku']) ?>" class="text-decoration-none">
-                                    <div class="card border-0 rounded hover-card h-100" style="background: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                                <a href="<?= Url::to(['dokumen/berlaku']) ?>" class="text-decoration-none koleksi-status-link d-block h-100">
+                                    <div class="card border-0 rounded koleksi-status-card h-100">
                                         <div class="card-body p-4 d-flex align-items-center">
                                             <div class="icon-box rounded-circle d-flex align-items-center justify-content-center mr-4" style="width: 60px; height: 60px; background-color: rgba(16, 185, 129, 0.1); flex-shrink: 0;">
                                                 <i class="bi bi-check2-circle" style="font-size: 1.8rem; color: #10b981;"></i>
@@ -351,8 +415,8 @@ $totalTidakBerlaku  = Dokumen::find()->where(['status' => 'Tidak Berlaku', 'is_p
                             </div>
                             <!-- Peraturan Tidak Berlaku -->
                             <div class="col-md-5">
-                                <a href="<?= Url::to(['dokumen/tberlaku']) ?>" class="text-decoration-none">
-                                    <div class="card border-0 rounded hover-card h-100" style="background: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+                                <a href="<?= Url::to(['dokumen/tberlaku']) ?>" class="text-decoration-none koleksi-status-link d-block h-100">
+                                    <div class="card border-0 rounded koleksi-status-card h-100">
                                         <div class="card-body p-4 d-flex align-items-center">
                                             <div class="icon-box rounded-circle d-flex align-items-center justify-content-center mr-4" style="width: 60px; height: 60px; background-color: rgba(239, 68, 68, 0.1); flex-shrink: 0;">
                                                 <i class="bi bi-x-circle" style="font-size: 1.8rem; color: #ef4444;"></i>
