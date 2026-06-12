@@ -42,7 +42,7 @@ if (empty($this->params['description'])) {
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 </head>
 
@@ -57,7 +57,12 @@ if (empty($this->params['description'])) {
         <div class="container d-flex justify-content-between align-items-center">
 
 <div class="logo">
-              <?= Html::a(Html::img('@web/common/dokumen/' . $logo->isi_konfig, ['id' => 'logo', 'alt' => Html::encode($siteName)]), ['/'], ['class' => 'navbar-brand width-200px sm-width-180px xs-width-150px']); ?>
+              <?= Html::a(\common\components\LazyImage::img('@web/common/dokumen/' . $logo->isi_konfig, [
+                  'id' => 'logo',
+                  'alt' => Html::encode($siteName),
+                  'width' => 200,
+                  'height' => 60,
+              ], false), ['/'], ['class' => 'navbar-brand width-200px sm-width-180px xs-width-150px']); ?>
             </div>
 
           <nav id="navbar" class="navbar">

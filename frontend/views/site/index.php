@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use common\components\LazyImage;
 use frontend\models\Dokumen;
 use backend\models\FrontendConfig;
 
@@ -10,6 +11,10 @@ use backend\models\FrontendConfig;
 $this->title = 'JDIH - Jaringan Dokumentasi dan Informasi Hukum';
 $this->description = 'Jaringan Dokumentasi dan Informasi Hukum';
 $this->keywords = ['Jaringan', 'Dokumentasi', 'Informasi', 'Hukum'];
+
+$heroWebp = Url::to('@web/images/hero-bg.webp');
+$heroPng = Url::to('@web/images/hero-bg.png');
+$this->registerLinkTag(['rel' => 'preload', 'as' => 'image', 'href' => $heroWebp, 'type' => 'image/webp']);
 
 $instansi = FrontendConfig::findOne(2);
 $rawInstansi = $instansi ? $instansi->isi_konfig : '';
@@ -56,7 +61,7 @@ $totalTidakBerlaku  = Dokumen::find()->where(['status' => 'Tidak Berlaku', 'is_p
         z-index: 1;
     }
 
-    .search-landing-container>* {
+    .search-landing-container > *:not(.search-landing-media) {
         position: relative;
         z-index: 2;
     }
@@ -226,10 +231,127 @@ $totalTidakBerlaku  = Dokumen::find()->where(['status' => 'Tidak Berlaku', 'is_p
     }
 
     .news-strip {
-        background: #f8f9fa;
-        padding: 3rem 0;
+        background: #f8fafc;
+        padding: 4rem 0;
         margin-top: 4rem;
-        border-top: 1px solid #eee;
+        border-top: 1px solid #e8edf4;
+    }
+
+    .news-strip__header {
+        margin-bottom: 2.5rem;
+    }
+
+    .news-strip__eyebrow {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #64748b;
+        margin-bottom: 0.5rem;
+    }
+
+    .news-strip__title {
+        font-size: clamp(1.5rem, 3vw, 1.875rem);
+        font-weight: 700;
+        color: #1a2752;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+        margin: 0;
+    }
+
+    .news-card {
+        transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.25s ease;
+    }
+
+    .news-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 28px rgba(26, 39, 82, 0.1) !important;
+    }
+
+    .news-card__image {
+        height: 200px;
+        object-fit: cover;
+        transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .news-card:hover .news-card__image {
+        transform: scale(1.04);
+    }
+
+    .news-card__date {
+        display: block;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: #64748b;
+        margin-bottom: 0.75rem;
+        letter-spacing: 0.01em;
+    }
+
+    .news-card__title {
+        font-size: 1.125rem;
+        font-weight: 650;
+        line-height: 1.35;
+        letter-spacing: -0.015em;
+        margin-bottom: 0.75rem;
+    }
+
+    .news-card__title a {
+        color: #1a2752;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+    .news-card__title a:hover {
+        color: #274685;
+    }
+
+    .news-card__excerpt {
+        font-size: 0.9375rem;
+        line-height: 1.65;
+        color: #64748b;
+        margin-bottom: 0;
+    }
+
+    .news-read-more {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #1a2752;
+        text-decoration: none;
+        transition: gap 0.25s cubic-bezier(0.25, 1, 0.5, 1), color 0.2s ease;
+    }
+
+    .news-read-more:hover {
+        color: #274685;
+        text-decoration: none;
+        gap: 0.6rem;
+    }
+
+    .news-read-more__icon {
+        font-size: 0.8em;
+        transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .news-read-more:hover .news-read-more__icon {
+        transform: translateX(3px);
+    }
+
+    .news-strip__cta .btn-outline-primary {
+        color: #1a2752;
+        border-color: #1a2752;
+        font-weight: 600;
+        font-size: 0.9375rem;
+        letter-spacing: 0.01em;
+        transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .news-strip__cta .btn-outline-primary:hover {
+        background-color: #1a2752;
+        border-color: #1a2752;
+        color: #f8fafc;
     }
 
     /* Koleksi Kami Cards */
@@ -315,7 +437,19 @@ $totalTidakBerlaku  = Dokumen::find()->where(['status' => 'Tidak Berlaku', 'is_p
 <div class="site-index">
 
     <main>
-        <div class="search-landing-container" style="background: url('<?= Url::to('@web/images/hero-bg.png') ?>') no-repeat center center; background-size: cover;">
+        <div class="search-landing-container">
+            <picture class="search-landing-media" aria-hidden="true">
+                <source srcset="<?= Html::encode($heroWebp) ?>" type="image/webp">
+                <img
+                    src="<?= Html::encode($heroPng) ?>"
+                    alt=""
+                    class="search-landing-bg"
+                    width="640"
+                    height="640"
+                    fetchpriority="high"
+                    decoding="async"
+                >
+            </picture>
 
             <h1 class="hero-brand" data-aos="fade-up">
                 JDIH
@@ -486,30 +620,44 @@ $totalTidakBerlaku  = Dokumen::find()->where(['status' => 'Tidak Berlaku', 'is_p
         <?php if (!empty($berita)): ?>
             <section class="news-strip">
                 <div class="container">
-                    <div class="row mb-4">
-                        <div class="col-12 text-center">
-                            <h4 class="font-weight-bold">Berita Terbaru</h4>
-                        </div>
-                    </div>
+                    <header class="news-strip__header text-center">
+                        <span class="news-strip__eyebrow">Informasi Terkini</span>
+                        <h2 class="news-strip__title">Berita Terbaru</h2>
+                    </header>
                     <div class="row">
                         <?php foreach ($berita as $data): ?>
                             <div class="col-lg-4 mb-4">
-                                <div class="card h-100 border-0 shadow-sm rounded overflow-hidden">
-                                    <?= Html::a(Html::img('@web/common/dokumen/' . $data->image, ['class' => 'card-img-top', 'style' => 'height: 200px; object-fit: cover;']), ['berita/view', 'id' => $data->id]); ?>
-                                    <div class="card-body p-4">
-                                        <h5 class="card-title font-weight-bold mb-3">
-                                            <?= Html::a(Html::encode($data->judul), ['berita/view', 'id' => $data->id], ['class' => 'text-dark text-decoration-none']) ?>
-                                        </h5>
-                                        <p class="card-text text-muted">
-                                            <?= implode(" ", array_slice(explode(" ", strip_tags($data->isi)), 0, 15)) . '...' ?>
-                                        </p>
+                                <article class="card h-100 border-0 shadow-sm rounded overflow-hidden news-card">
+                                    <div class="overflow-hidden">
+                                        <?= Html::a(LazyImage::img('@web/common/dokumen/' . $data->image, [
+                                            'class' => 'card-img-top news-card__image w-100',
+                                            'alt' => $data->judul,
+                                        ]), ['berita/view', 'id' => $data->id]); ?>
                                     </div>
-                                </div>
+                                    <div class="card-body p-4 d-flex flex-column">
+                                        <time class="news-card__date" datetime="<?= Html::encode($data->tanggal) ?>">
+                                            <?= \common\components\DateHelper::formatIndonesian($data->tanggal) ?>
+                                        </time>
+                                        <h3 class="news-card__title">
+                                            <?= Html::a(Html::encode($data->judul), ['berita/view', 'id' => $data->id]) ?>
+                                        </h3>
+                                        <p class="news-card__excerpt flex-grow-1">
+                                            <?= implode(' ', array_slice(explode(' ', strip_tags($data->isi)), 0, 18)) . '…' ?>
+                                        </p>
+                                        <div class="mt-3 pt-3" style="border-top: 1px solid #f1f5f9;">
+                                            <?= Html::a(
+                                                'Baca selengkapnya <i class="ti-arrow-right news-read-more__icon"></i>',
+                                                ['berita/view', 'id' => $data->id],
+                                                ['class' => 'news-read-more']
+                                            ) ?>
+                                        </div>
+                                    </div>
+                                </article>
                             </div>
                         <?php endforeach; ?>
                     </div>
-                    <div class="text-center mt-3">
-                        <?= Html::a('Lihat Semua Berita <i class="bi bi-arrow-right"></i>', ['berita/index'], ['class' => 'btn btn-outline-primary rounded-pill px-4']); ?>
+                    <div class="text-center mt-4 news-strip__cta">
+                        <?= Html::a('Lihat semua berita <i class="ti-arrow-right ml-1"></i>', ['berita/index'], ['class' => 'btn btn-outline-primary rounded-pill px-4 py-2']); ?>
                     </div>
                 </div>
             </section>

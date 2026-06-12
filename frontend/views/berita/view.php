@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use common\components\LazyImage;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\Berita */
@@ -23,7 +24,9 @@ $this->registerMetaTag(['property' => 'og:description', 'content' => $desc]);
 $this->registerMetaTag(['property' => 'og:type', 'content' => 'article']);
 $this->registerMetaTag(['property' => 'og:url', 'content' => $currentUrl]);
 if (!empty($model->image)) {
-    $this->registerMetaTag(['property' => 'og:image', 'content' => $baseUrl . 'common/dokumen/' . $model->image]);
+    $imageUrl = Url::to('@web/common/dokumen/' . $model->image, true);
+    $this->registerMetaTag(['property' => 'og:image', 'content' => $imageUrl]);
+    $this->registerLinkTag(['rel' => 'preload', 'as' => 'image', 'href' => $imageUrl]);
 }
 
 // Twitter
@@ -44,11 +47,11 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                     <!-- News Header Image -->
                     <?php if ($model->image): ?>
                         <div class="news-hero-image" style="height: 400px; overflow: hidden;">
-                            <?= Html::img('@web/common/dokumen/' . $model->image, [
+                            <?= LazyImage::img('@web/common/dokumen/' . $model->image, [
                                 'class' => 'w-100 h-100 object-fit-cover',
                                 'style' => 'object-fit: cover;',
-                                'alt' => $model->judul
-                            ]) ?>
+                                'alt' => $model->judul,
+                            ], false) ?>
                         </div>
                     <?php endif; ?>
 

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use common\components\LazyImage;
 use frontend\models\Eksemplar;
 use frontend\models\DataLampiran;
 use frontend\models\DataPengarang;
@@ -186,9 +187,10 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                     <!-- Cover Card -->
                     <?php if (!empty($model->gambar_sampul)): ?>
                         <div class="bg-white rounded-4 shadow-sm p-2 mb-4">
-                            <?= Html::img('@web/common/dokumen/' . $model->gambar_sampul, [
+                            <?= LazyImage::img('@web/common/dokumen/' . $model->gambar_sampul, [
                                 'class' => 'img-fluid rounded-4 w-100',
-                                'style' => 'object-fit: cover; max-height: 480px;'
+                                'style' => 'object-fit: cover; max-height: 480px;',
+                                'alt' => $model->judul,
                             ]) ?>
                         </div>
                     <?php endif; ?>
