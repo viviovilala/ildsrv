@@ -1,3 +1,9 @@
+## [4.14.4](https://github.com/bphndigitalservice/ildis/compare/v4.14.3...v4.14.4) (2026-06-12)
+
+### Refactoring
+
+* improve selector and event listener functions ([b3cc62b](https://github.com/bphndigitalservice/ildis/commit/b3cc62b3804270f34e4e6a2b393f129d45392d23))
+
 ## [4.14.3](https://github.com/bphndigitalservice/ildis/compare/v4.14.2...v4.14.3) (2026-06-12)
 
 ### Refactoring
