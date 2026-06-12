@@ -62,6 +62,7 @@
   const setMobileNavState = (open) => {
     const navbar = select('#navbar')
     const header = select('#header')
+    const drawer = select('.mobile-nav-drawer')
     if (!navbar) return
 
     navbar.classList.toggle('navbar-mobile', open)
@@ -70,19 +71,17 @@
     }
     document.body.classList.toggle('mobile-nav-active', open)
 
-    if (open) {
-      navbar.querySelectorAll('li.current').forEach((item) => {
-        let node = item
-        while (node && node !== navbar) {
-          if (node.tagName === 'UL') {
-            node.classList.add('dropdown-active')
-            const parentItem = node.parentElement
-            if (parentItem && parentItem.classList.contains('dropdown')) {
-              parentItem.classList.add('dropdown-open')
-            }
-          }
-          node = node.parentElement
-        }
+    if (drawer) {
+      drawer.setAttribute('aria-hidden', open ? 'false' : 'true')
+      drawer.setAttribute('aria-modal', open ? 'true' : 'false')
+    }
+
+    if (!open) {
+      navbar.querySelectorAll('.dropdown-active').forEach((submenu) => {
+        submenu.classList.remove('dropdown-active')
+      })
+      navbar.querySelectorAll('.dropdown-open').forEach((item) => {
+        item.classList.remove('dropdown-open')
       })
     }
   }
@@ -156,20 +155,23 @@
   /**
    * Testimonials slider
    */
-  new Swiper('.testimonials-slider', {
-    speed: 600,
-    loop: true,
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false
-    },
-    slidesPerView: 'auto',
-    pagination: {
-      el: '.swiper-pagination',
-      type: 'bullets',
-      clickable: true
-    }
-  });
+  const testimonialsSlider = select('.testimonials-slider')
+  if (testimonialsSlider) {
+    new Swiper('.testimonials-slider', {
+      speed: 600,
+      loop: true,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false
+      },
+      slidesPerView: 'auto',
+      pagination: {
+        el: '.swiper-pagination',
+        type: 'bullets',
+        clickable: true
+      }
+    })
+  }
 
   /**
    * Animation on scroll

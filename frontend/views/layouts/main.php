@@ -65,7 +65,7 @@ if (empty($this->params['description'])) {
 
           <nav id="navbar" class="navbar">
             <div class="mobile-nav-backdrop" aria-hidden="true"></div>
-            <div class="mobile-nav-drawer" role="dialog" aria-modal="true" aria-label="Menu navigasi">
+            <div class="mobile-nav-drawer" role="dialog" aria-modal="false" aria-hidden="true" aria-label="Menu navigasi">
               <div class="mobile-nav-header">
                 <div class="mobile-nav-header__brand">
                   <span class="mobile-nav-header__icon" aria-hidden="true"><i class="bi bi-scales"></i></span>

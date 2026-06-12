@@ -59,8 +59,9 @@
     border-radius: 16px 0 0 16px;
     box-shadow: -10px 0 40px rgba(15, 23, 42, 0.14);
     transform: translateX(105%);
+    visibility: hidden;
     pointer-events: none;
-    transition: transform 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.36s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.36s ease;
     z-index: 9999;
     display: flex;
     flex-direction: column;
@@ -69,6 +70,7 @@
 
   .navbar-mobile .mobile-nav-drawer {
     transform: translateX(0);
+    visibility: visible;
     pointer-events: auto;
   }
 
@@ -183,8 +185,8 @@
     border-radius: 4px;
   }
 
-  /* Reset legacy mobile list panel */
-  .navbar-mobile ul {
+  /* Top-level menu list only — do not force nested submenu uls visible */
+  .navbar-mobile .mobile-nav-body > ul {
     display: flex !important;
     flex-direction: column;
     position: static;
@@ -295,9 +297,9 @@
     color: var(--mm-primary);
   }
 
-  /* Submenu */
+  /* Submenu — hidden until toggled (overrides legacy style.css rules) */
   .navbar-mobile .dropdown ul {
-    display: none;
+    display: none !important;
     position: static;
     margin: 0.15rem 0 0.35rem 1.15rem;
     padding: 0.15rem 0 0.15rem 1rem;
@@ -311,7 +313,7 @@
   }
 
   .navbar-mobile .dropdown ul.dropdown-active {
-    display: block;
+    display: block !important;
   }
 
   .navbar-mobile .dropdown ul li {
@@ -368,6 +370,23 @@
     margin-top: 0.5rem;
     border-top: 1px solid var(--mm-border);
     padding-top: 1rem;
+  }
+
+  /* Homepage hero search must stay visible when the drawer is closed */
+  body:not(.mobile-nav-active) .site-index .search-input-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: min(650px, 100%);
+  }
+
+  body:not(.mobile-nav-active) .site-index .search-input {
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto !important;
+  }
+
+  body:not(.mobile-nav-active) .site-index .search-btn {
+    flex-shrink: 0;
   }
 }
 
