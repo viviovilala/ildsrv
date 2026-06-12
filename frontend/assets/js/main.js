@@ -99,7 +99,7 @@
   on('click', '.mobile-nav-close, .mobile-nav-backdrop', function(e) {
     e.preventDefault()
     setMobileNavState(false)
-  })
+  }, true)
 
   /**
    * Back to top button

@@ -45,6 +45,7 @@ $totalTidakBerlaku  = Dokumen::find()->where(['status' => 'Tidak Berlaku', 'is_p
         align-items: center;
         text-align: center;
         position: relative;
+        overflow: hidden;
         padding: 80px 2rem 2rem;
         /* Added 80px top padding for navbar */
     }
@@ -92,31 +93,18 @@ $totalTidakBerlaku  = Dokumen::find()->where(['status' => 'Tidak Berlaku', 'is_p
 
     @media screen and (max-width: 576px) {
         .search-landing-container {
-            min-height: auto;
+            min-height: 72svh;
             padding: 5.5rem 1rem 2.5rem;
         }
 
         .hero-brand {
             font-size: clamp(2.25rem, 11vw, 2.75rem);
-            margin-bottom: 1.75rem;
+            margin-bottom: 1.5rem;
         }
 
         .hero-brand .hero-instansi {
             font-size: 0.34em;
             max-width: 18em;
-        }
-
-        .quick-links {
-            margin-top: 1.75rem;
-            flex-direction: column;
-            align-items: stretch;
-            width: 100%;
-            max-width: 650px;
-        }
-
-        .quick-chip {
-            justify-content: flex-start;
-            width: 100%;
         }
     }
 
@@ -216,43 +204,90 @@ $totalTidakBerlaku  = Dokumen::find()->where(['status' => 'Tidak Berlaku', 'is_p
     .quick-links {
         margin-top: 2.5rem;
         display: flex;
-        gap: 12px;
-        justify-content: center;
         flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        max-width: 650px;
     }
 
     .quick-chip {
-        padding: 8px 18px;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        width: auto;
+        max-width: 100%;
+        padding: 8px 16px;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 999px;
         color: #ffffff;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        line-height: 1.2;
         text-decoration: none;
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+        transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    .quick-chip:hover {
+    .quick-chip:hover,
+    .quick-chip:focus-visible {
         background: rgba(255, 255, 255, 0.2);
         color: #ffffff;
         text-decoration: none;
-        border-color: rgba(255, 193, 7, 0.6);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border-color: rgba(255, 193, 7, 0.55);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
     }
 
     .quick-chip .badge-count {
-        background: rgba(255, 193, 7, 0.9);
+        flex-shrink: 0;
+        background: rgba(255, 193, 7, 0.92);
         color: #1a2752;
-        padding: 2px 8px;
-        border-radius: 12px;
-        font-size: 0.75rem;
+        padding: 2px 7px;
+        border-radius: 999px;
+        font-size: 0.72rem;
         font-weight: 700;
+        line-height: 1.3;
+    }
+
+    @media screen and (max-width: 576px) {
+        .quick-links {
+            margin-top: 1.5rem;
+            gap: 8px;
+            max-width: 100%;
+        }
+
+        .quick-chip {
+            padding: 7px 12px;
+            font-size: 0.8rem;
+            gap: 5px;
+        }
+
+        .quick-chip .badge-count {
+            font-size: 0.65rem;
+            padding: 1px 6px;
+        }
+    }
+
+    @media screen and (max-width: 380px) {
+        .quick-chip {
+            padding: 6px 10px;
+            font-size: 0.75rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .quick-chip {
+            transition: none;
+        }
+
+        .quick-chip:hover,
+        .quick-chip:focus-visible {
+            transform: none;
+        }
     }
 
     .news-strip {
@@ -438,14 +473,14 @@ $totalTidakBerlaku  = Dokumen::find()->where(['status' => 'Tidak Berlaku', 'is_p
                 >
             </picture>
 
-            <h1 class="hero-brand">
+            <h1 class="hero-brand" data-aos="fade-up">
                 JDIH
                 <?php if ($instansiText !== ''): ?>
                     <span class="hero-instansi"><?= Html::encode($instansiText) ?></span>
                 <?php endif; ?>
             </h1>
 
-            <form action="<?= Url::to(['dokumen/index']) ?>" method="GET" class="w-100 hero-search-form">
+            <form action="<?= Url::to(['dokumen/index']) ?>" method="GET" class="w-100 hero-search-form" data-aos="fade-up" data-aos-delay="100">
                 <div class="search-input-wrapper">
                     <i class="bi bi-search search-icon"></i>
                     <input type="text" name="DokumenSearch[judul]" class="search-input" placeholder="Cari dokumen hukum, peraturan, putusan..." value="" autocomplete="off">
@@ -453,7 +488,7 @@ $totalTidakBerlaku  = Dokumen::find()->where(['status' => 'Tidak Berlaku', 'is_p
                 </div>
             </form>
 
-            <div class="quick-links">
+            <div class="quick-links" data-aos="fade-up" data-aos-delay="200">
                 <a href="<?= Url::to(['dokumen/peraturan']) ?>" class="quick-chip">
                     <i class="bi bi-file-earmark-text"></i> Peraturan
                     <span class="badge-count"><?= number_format($totalPeraturan) ?></span>

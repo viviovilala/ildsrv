@@ -40,6 +40,11 @@
   body.mobile-nav-active #mobile-nav {
     visibility: visible;
     pointer-events: auto;
+    z-index: 10050;
+  }
+
+  body.mobile-nav-active .mobile-nav-toggle {
+    z-index: 9997;
   }
 
   .mobile-nav-backdrop {
