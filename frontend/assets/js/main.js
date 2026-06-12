@@ -60,9 +60,15 @@
    * Mobile nav toggle
    */
   on('click', '.mobile-nav-toggle', function(e) {
-    select('#navbar').classList.toggle('navbar-mobile')
+    const navbar = select('#navbar')
+    const header = select('#header')
+    const isOpen = navbar.classList.toggle('navbar-mobile')
     this.classList.toggle('bi-list')
     this.classList.toggle('bi-x')
+    if (header) {
+      header.classList.toggle('mobile-nav-open', isOpen)
+    }
+    document.body.classList.toggle('mobile-nav-active', isOpen)
   })
 
   /**

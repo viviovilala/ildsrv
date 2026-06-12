@@ -37,63 +37,63 @@ $this->params['breadcrumbs'][] = ['label' => 'Dokumen', 'url' => ['index']];
 $this->params['breadcrumbs'][] = Html::encode($this->title);
 ?>
 
-<div class="dokumen-view-wrapper" style="background-color: #f8fafc; min-height: 100vh; padding: 100px 0 40px 0;">
+<div class="dokumen-view-wrapper">
     <div class="container">
         <div class="row">
             <!-- Main Content Area -->
             <div class="col-lg-8">
-                <div class="bg-white rounded-4 shadow-sm p-4 p-md-5 mb-4">
+                <div class="dokumen-view-card">
                     <!-- Heading Section -->
                     <div class="mb-5">
                         <div class="d-flex align-items-center gap-2 mb-3">
-                            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill font-weight-600">
+                            <span class="dokumen-view-type-badge">
                                 <?= Html::encode($model->jenis_peraturan ?: 'Artikel') ?>
                             </span>
                         </div>
-                        <h1 class="h3 font-weight-700 text-dark-blue mb-3">
+                        <h1 class="dokumen-view-title">
                             <?= Html::encode($model->judul) ?>
                         </h1>
-                        <p class="text-muted small mb-0">
-                            <i class="ti-calendar mr-1"></i> Terbit: <?= Html::encode(($model->bulan ? $model->bulan . ' ' : '') . ($model->tahun_terbit ?: '')) ?: '-' ?>
+                        <p class="dokumen-view-meta-date">
+                            <i class="ti-calendar mr-1" aria-hidden="true"></i> Terbit: <?= Html::encode(($model->bulan ? $model->bulan . ' ' : '') . ($model->tahun_terbit ?: '')) ?: '-' ?>
                         </p>
                     </div>
 
                     <!-- Metadata Grid -->
                     <div class="row g-4 mb-5">
                         <div class="col-sm-6">
-                            <label class="text-muted small text-uppercase font-weight-700 mb-1 d-block tracking-wider">Sumber</label>
-                            <div class="text-dark font-weight-600"><?= Html::encode($model->sumber ?: '-') ?></div>
+                            <label class="dokumen-view-label">Sumber</label>
+                            <div class="dokumen-view-value"><?= Html::encode($model->sumber ?: '-') ?></div>
                         </div>
                         <div class="col-sm-6">
-                            <label class="text-muted small text-uppercase font-weight-700 mb-1 d-block tracking-wider">Volume</label>
-                            <div class="text-dark font-weight-600"><?= Html::encode($model->volume ?: '-') ?></div>
+                            <label class="dokumen-view-label">Volume</label>
+                            <div class="dokumen-view-value"><?= Html::encode($model->volume ?: '-') ?></div>
                         </div>
                         <div class="col-sm-6">
-                            <label class="text-muted small text-uppercase font-weight-700 mb-1 d-block tracking-wider">Nomor</label>
-                            <div class="text-dark font-weight-600"><?= Html::encode($model->nomor ?: ($model->nomor_peraturan ?: '-')) ?></div>
+                            <label class="dokumen-view-label">Nomor</label>
+                            <div class="dokumen-view-value"><?= Html::encode($model->nomor ?: ($model->nomor_peraturan ?: '-')) ?></div>
                         </div>
                         <div class="col-sm-6">
-                            <label class="text-muted small text-uppercase font-weight-700 mb-1 d-block tracking-wider">Halaman</label>
-                            <div class="text-dark font-weight-600"><?= Html::encode($model->halaman ?: '-') ?></div>
+                            <label class="dokumen-view-label">Halaman</label>
+                            <div class="dokumen-view-value"><?= Html::encode($model->halaman ?: '-') ?></div>
                         </div>
                         <div class="col-sm-6">
-                            <label class="text-muted small text-uppercase font-weight-700 mb-1 d-block tracking-wider">Tempat Terbit</label>
-                            <div class="text-dark font-weight-600"><?= Html::encode($model->tempat_terbit ?: '-') ?></div>
+                            <label class="dokumen-view-label">Tempat Terbit</label>
+                            <div class="dokumen-view-value"><?= Html::encode($model->tempat_terbit ?: '-') ?></div>
                         </div>
                         <div class="col-sm-6">
-                            <label class="text-muted small text-uppercase font-weight-700 mb-1 d-block tracking-wider">Bahasa</label>
-                            <div class="text-dark font-weight-600"><?= Html::encode($model->bahasa ?: '-') ?></div>
+                            <label class="dokumen-view-label">Bahasa</label>
+                            <div class="dokumen-view-value"><?= Html::encode($model->bahasa ?: '-') ?></div>
                         </div>
                     </div>
 
-                    <hr class="border-light-gray my-5">
+                    <hr class="dokumen-view-divider">
 
                     <!-- Relation Sections -->
                     <div class="space-y-5">
                         <!-- Technical Information -->
                         <div class="row g-4">
                             <div class="col-md-6">
-                                <h4 class="h6 font-weight-700 text-uppercase mb-3 tracking-wide">T.E.U Badan / Pengarang</h4>
+                                <h4 class="dokumen-view-subsection-title">T.E.U Badan / Pengarang</h4>
                                 <?php
                                 $teu = DataPengarang::find()->where(['id_dokumen' => $model->id])->all();
                                 if (!empty($teu)): ?>
@@ -114,7 +114,7 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                                 <?php endif; ?>
                             </div>
                             <div class="col-md-6">
-                                <h4 class="h6 font-weight-700 text-uppercase mb-3 tracking-wide">Subjek</h4>
+                                <h4 class="dokumen-view-subsection-title">Subjek</h4>
                                 <?php
                                 $subjek = DataSubyek::find()->where(['id_dokumen' => $model->id])->all();
                                 if (!empty($subjek)): ?>
@@ -138,9 +138,9 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
             <div class="col-lg-4">
                 <div class="sticky-top" style="top: 100px;">
                     <!-- Attachments Card -->
-                    <div class="bg-white rounded-4 shadow-sm p-4 mb-4">
-                        <h4 class="h6 font-weight-700 mb-4 d-flex align-items-center gap-2">
-                            <i class="ti-download text-primary"></i> Lampiran & Berkas
+                    <div class="dokumen-view-sidebar-panel">
+                        <h4 class="dokumen-view-sidebar-title">
+                            <i class="ti-download" aria-hidden="true"></i> Lampiran & Berkas
                         </h4>
                         <div class="d-grid gap-2">
                             <?php
@@ -170,7 +170,7 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                             <?php endif; ?>
 
                             <?php if (empty($lampiran) && empty($model->abstrak)): ?>
-                                <div class="text-center py-4 text-muted small italic border border-dashed rounded-3">
+                                <div class="dokumen-view-empty">
                                     Tidak ada berkas tersedia
                                 </div>
                             <?php endif; ?>
@@ -178,16 +178,16 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                     </div>
 
                     <!-- Additional Info Card -->
-                    <div class="bg-white rounded-4 shadow-sm p-4 mb-4">
-                        <h4 class="h6 font-weight-700 mb-4">Informasi Tambahan</h4>
+                    <div class="dokumen-view-sidebar-panel">
+                        <h4 class="dokumen-view-sidebar-title">Informasi Tambahan</h4>
                         <div class="space-y-4">
                             <div>
-                                <label class="text-muted small text-uppercase font-weight-700 mb-1 d-block tracking-wider">Penerbit</label>
-                                <p class="text-dark small mb-0"><?= Html::encode($model->penerbit ?: '-') ?></p>
+                                <label class="dokumen-view-label">Penerbit</label>
+                                <p class="dokumen-view-value mb-0"><?= Html::encode($model->penerbit ?: '-') ?></p>
                             </div>
                             <div>
-                                <label class="text-muted small text-uppercase font-weight-700 mb-1 d-block tracking-wider">Bidang Hukum</label>
-                                <p class="text-dark small mb-0"><?= Html::encode($model->bidang_hukum ?: '-') ?></p>
+                                <label class="dokumen-view-label">Bidang Hukum</label>
+                                <p class="dokumen-view-value mb-0"><?= Html::encode($model->bidang_hukum ?: '-') ?></p>
                             </div>
                         </div>
                     </div>
@@ -196,16 +196,3 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
         </div>
     </div>
 </div>
-
-<style>
-.space-y-3 > * + * { margin-top: 0.75rem !important; }
-.space-y-4 > * + * { margin-top: 1rem !important; }
-.space-y-5 > * + * { margin-top: 2rem !important; }
-.text-dark-blue { color: #1e293b; }
-.font-weight-600 { font-weight: 600; }
-.font-weight-700 { font-weight: 700; }
-.tracking-wide { letter-spacing: 0.025em; }
-.tracking-wider { letter-spacing: 0.05em; }
-.italic { font-style: italic; }
-.rounded-4 { border-radius: 1rem !important; }
-</style>
