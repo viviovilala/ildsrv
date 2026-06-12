@@ -23,7 +23,8 @@ use yii\widgets\ActiveForm;
             'class' => 'form-control berita-search-form__input',
             'placeholder' => 'Cari berita...',
         ]) ?>
-        <?= Html::submitButton('<i class="bi bi-search" aria-hidden="true"></i>', [
+        <?= Html::button('<i class="bi bi-search" aria-hidden="true"></i>', [
+            'type' => 'submit',
             'class' => 'berita-search-form__submit',
             'title' => 'Cari',
             'aria-label' => 'Cari berita',

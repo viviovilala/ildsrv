@@ -17,14 +17,7 @@ $this->registerMetaTag(['name' => 'robots', 'content' => 'index, follow']);
         <div class="row">
             <!-- Sidebar (Search) -->
             <div class="col-lg-3 mb-4">
-                <div class="side-bar sticky-top berita-sidebar" style="top: 120px;">
-                    <div class="berita-sidebar__panel">
-                        <h2 class="berita-sidebar__title">
-                            <i class="bi bi-search" aria-hidden="true"></i> Cari berita
-                        </h2>
-                        <?= $this->render('_search', ['model' => $searchModel]); ?>
-                    </div>
-                </div>
+                <?= $this->render('_sidebar', ['searchModel' => $searchModel]) ?>
             </div>
 
             <!-- News List -->
@@ -59,63 +52,9 @@ $this->registerMetaTag(['name' => 'robots', 'content' => 'index, follow']);
     </div>
 </div>
 
+<?= $this->render('_berita-shared-styles') ?>
+
 <style>
-.berita-sidebar__panel {
-    background: #ffffff;
-    border: 1px solid #e8edf4;
-    border-radius: 0.75rem;
-    padding: 1.25rem;
-}
-
-.berita-sidebar__title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #1a2752;
-    margin: 0 0 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.berita-search-form .input-group {
-    align-items: stretch;
-}
-
-.berita-search-form__input {
-    border: 1px solid #e2e8f0;
-    border-right: 0;
-    border-radius: 0.5rem 0 0 0.5rem;
-    padding: 0.625rem 0.875rem;
-    font-size: 0.9375rem;
-    background: #f8fafc;
-}
-
-.berita-search-form__input:focus {
-    background: #ffffff;
-    border-color: #1a2752;
-    box-shadow: none;
-}
-
-.berita-search-form__submit {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 1rem;
-    border: 1px solid #1a2752;
-    border-radius: 0 0.5rem 0.5rem 0;
-    background: #1a2752;
-    color: #ffffff;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.berita-search-form__submit:hover {
-    background: #243566;
-    border-color: #243566;
-    color: #ffffff;
-}
-
 .berita-page-header {
     border-bottom: 1px solid #e2e8f0;
 }
