@@ -1,3 +1,20 @@
+## [4.10.0](https://github.com/bphndigitalservice/ildis/compare/v4.9.2...v4.10.0) (2026-06-12)
+
+### Features
+
+* add document URL rules and enhance frontend search styles ([12c5eba](https://github.com/bphndigitalservice/ildis/commit/12c5eba14efb759ee77018fe3b1b52d3172e0d7d))
+* add FeedExportFilter for feed export CLI filters ([67f6204](https://github.com/bphndigitalservice/ildis/commit/67f62045e257aac2383602ae4bd91db3c86ac282))
+* add interactive feed/export-document command ([4d41469](https://github.com/bphndigitalservice/ildis/commit/4d4146958e57962713069bd818bffb351e8a4eb1))
+* implement DocumentSlugBehavior and enhance document URL handling ([9555125](https://github.com/bphndigitalservice/ildis/commit/95551254528b295065785b24a9e615372b78b711))
+
+### Refactoring
+
+* extract shared feed document pipeline in FeedController ([847d5da](https://github.com/bphndigitalservice/ildis/commit/847d5daf51ac148b12a343ee64f19723b38ea10f))
+
+### Documentation
+
+* add design spec for interactive feed export CLI ([764ac29](https://github.com/bphndigitalservice/ildis/commit/764ac294c3a8f91278a8d9d28d38103ecb6593e1))
+
 ## [4.9.2](https://github.com/bphndigitalservice/ildis/compare/v4.9.1...v4.9.2) (2026-06-11)
 
 ### Refactoring
