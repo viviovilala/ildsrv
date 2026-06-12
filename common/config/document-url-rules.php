@@ -1,9 +1,14 @@
 <?php
 
+use common\urlRules\DocumentViewUrlRule;
+
 /**
  * Shared pretty URL rules for public document routes.
- * Legacy query-string URLs (e.g. /dokumen/view?id=123) remain valid via Yii2 defaults.
+ *
+ * Canonical:  /dokumen/123-judul-slug
+ * Also valid: /dokumen/view/123, /dokumen/view?id=123
  */
 return [
+    ['class' => DocumentViewUrlRule::class],
     'dokumen/view/<id:\d+>' => 'dokumen/view',
 ];
