@@ -163,11 +163,18 @@ $this->params['breadcrumbs'][] = Html::encode($this->title);
                             <?php endif; ?>
 
                             <?php if (!empty($model->abstrak)): ?>
-                                <?= Html::a('<i class="ti-book mr-2"></i> Abstrak', ['/common/dokumen/' . $model->abstrak], [
-                                    'class' => 'btn btn-primary font-weight-600 rounded-3 py-2',
-                                    'target' => '_blank',
-                                    'title' => 'Lihat Abstrak'
-                                ]) ?>
+                                <?= Html::a(
+                                    '<i class="ti-book" style="font-size: 1.1rem; margin-right: 8px;"></i> <span style="font-weight: 500; font-size: 15px;">Lihat Abstrak</span>',
+                                    ['/common/dokumen/' . $model->abstrak],
+                                    [
+                                        'class' => 'btn w-100 d-flex align-items-center justify-content-center mb-2',
+                                        'style' => 'background-color: #1e264c; color: #ffffff; border-radius: 12px; padding: 12px 20px; border: none; box-shadow: none; transition: background-color 0.2s ease;',
+                                        'onmouseover' => 'this.style.backgroundColor="#161d3a"',
+                                        'onmouseout' => 'this.style.backgroundColor="#1e264c"',
+                                        'target' => '_blank',
+                                        'title' => 'Lihat Abstrak'
+                                    ]
+                                ) ?>
                             <?php endif; ?>
 
                             <?php if (empty($lampiran) && empty($model->abstrak)): ?>
