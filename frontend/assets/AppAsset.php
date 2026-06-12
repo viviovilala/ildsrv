@@ -22,6 +22,7 @@ class AppAsset extends AssetBundle
         'vendor/swiper/swiper-bundle.min.css',
         'css/lazyload.css',
         'css/style.css',
+        'css/mobile-menu.css',
     ];
 
     public $js = [

@@ -64,8 +64,33 @@ if (empty($this->params['description'])) {
             </div>
 
           <nav id="navbar" class="navbar">
-            <?= $this->render('menu.php') ?>
-	    <i class="bi bi-list mobile-nav-toggle" style="color:blue"></i>
+            <div class="mobile-nav-backdrop" aria-hidden="true"></div>
+            <div class="mobile-nav-drawer" role="dialog" aria-modal="true" aria-label="Menu navigasi">
+              <div class="mobile-nav-header">
+                <div class="mobile-nav-header__brand">
+                  <span class="mobile-nav-header__icon" aria-hidden="true"><i class="bi bi-scales"></i></span>
+                  <span class="mobile-nav-header__title">Menu</span>
+                </div>
+                <button type="button" class="mobile-nav-close" aria-label="Tutup menu">
+                  <i class="bi bi-x-lg" aria-hidden="true"></i>
+                </button>
+              </div>
+              <form class="mobile-nav-search" action="<?= Url::to(['dokumen/index']) ?>" method="get" role="search">
+                <i class="bi bi-search mobile-nav-search__icon" aria-hidden="true"></i>
+                <input
+                  type="search"
+                  name="DokumenSearch[judul]"
+                  class="mobile-nav-search__input"
+                  placeholder="Cari dokumen..."
+                  autocomplete="off"
+                  aria-label="Cari dokumen"
+                >
+              </form>
+              <div class="mobile-nav-body">
+                <?= $this->render('menu.php') ?>
+              </div>
+            </div>
+            <i class="bi bi-list mobile-nav-toggle" aria-label="Buka menu"></i>
           </nav><!-- .navbar -->
 
         </div>

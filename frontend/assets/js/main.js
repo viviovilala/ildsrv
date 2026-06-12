@@ -59,16 +59,48 @@
   /**
    * Mobile nav toggle
    */
-  on('click', '.mobile-nav-toggle', function(e) {
+  const setMobileNavState = (open) => {
     const navbar = select('#navbar')
     const header = select('#header')
-    const isOpen = navbar.classList.toggle('navbar-mobile')
-    this.classList.toggle('bi-list')
-    this.classList.toggle('bi-x')
+    if (!navbar) return
+
+    navbar.classList.toggle('navbar-mobile', open)
     if (header) {
-      header.classList.toggle('mobile-nav-open', isOpen)
+      header.classList.toggle('mobile-nav-open', open)
     }
-    document.body.classList.toggle('mobile-nav-active', isOpen)
+    document.body.classList.toggle('mobile-nav-active', open)
+
+    if (open) {
+      navbar.querySelectorAll('li.current').forEach((item) => {
+        let node = item
+        while (node && node !== navbar) {
+          if (node.tagName === 'UL') {
+            node.classList.add('dropdown-active')
+            const parentItem = node.parentElement
+            if (parentItem && parentItem.classList.contains('dropdown')) {
+              parentItem.classList.add('dropdown-open')
+            }
+          }
+          node = node.parentElement
+        }
+      })
+    }
+  }
+
+  const toggleMobileNav = () => {
+    const navbar = select('#navbar')
+    if (!navbar) return
+    setMobileNavState(!navbar.classList.contains('navbar-mobile'))
+  }
+
+  on('click', '.mobile-nav-toggle', function(e) {
+    e.preventDefault()
+    toggleMobileNav()
+  })
+
+  on('click', '.mobile-nav-close, .mobile-nav-backdrop', function(e) {
+    e.preventDefault()
+    setMobileNavState(false)
   })
 
   /**
@@ -95,11 +127,31 @@
    * Mobile nav dropdowns activate
    */
   on('click', '.navbar .dropdown > a', function(e) {
-    if (select('#navbar').classList.contains('navbar-mobile')) {
-      e.preventDefault()
-      this.nextElementSibling.classList.toggle('dropdown-active')
+    const navbar = select('#navbar')
+    if (!navbar || !navbar.classList.contains('navbar-mobile')) {
+      return
     }
+
+    const parentLink = this.classList.contains('mobile-menu-link--parent')
+    const submenu = this.nextElementSibling
+
+    if (!parentLink || !submenu || submenu.tagName !== 'UL') {
+      setMobileNavState(false)
+      return
+    }
+
+    e.preventDefault()
+    const parentItem = this.parentElement
+    const isOpen = submenu.classList.toggle('dropdown-active')
+    parentItem.classList.toggle('dropdown-open', isOpen)
   }, true)
+
+  on('keydown', document, function(e) {
+    const navbar = select('#navbar')
+    if (e.key === 'Escape' && navbar && navbar.classList.contains('navbar-mobile')) {
+      setMobileNavState(false)
+    }
+  })
 
   /**
    * Testimonials slider
