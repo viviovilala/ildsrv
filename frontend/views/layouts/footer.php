@@ -146,8 +146,6 @@ $socialLinks = $socialSection ? $socialSection->activeLinks : [];
         </span>
         <span class="analytics-title mt-2">
           <?= Html::a('Statistik dokumen hukum', ['/statistik'], ['class' => 'footer-link']) ?>
-          &nbsp;|&nbsp;
-          <?= Html::a('Survey kepuasan (IKM)', ['/survey-kepuasan'], ['class' => 'footer-link']) ?>
         </span>
       </div>
     </div>
