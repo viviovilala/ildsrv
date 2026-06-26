@@ -639,6 +639,8 @@ $totalTidakBerlaku  = Dokumen::find()->where(['status' => 'Tidak Berlaku', 'is_p
         </section>
 
         <!-- News Strip (Only on landing) -->
+        <?= $this->render('_popular-documents', ['popularDocuments' => $popularDocuments ?? []]) ?>
+
         <?php if (!empty($berita)): ?>
             <section class="news-strip">
                 <div class="container">
