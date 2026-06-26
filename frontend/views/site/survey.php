@@ -19,6 +19,7 @@ foreach ($options as $id => $label) {
 }
 ?>
 
+<div class="page-with-fixed-header" style="background-color: #f8fafc;">
 <div class="container py-5">
     <div class="row g-4">
         <div class="col-lg-6">
@@ -55,6 +56,7 @@ foreach ($options as $id => $label) {
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <?php

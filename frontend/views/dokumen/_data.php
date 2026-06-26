@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use frontend\models\DataLampiran;
 
 $domain = yii\helpers\Url::base(true);
+$views = (int) ($model->hit_see ?? 0);
+$downloads = (int) ($model->hit_download ?? 0);
 
 ?>
 
@@ -38,5 +40,15 @@ $domain = yii\helpers\Url::base(true);
             ]);
         }
         ?>
+        <span class="doc-list-stats" aria-label="Statistik dokumen">
+            <span class="doc-list-stats__item" title="Jumlah dilihat">
+                <i class="bi bi-eye" aria-hidden="true"></i>
+                <span><?= Html::encode(number_format($views, 0, ',', '.')) ?> dilihat</span>
+            </span>
+            <span class="doc-list-stats__item" title="Jumlah diunduh">
+                <i class="bi bi-download" aria-hidden="true"></i>
+                <span><?= Html::encode(number_format($downloads, 0, ',', '.')) ?> diunduh</span>
+            </span>
+        </span>
     </div>
 </div>

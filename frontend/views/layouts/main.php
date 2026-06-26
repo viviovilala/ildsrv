@@ -116,8 +116,85 @@ if (empty($this->params['description'])) {
 
         <?= $this->render('footer.php') ?>
 
-    <div class="a11y-toolbar" aria-label="Alat aksesibilitas">
-        <button type="button" id="a11y-read-aloud" class="a11y-toolbar__btn">Baca dengan screen reader</button>
+    <div id="a11y-widget" class="a11y-widget" aria-label="Widget aksesibilitas">
+        <button
+            type="button"
+            id="a11y-widget-toggle"
+            class="a11y-widget__toggle"
+            aria-expanded="false"
+            aria-controls="a11y-widget-panel"
+            aria-label="Buka menu aksesibilitas"
+            title="Menu aksesibilitas"
+        >
+            <i class="bi bi-universal-access-circle" aria-hidden="true"></i>
+        </button>
+        <div id="a11y-widget-panel" class="a11y-widget__panel" hidden role="region" aria-label="Menu aksesibilitas">
+            <div class="a11y-widget__header">
+                <h2 class="a11y-widget__title">Aksesibilitas</h2>
+                <button type="button" id="a11y-widget-close" class="a11y-widget__close" aria-label="Tutup menu aksesibilitas">
+                    <i class="bi bi-x-lg" aria-hidden="true"></i>
+                </button>
+            </div>
+            <ul class="a11y-widget__menu">
+                <li class="a11y-widget__item">
+                    <button type="button" class="a11y-widget__action" data-a11y-action="font-increase">
+                        <i class="bi bi-zoom-in" aria-hidden="true"></i>
+                        <span>Perbesar teks</span>
+                    </button>
+                </li>
+                <li class="a11y-widget__item">
+                    <button type="button" class="a11y-widget__action" data-a11y-action="font-decrease">
+                        <i class="bi bi-zoom-out" aria-hidden="true"></i>
+                        <span>Perkecil teks</span>
+                    </button>
+                </li>
+                <li class="a11y-widget__divider" aria-hidden="true"></li>
+                <li class="a11y-widget__item">
+                    <button type="button" class="a11y-widget__action" data-a11y-action="a11y-high-contrast">
+                        <i class="bi bi-circle-half" aria-hidden="true"></i>
+                        <span>Kontras tinggi</span>
+                    </button>
+                </li>
+                <li class="a11y-widget__item">
+                    <button type="button" class="a11y-widget__action" data-a11y-action="a11y-grayscale">
+                        <i class="bi bi-palette" aria-hidden="true"></i>
+                        <span>Mode abu-abu</span>
+                    </button>
+                </li>
+                <li class="a11y-widget__item">
+                    <button type="button" class="a11y-widget__action" data-a11y-action="a11y-highlight-links">
+                        <i class="bi bi-link-45deg" aria-hidden="true"></i>
+                        <span>Sorot tautan</span>
+                    </button>
+                </li>
+                <li class="a11y-widget__item">
+                    <button type="button" class="a11y-widget__action" data-a11y-action="a11y-readable-font">
+                        <i class="bi bi-type" aria-hidden="true"></i>
+                        <span>Font mudah dibaca</span>
+                    </button>
+                </li>
+                <li class="a11y-widget__divider" aria-hidden="true"></li>
+                <li class="a11y-widget__item">
+                    <button type="button" class="a11y-widget__action" data-a11y-action="read-aloud">
+                        <i class="bi bi-volume-up" aria-hidden="true"></i>
+                        <span>Baca layar</span>
+                    </button>
+                </li>
+                <li class="a11y-widget__item">
+                    <button type="button" class="a11y-widget__action" data-a11y-action="stop-read">
+                        <i class="bi bi-stop-circle" aria-hidden="true"></i>
+                        <span>Hentikan bacaan</span>
+                    </button>
+                </li>
+                <li class="a11y-widget__divider" aria-hidden="true"></li>
+                <li class="a11y-widget__item">
+                    <button type="button" class="a11y-widget__action" data-a11y-action="reset">
+                        <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+                        <span>Atur ulang</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <!-- end main-wrapper section -->
