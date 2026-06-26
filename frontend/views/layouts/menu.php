@@ -120,15 +120,6 @@ $menuItems = [
             ['label' => 'bphn.go.id', 'url' => Url::to('https://bphn.go.id/')],
         ]
     ],
-    [
-        'label' => 'Survey Kepuasan',
-        'url' => ['/survey-kepuasan'],
-        'options' => ['class' => 'mobile-menu-item nav-chart-item'],
-        'template' => '<a href="{url}" class="mobile-menu-link nav-chart-link" title="Survey Kepuasan" aria-label="Survey Kepuasan">'
-            . '<span class="mobile-menu-icon" aria-hidden="true"><i class="bi bi-bar-chart-line"></i></span>'
-            . '<span class="mobile-menu-label">{label}</span>'
-            . '</a>',
-    ],
 
 ];
 
