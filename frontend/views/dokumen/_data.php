@@ -25,17 +25,15 @@ $domain = yii\helpers\Url::base(true);
         $lampiran = DataLampiran::find()->where(['id_dokumen' => $model->id])->one();
 
         if (!empty($lampiran)) {
-            echo Html::a('<i class="bi bi-file-earmark-pdf text-danger"></i> Dokumen', ['/common/dokumen/' . $lampiran->dokumen_lampiran], [
+            echo Html::a('<i class="bi bi-file-earmark-pdf text-danger"></i> Dokumen', ['/dokumen/download', 'id' => $lampiran->dokumen_lampiran, 'docId' => $model->id], [
                 'class' => 'btn-doc-action btn-doc-primary',
-                'target' => '_blank',
                 'title' => 'Unduh/Lihat Dokumen'
             ]);
         }
 
         if (!empty($model->abstrak)) {
-            echo Html::a('<i class="bi bi-file-earmark-text text-primary"></i> Abstrak', ['/common/dokumen/' . $model->abstrak], [
+            echo Html::a('<i class="bi bi-file-earmark-text text-primary"></i> Abstrak', ['/dokumen/download', 'id' => $model->abstrak, 'docId' => $model->id], [
                 'class' => 'btn-doc-action btn-doc-outline',
-                'target' => '_blank',
                 'title' => 'Unduh/Lihat Abstrak'
             ]);
         }
