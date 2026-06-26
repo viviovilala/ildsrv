@@ -81,6 +81,8 @@ return [
                     '/' => 'site/index',
                     'kontak' => 'site/kontak',
                     'statistik' => 'statistik/index',
+                    'survey-kepuasan' => 'site/survey',
+                    'ikm' => 'site/survey',
                     'sitemap.xml' => 'sitemap/index',
                     '/rancangan' => 'rancangan/index',
                 ]
