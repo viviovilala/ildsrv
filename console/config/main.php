@@ -15,15 +15,15 @@ return [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'controllerMap' => [
+    'controllerMap' => array_filter([
         'fixture' => [
             'class' => 'yii\console\controllers\FixtureController',
             'namespace' => 'common\fixtures',
-	],
-	'migration' => [
-		'class' => 'bizley\migration\controllers\MigrationController',
-		'db' => 'db'
         ],
+        'migration' => class_exists('bizley\migration\controllers\MigrationController') ? [
+            'class' => 'bizley\migration\controllers\MigrationController',
+            'db' => 'db',
+        ] : null,
         'migrate' => [
             'class' => 'yii\console\controllers\MigrateController',
             'migrationNamespaces' => [
@@ -31,7 +31,7 @@ return [
             ],
             'migrationPath' => null,
         ],
-    ],
+    ]),
     'components' => [
         'log' => [
             'targets' => [
@@ -49,12 +49,11 @@ return [
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
             'baseUrl' => getenv('PUBLIC_DOMAIN'),
-            'hostInfo' => getenv('public_domain'),
+            'hostInfo' => getenv('PUBLIC_DOMAIN'),
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => require __DIR__ . '/../../common/config/document-url-rules.php',
         ],
-
     ],
     'params' => $params,
 ];

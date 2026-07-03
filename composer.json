@@ -60,7 +60,9 @@
         "codeception/codeception": "^5.1",
         "codeception/module-yii2": "^2.0",
         "codeception/module-asserts": "^3.0",
-        "codeception/verify": "^3.0",
+        "codeception/verify": "^3.0"
+    },
+    "require-dev": {
         "bizley/migration": "^4.0"
     },
     "config": {

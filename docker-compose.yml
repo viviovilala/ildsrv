@@ -9,7 +9,7 @@ services:
       MYSQL_USER: ${DB_USER:-ildis}
       MYSQL_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set}
     ports:
-      - "3306:3306"
+      - "3308:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
@@ -36,6 +36,7 @@ services:
       # Optional: mount custom nginx config without rebuilding the image.
       # Remove this line to use the default config baked into the image.
       - ./docker/nginx/default.conf:/etc/nginx/http.d/default.conf:ro
+      - ./.env:/var/www/.env:ro
     environment:
       - S6_KEEP_ENV=1
       - YII_ENV=${YII_ENV:-prod}
