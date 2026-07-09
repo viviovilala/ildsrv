@@ -116,8 +116,8 @@ $menuItems = [
         'template' => $parentLinkTemplate('bi-link-45deg'),
 
         'items' => [
-            ['label' => 'jdihn.go.id', 'url' => Url::to('https://jdihn.go.id/')],
-            ['label' => 'bphn.go.id', 'url' => Url::to('https://bphn.go.id/')],
+            ['label' => 'JDIHN Nasional', 'url' => Url::to('https://jdihn.go.id/')],
+            ['label' => 'UPN Veteran Jatim', 'url' => Url::to('https://upnjatim.ac.id/')],
         ]
     ],
     [

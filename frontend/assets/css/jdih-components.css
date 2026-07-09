@@ -1083,3 +1083,210 @@ footer {
     justify-content: center;
   }
 }
+
+/* Static public pages */
+.jdih-page {
+  background: #f8f7f2;
+  min-height: 100vh;
+}
+
+.jdih-page-hero {
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  padding: 86px 0 96px;
+}
+
+.jdih-page-hero__eyebrow {
+  display: inline-flex;
+  margin-bottom: 18px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #ffd200;
+  color: #064e0b;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.jdih-page-hero h1 {
+  margin: 0;
+  max-width: 820px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.jdih-page-hero p {
+  max-width: 700px;
+  margin: 24px 0 0;
+  color: rgba(255,255,255,.84);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.jdih-page-body {
+  padding: 72px 0 92px;
+}
+
+.jdih-page-card {
+  border: 1px solid #d8dbd2;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 16px 36px rgba(30,36,28,.07);
+}
+
+.jdih-page-card--padded {
+  padding: clamp(28px, 4vw, 48px);
+}
+
+.jdih-content {
+  color: #4d554b;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.jdih-content h1,
+.jdih-content h2,
+.jdih-content h3,
+.jdih-content h4 {
+  color: #064e0b;
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: 0;
+}
+
+.jdih-contact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1.1fr;
+  gap: 32px;
+}
+
+.jdih-contact-list {
+  display: grid;
+  gap: 16px;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.jdih-contact-list li {
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.jdih-contact-list i {
+  width: 46px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #edf3ed;
+  color: #064e0b;
+  font-size: 20px;
+}
+
+.jdih-contact-list strong {
+  display: block;
+  color: #1e241c;
+}
+
+.jdih-contact-form {
+  display: grid;
+  gap: 14px;
+}
+
+.jdih-contact-form input,
+.jdih-contact-form textarea {
+  width: 100%;
+  border: 1px solid #d8dbd2;
+  border-radius: 8px;
+  background: #fbfbf8;
+  padding: 14px 16px;
+  outline: 0;
+}
+
+.jdih-contact-form input:focus,
+.jdih-contact-form textarea:focus {
+  border-color: #064e0b;
+  box-shadow: 0 0 0 3px rgba(6,78,11,.1);
+}
+
+.jdih-contact-form button,
+.jdih-page-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 0;
+  border-radius: 8px;
+  background: #064e0b;
+  color: #fff;
+  padding: 14px 22px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.jdih-contact-form button:hover,
+.jdih-page-button:hover {
+  background: #0b5d1e;
+  color: #fff;
+  text-decoration: none;
+}
+
+.jdih-structure-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid #d8dbd2;
+  background: #fff;
+}
+
+/* Legacy public/profile page compatibility */
+.page-title-section.bg-img,
+.page-title-section.cover-background {
+  position: relative;
+  background: linear-gradient(90deg, rgba(6,78,11,.88), rgba(6,78,11,.52)), url("../../web/images/upnvjt-building.png") center/cover no-repeat !important;
+  padding: 86px 0 96px !important;
+  color: #fff;
+}
+
+.page-title-section.bg-img::before {
+  display: none !important;
+}
+
+.page-title-section h1 {
+  margin: 0;
+  color: #fff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(38px, 5vw, 58px);
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.page-title-section ul {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.page-title-section li,
+.page-title-section a,
+.page-title-section .active {
+  color: rgba(255,255,255,.86) !important;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+@media (max-width: 991.98px) {
+  .jdih-contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
