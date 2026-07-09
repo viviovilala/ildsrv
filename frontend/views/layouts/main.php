@@ -1,21 +1,15 @@
 <?php
 
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use yii\helpers\Url;
-use yii\widgets\Menu;
 
 AppAsset::register($this);
 
-use backend\models\FrontendConfig;
-
-$logo = FrontendConfig::findOne(1);
-$siteName = 'JDIH - Jaringan Dokumentasi dan Informasi Hukum';
+$siteName = 'JDIH UPNVJT';
 $canonicalUrl = Url::canonical();
+$brandLogo = Url::to('@web/frontend/assets/img/logo-upn.png');
 
 if (empty($this->params['description'])) {
     $this->registerMetaTag(['name' => 'description', 'content' => 'Jaringan Dokumentasi dan Informasi Hukum - Portal hukum terlengkap untuk peraturan, monografi, putusan, dan artikel hukum.']);
@@ -53,27 +47,32 @@ if (empty($this->params['description'])) {
 
     <a class="visually-hidden-focusable skip-link" href="#main-content">Lewati ke konten utama</a>
 
-    <!-- start main-wrapper section -->
+    <header class="jdih-public-header" role="banner">
+        <div class="container jdih-public-header__inner">
+            <?= Html::a(
+                '<span class="jdih-logo-mark"><img src="' . Html::encode($brandLogo) . '" alt="" aria-hidden="true"></span><span class="jdih-brand-text"><strong>JDIH UPNVJT</strong><small>Jaringan Dokumentasi Hukum</small></span>',
+                ['/'],
+                ['class' => 'jdih-public-brand', 'aria-label' => 'Beranda JDIH UPNVJT']
+            ) ?>
 
-    <header id="header" class="fixed-top d-flex align-items-center">
-        <div class="container d-flex justify-content-between align-items-center">
+            <nav class="jdih-public-nav" aria-label="Navigasi utama">
+                <?= Html::a('Home', ['/site/index'], ['class' => 'jdih-public-nav__link']) ?>
+                <?= Html::a('Produk Hukum', ['/dokumen/index'], ['class' => 'jdih-public-nav__link']) ?>
+                <?= Html::a('Berita', ['/berita/index'], ['class' => 'jdih-public-nav__link']) ?>
+                <?= Html::a('Informasi', ['/site/kontak'], ['class' => 'jdih-public-nav__link']) ?>
+                <?= Html::a('Tentang', ['/site/about'], ['class' => 'jdih-public-nav__link']) ?>
+            </nav>
 
-            <div class="logo">
-              <?= Html::a(\common\components\LazyImage::img('@web/common/dokumen/' . $logo->isi_konfig, [
-                  'id' => 'logo',
-                  'alt' => Html::encode($siteName),
-              ], false), ['/'], ['class' => 'navbar-brand width-200px sm-width-180px xs-width-150px']); ?>
+            <div class="jdih-public-actions">
+                <form class="jdih-header-search" action="<?= Url::to(['/dokumen/index']) ?>" method="get" role="search">
+                    <i class="bi bi-search" aria-hidden="true"></i>
+                    <input type="search" name="DokumenSearch[judul]" placeholder="Cari dokumen..." aria-label="Cari dokumen">
+                </form>
+                <?= Html::a('Masuk', ['/site/login'], ['class' => 'jdih-login-button']) ?>
+                <button type="button" class="mobile-nav-toggle bi bi-list" aria-label="Buka menu" aria-expanded="false" aria-controls="mobile-nav"></button>
             </div>
-
-          <nav id="navbar" class="navbar" aria-label="Navigasi utama">
-            <div class="navbar-menu-desktop">
-              <?= $this->render('menu.php') ?>
-            </div>
-            <button type="button" class="mobile-nav-toggle bi bi-list border-0 bg-transparent" aria-label="Buka menu" aria-expanded="false" aria-controls="mobile-nav"></button>
-          </nav><!-- .navbar -->
-
         </div>
-    </header><!-- End Header -->
+    </header>
 
     <div id="mobile-nav" class="mobile-nav" aria-hidden="true">
       <div class="mobile-nav-backdrop" aria-hidden="true"></div>
@@ -81,10 +80,7 @@ if (empty($this->params['description'])) {
         <div class="mobile-nav-header">
           <div class="mobile-nav-header__brand">
             <a href="<?= Url::to(['/']) ?>" class="mobile-nav-header__logo-link">
-              <?= \common\components\LazyImage::img('@web/common/dokumen/' . $logo->isi_konfig, [
-                  'class' => 'mobile-nav-header__logo',
-                  'alt' => Html::encode($siteName),
-              ], false) ?>
+              <span class="jdih-logo-mark"><img src="<?= Html::encode($brandLogo) ?>" alt="" aria-hidden="true"></span>
             </a>
             <span class="mobile-nav-header__title">Menu</span>
           </div>
@@ -196,8 +192,6 @@ if (empty($this->params['description'])) {
             </ul>
         </div>
     </div>
-
-    <!-- end main-wrapper section -->
 
     <!-- start scroll to top -->
     <a href="#" class="back-to-top" aria-label="Kembali ke atas"><i class="bi bi-chevron-up" aria-hidden="true"></i></a>
