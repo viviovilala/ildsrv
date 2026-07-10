@@ -13,7 +13,8 @@ class AdminLteAsset extends AssetBundle
         'css/AdminLTE.min.css',
         'css/skins/_all-skins.min.css',
         'css/style.css',
-        'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css'
+        'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css',
+        '@web/assets_b/css/jdih-admin.css'
     ];
     public $js = [
         'plugins/fastclick/fastclick.min.js',

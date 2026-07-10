@@ -1,54 +1,30 @@
 <?php
 
-use yii\helpers\Html;
 use frontend\models\DataLampiran;
+use yii\helpers\Html;
 
-$domain = yii\helpers\Url::base(true);
-$views = (int) ($model->hit_see ?? 0);
-$downloads = (int) ($model->hit_download ?? 0);
-
+$status = trim((string) ($model->status ?: 'Berlaku'));
+$isRevoked = stripos($status, 'cabut') !== false || stripos($status, 'tidak') !== false;
+$lampiran = DataLampiran::find()->where(['id_dokumen' => $model->id])->one();
+$jenis = $model->bentuk_peraturan ?: $model->jenis_peraturan ?: 'Peraturan Rektor';
+$year = $model->tahun_terbit ?: ($model->tanggal_penetapan ? date('Y', strtotime($model->tanggal_penetapan)) : '-');
 ?>
 
-<div class="search-result-item">
-    <div class="search-result-meta">
-        <span class="meta-badge">
-            <?= Html::a($model->bentuk_peraturan ?: 'Dokumen', ['/dokumen/index2', 'id' => $model->bentuk_peraturan], ['class' => 'text-decoration-none', 'style' => 'color: inherit;']); ?>
-        </span>
-        <span class="search-result-meta__sep" aria-hidden="true">&bull;</span>
-        <span class="search-result-meta__year"><?= $model->tahun_terbit ?: '-'; ?></span>
+<article class="catalog-doc-card">
+    <div class="catalog-doc-card__icon"><i class="bi bi-file-earmark-text" aria-hidden="true"></i></div>
+    <div>
+        <div class="catalog-doc-card__meta">
+            <span class="catalog-doc-card__status<?= $isRevoked ? ' is-revoked' : '' ?>"><?= Html::encode($status) ?></span>
+            <span><?= Html::encode($jenis) ?></span><span>&bull;</span><span><?= Html::encode($year) ?></span>
+        </div>
+        <h3><?= Html::a(Html::encode($model->judul), ['/dokumen/view', 'id' => $model->id]) ?></h3>
+        <p>Nomor <?= Html::encode($model->nomor_peraturan ?: '-') ?> &bull; Tanggal Penetapan: <?= Html::encode($model->tanggal_penetapan ? $model->getTanggal($model->tanggal_penetapan) : '-') ?></p>
     </div>
-
-    <h3 class="search-result-title">
-        <?= Html::a(Html::encode($model->judul), ['/dokumen/view', 'id' => $model->id], ['title' => 'Lihat detail dokumen']); ?>
-    </h3>
-
-    <div class="search-result-actions">
-        <?php
-        $lampiran = DataLampiran::find()->where(['id_dokumen' => $model->id])->one();
-
-        if (!empty($lampiran)) {
-            echo Html::a('<i class="bi bi-file-earmark-pdf text-danger"></i> Dokumen', ['/dokumen/download', 'id' => $lampiran->dokumen_lampiran, 'docId' => $model->id], [
-                'class' => 'btn-doc-action btn-doc-primary',
-                'title' => 'Unduh/Lihat Dokumen'
-            ]);
-        }
-
-        if (!empty($model->abstrak)) {
-            echo Html::a('<i class="bi bi-file-earmark-text text-primary"></i> Abstrak', ['/dokumen/download', 'id' => $model->abstrak, 'docId' => $model->id], [
-                'class' => 'btn-doc-action btn-doc-outline',
-                'title' => 'Unduh/Lihat Abstrak'
-            ]);
-        }
+    <div class="catalog-doc-card__actions">
+        <?= $lampiran
+            ? Html::a('<i class="bi bi-download" aria-hidden="true"></i> Unduh PDF', ['/dokumen/download', 'id' => $lampiran->dokumen_lampiran, 'docId' => $model->id], ['class' => 'catalog-doc-card__download'])
+            : Html::a('<i class="bi bi-download" aria-hidden="true"></i> Unduh PDF', ['/dokumen/view', 'id' => $model->id], ['class' => 'catalog-doc-card__download'])
         ?>
-        <span class="doc-list-stats" aria-label="Statistik dokumen">
-            <span class="doc-list-stats__item" title="Jumlah dilihat">
-                <i class="bi bi-eye" aria-hidden="true"></i>
-                <span><?= Html::encode(number_format($views, 0, ',', '.')) ?> dilihat</span>
-            </span>
-            <span class="doc-list-stats__item" title="Jumlah diunduh">
-                <i class="bi bi-download" aria-hidden="true"></i>
-                <span><?= Html::encode(number_format($downloads, 0, ',', '.')) ?> diunduh</span>
-            </span>
-        </span>
+        <?= Html::a('Detail', ['/dokumen/view', 'id' => $model->id], ['class' => 'catalog-doc-card__detail']) ?>
     </div>
-</div>
+</article>

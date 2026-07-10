@@ -3,46 +3,19 @@
 use common\components\LazyImage;
 use yii\helpers\Html;
 
-/* @var $model frontend\models\Berita */
+$image = $model->image ? '@web/common/dokumen/' . $model->image : '@web/images/upnvjt-building.png';
+$excerpt = mb_strimwidth(trim(strip_tags($model->isi)), 0, 135, '...');
 ?>
 
-<div class="news-item mb-3">
-    <article class="card border-0 h-100 overflow-hidden news-list-card">
-        <div class="row g-0 h-100">
-            <div class="col-md-4">
-                <div class="news-image-wrapper h-100 position-relative">
-                    <?= Html::a(
-                        LazyImage::img('@web/common/dokumen/' . $model->image, [
-                            'class' => 'w-100 h-100 object-fit-cover position-absolute news-list-card__image',
-                            'alt' => $model->judul,
-                        ]),
-                        ['view', 'id' => $model->id],
-                        ['class' => 'd-block h-100']
-                    ) ?>
-                </div>
-            </div>
-
-            <div class="col-md-8">
-                <div class="card-body p-4 d-flex flex-column h-100">
-                    <time class="news-list-card__date" datetime="<?= Html::encode($model->tanggal) ?>">
-                        <?= \common\components\DateHelper::formatIndonesian($model->tanggal) ?>
-                    </time>
-
-                    <h3 class="news-list-card__title">
-                        <?= Html::a(Html::encode($model->judul), ['view', 'id' => $model->id]) ?>
-                    </h3>
-
-                    <p class="news-list-card__excerpt flex-grow-1">
-                        <?= strip_tags($model->isi) ?>
-                    </p>
-
-                    <?= Html::a(
-                        'Baca selengkapnya →',
-                        ['view', 'id' => $model->id],
-                        ['class' => 'news-read-more mt-auto']
-                    ) ?>
-                </div>
-            </div>
-        </div>
-    </article>
-</div>
+<article class="news-card">
+    <div class="news-card__image">
+        <?= Html::a(LazyImage::img($image, ['alt' => $model->judul]), ['view', 'id' => $model->id]) ?>
+        <span class="news-card__badge">Kebijakan</span>
+    </div>
+    <div class="news-card__body">
+        <time class="news-card__date" datetime="<?= Html::encode($model->tanggal) ?>"><i class="bi bi-calendar4"></i> <?= Html::encode($model->tanggal ? $model->getTanggal($model->tanggal) : '-') ?></time>
+        <h2><?= Html::a(Html::encode($model->judul), ['view', 'id' => $model->id]) ?></h2>
+        <p><?= Html::encode($excerpt) ?></p>
+        <div class="news-card__foot"><span><i class="bi bi-person"></i> Admin JDIH</span><?= Html::a('Detail <i class="bi bi-chevron-right"></i>', ['view', 'id' => $model->id]) ?></div>
+    </div>
+</article>
