@@ -1,23 +1,20 @@
 <?php
 
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use yii\helpers\Url;
-use yii\widgets\Menu;
 
 AppAsset::register($this);
 
-use backend\models\FrontendConfig;
-
-$logo = FrontendConfig::findOne(1);
-$siteName = 'JDIH - Jaringan Dokumentasi dan Informasi Hukum';
+$siteName = 'JDIH UPNVJT';
 $canonicalUrl = Url::canonical();
+<<<<<<< HEAD
 $brandLogo = Url::to('@web/images/upnvjt-logo-yellow.png');
 $splashBackground = Url::to('@web/images/hero-bg.png');
+=======
+$brandLogo = Url::to('@web/frontend/assets/img/logo-upn.png');
+>>>>>>> d1a316e3a76d3b83e0d4b7c9d7be2d1f9f96d4d0
 
 if (empty($this->params['description'])) {
     $this->registerMetaTag(['name' => 'description', 'content' => 'Jaringan Dokumentasi dan Informasi Hukum - Portal hukum terlengkap untuk peraturan, monografi, putusan, dan artikel hukum.']);
@@ -55,11 +52,35 @@ if (empty($this->params['description'])) {
 
     <a class="visually-hidden-focusable skip-link" href="#main-content">Lewati ke konten utama</a>
 
-    <!-- start main-wrapper section -->
+<<<<<<< HEAD
+    <header class="jdih-public-header">
+        <div class="container jdih-public-header__inner">
+            <?= Html::a('<img src="' . Html::encode($brandLogo) . '" alt="" aria-hidden="true"><span><strong>JDIH UPNVJT</strong><small>Jaringan Dokumentasi Hukum</small></span>', ['/'], ['class' => 'jdih-brand']) ?>
+            <nav class="jdih-public-nav" aria-label="Navigasi utama">
+                <?= Html::a('Home', ['/site/index']) ?>
+                <?= Html::a('Produk Hukum', ['/dokumen/peraturan']) ?>
+                <?= Html::a('Berita', ['/berita/index']) ?>
+                <?= Html::a('Informasi', ['/site/kontak']) ?>
+                <?= Html::a('Tentang', ['/site/about']) ?>
+            </nav>
+=======
+    <header class="jdih-public-header" role="banner">
+        <div class="container jdih-public-header__inner">
+            <?= Html::a(
+                '<span class="jdih-logo-mark"><img src="' . Html::encode($brandLogo) . '" alt="" aria-hidden="true"></span><span class="jdih-brand-text"><strong>JDIH UPNVJT</strong><small>Jaringan Dokumentasi Hukum</small></span>',
+                ['/'],
+                ['class' => 'jdih-public-brand', 'aria-label' => 'Beranda JDIH UPNVJT']
+            ) ?>
 
-    <header id="header" class="fixed-top d-flex align-items-center">
-        <div class="container d-flex justify-content-between align-items-center">
+            <nav class="jdih-public-nav" aria-label="Navigasi utama">
+                <?= Html::a('Home', ['/site/index'], ['class' => 'jdih-public-nav__link']) ?>
+                <?= Html::a('Produk Hukum', ['/dokumen/index'], ['class' => 'jdih-public-nav__link']) ?>
+                <?= Html::a('Berita', ['/berita/index'], ['class' => 'jdih-public-nav__link']) ?>
+                <?= Html::a('Informasi', ['/site/kontak'], ['class' => 'jdih-public-nav__link']) ?>
+                <?= Html::a('Tentang', ['/site/about'], ['class' => 'jdih-public-nav__link']) ?>
+            </nav>
 
+<<<<<<< HEAD
             <div class="logo">
               <?= Html::a(
                   Html::img($brandLogo, [
@@ -70,17 +91,23 @@ if (empty($this->params['description'])) {
                   ['/'],
                   ['class' => 'navbar-brand']
               ); ?>
+=======
+>>>>>>> 5bef1a2f6a6de30f1f4e8c9f59bd9ee27d536d98
+            <div class="jdih-public-actions">
+                <form class="jdih-header-search" action="<?= Url::to(['/dokumen/index']) ?>" method="get" role="search">
+                    <i class="bi bi-search" aria-hidden="true"></i>
+                    <input type="search" name="DokumenSearch[judul]" placeholder="Cari dokumen..." aria-label="Cari dokumen">
+                </form>
+<<<<<<< HEAD
+                <?= Html::a('Masuk', ['/site/login'], ['class' => 'jdih-login-btn']) ?>
+=======
+                <?= Html::a('Masuk', ['/site/login'], ['class' => 'jdih-login-button']) ?>
+>>>>>>> 5bef1a2f6a6de30f1f4e8c9f59bd9ee27d536d98
+                <button type="button" class="mobile-nav-toggle bi bi-list" aria-label="Buka menu" aria-expanded="false" aria-controls="mobile-nav"></button>
+>>>>>>> d1a316e3a76d3b83e0d4b7c9d7be2d1f9f96d4d0
             </div>
-
-          <nav id="navbar" class="navbar" aria-label="Navigasi utama">
-            <div class="navbar-menu-desktop">
-              <?= $this->render('menu.php') ?>
-            </div>
-            <button type="button" class="mobile-nav-toggle bi bi-list border-0 bg-transparent" aria-label="Buka menu" aria-expanded="false" aria-controls="mobile-nav"></button>
-          </nav><!-- .navbar -->
-
         </div>
-    </header><!-- End Header -->
+    </header>
 
     <div id="mobile-nav" class="mobile-nav" aria-hidden="true">
       <div class="mobile-nav-backdrop" aria-hidden="true"></div>
@@ -88,10 +115,18 @@ if (empty($this->params['description'])) {
         <div class="mobile-nav-header">
           <div class="mobile-nav-header__brand">
             <a href="<?= Url::to(['/']) ?>" class="mobile-nav-header__logo-link">
+<<<<<<< HEAD
               <?= Html::img($brandLogo, [
                   'class' => 'mobile-nav-header__logo',
                   'alt' => 'Logo UPN Veteran Jawa Timur',
               ]) ?>
+=======
+<<<<<<< HEAD
+              <img src="<?= Html::encode($brandLogo) ?>" class="mobile-nav-header__logo" alt="<?= Html::encode($siteName) ?>">
+=======
+              <span class="jdih-logo-mark"><img src="<?= Html::encode($brandLogo) ?>" alt="" aria-hidden="true"></span>
+>>>>>>> 5bef1a2f6a6de30f1f4e8c9f59bd9ee27d536d98
+>>>>>>> d1a316e3a76d3b83e0d4b7c9d7be2d1f9f96d4d0
             </a>
             <span class="mobile-nav-header__title">Menu</span>
           </div>
@@ -204,6 +239,7 @@ if (empty($this->params['description'])) {
         </div>
     </div>
 
+<<<<<<< HEAD
     <div
       id="jdih-splash"
       class="jdih-splash"
@@ -221,6 +257,8 @@ if (empty($this->params['description'])) {
 
     <!-- end main-wrapper section -->
 
+=======
+>>>>>>> d1a316e3a76d3b83e0d4b7c9d7be2d1f9f96d4d0
     <!-- start scroll to top -->
     <a href="#" class="back-to-top" aria-label="Kembali ke atas"><i class="bi bi-chevron-up" aria-hidden="true"></i></a>
     <!-- end scroll to top -->

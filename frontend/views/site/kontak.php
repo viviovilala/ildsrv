@@ -1,81 +1,69 @@
-<section class="page-title-section bg-img cover-background" data-overlay-dark="7" data-background="img/banner/bg1.jpg">
-    <div class="container">
-        <h1>Kontak</h1>
-        <ul class="text-center">
-            <li>
-                <a href="index.html">Home</a>
-            </li>
-            <li>
-                <span class="active">Kontak</span>
-            </li>
-        </ul>
-    </div>
-</section>
+<?php
 
-<section class="no-padding-bottom">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6 order-2 order-lg-1">
-                <div class="padding-15px-all shadow bg-white">
-                    <iframe class="contact-map" id="gmap_canvas" src="https://maps.google.com/maps?q=london&t=&z=13&ie=UTF8&iwloc=&output=embed" scrolling="no" marginheight="0" marginwidth="0"></iframe>
-                </div>
-            </div>
-            <div class="col-lg-6 order-1 order-lg-2 sm-margin-30px-bottom">
-                <div class="padding-40px-left padding-40px-top sm-no-padding">
-                    <h3>Find Us There</h3>
-                    <p class="text-extra-dark-gray font-size16 line-height-28">It is a long established fact that a reader will be distracted by the readable.</p>
-                    <div class="margin-30px-bottom sm-margin-20px-bottom">
-                        <ul class="list-style-1 no-margin">
-                            <li>
-                                <span class="d-inline-block vertical-align-top font-size18"><i class="fas fa-map-marker-alt text-theme-color"></i></span>
-                                <span class="d-inline-block width-65 sm-width-85 vertical-align-top padding-10px-left">74 Guild Street 542B, Great North Town MT.</span>
-                            </li>
-                            <li>
-                                <span class="d-inline-block vertical-align-top font-size18"><i class="fas fa-phone text-theme-color"></i></span>
-                                <span class="d-inline-block width-65 sm-width-85 vertical-align-top padding-10px-left">4355 6567 789</span>
-                            </li>
-                            <li>
-                                <span class="d-inline-block vertical-align-top font-size18"><i class="fas fa-envelope text-theme-color"></i></span>
-                                <span class="d-inline-block width-65 sm-width-85 vertical-align-top padding-10px-left">example@yourname.com</span>
-                            </li>
-                        </ul>
+use yii\helpers\Html;
+use yii\helpers\Url;
+
+$this->title = 'Kontak';
+$heroImage = Url::to('@web/images/upnvjt-building.png');
+?>
+
+<<<<<<< HEAD
+<section class="jdih-hero" style="min-height:420px;background-image:linear-gradient(90deg,rgba(6,78,11,.86),rgba(6,78,11,.48)),url('<?= Html::encode($heroImage) ?>')"><div class="container"><div class="jdih-hero__content"><span class="jdih-eyebrow">Kontak JDIH</span><h1>Hubungi JDIH UPNVJT</h1><p>Layanan informasi hukum kampus untuk civitas akademika, unit kerja, dan masyarakat.</p></div></div></section>
+<section class="jdih-section"><div class="container"><div class="catalog-body" style="margin-top:0"><article class="catalog-filter"><h2>Informasi Layanan</h2><p><strong>Kantor</strong><br>Lt. 3 Gedung Rektorat, Kampus Gunung Anyar, UPN Veteran Jawa Timur, Surabaya</p><p><strong>Email</strong><br>sekretariat@upnjatim.ac.id</p><p><strong>Jam Layanan</strong><br>Senin - Jumat, 08.00 - 16.00 WIB</p></article><form class="catalog-filter" action="#" method="post"><h2>Kirim Pesan</h2><input type="text" placeholder="Nama lengkap"><br><br><input type="email" placeholder="Email"><br><br><input type="text" placeholder="Subjek pesan"><br><br><textarea rows="6" class="form-control" placeholder="Tulis pesan Anda"></textarea><button type="submit">Kirim Pesan</button></form></div></div></section>
+=======
+<section class="jdih-page">
+    <div class="jdih-page-hero" style="background-image: linear-gradient(90deg, rgba(6,78,11,.86), rgba(6,78,11,.48)), url('<?= Html::encode($heroImage) ?>');">
+        <div class="container">
+            <span class="jdih-page-hero__eyebrow">Kontak JDIH</span>
+            <h1>Hubungi JDIH UPN Veteran Jawa Timur</h1>
+            <p>Layanan informasi hukum kampus untuk civitas akademika, unit kerja, dan masyarakat.</p>
+        </div>
+    </div>
+
+    <div class="jdih-page-body">
+        <div class="container">
+            <div class="jdih-contact-grid">
+                <section class="jdih-page-card jdih-page-card--padded">
+                    <div class="jdih-content">
+                        <h2>Informasi Layanan</h2>
+                        <p>
+                            Tim JDIH UPNVJT melayani kebutuhan akses regulasi, dokumen hukum,
+                            informasi kebijakan universitas, dan bantuan penelusuran katalog hukum.
+                        </p>
                     </div>
-                    <ul class="social-icon-style sm-no-margin-bottom">
-                        <li><a href="javascript:void(0)"><i class="fab fa-facebook-f"></i></a></li>
-                        <li><a href="javascript:void(0)"><i class="fab fa-twitter"></i></a></li>
-                        <li><a href="javascript:void(0)"><i class="fab fa-instagram"></i></a></li>
-                        <li><a href="javascript:void(0)"><i class="fab fa-linkedin-in"></i></a></li>
+
+                    <ul class="jdih-contact-list">
+                        <li>
+                            <i class="bi bi-geo-alt" aria-hidden="true"></i>
+                            <div><strong>Kantor</strong><span>Lt. 3 Gedung Rektorat, Kampus Gunung Anyar, UPN Veteran Jawa Timur, Surabaya</span></div>
+                        </li>
+                        <li>
+                            <i class="bi bi-envelope" aria-hidden="true"></i>
+                            <div><strong>Email</strong><span>sekretariat@upnjatim.ac.id</span></div>
+                        </li>
+                        <li>
+                            <i class="bi bi-clock" aria-hidden="true"></i>
+                            <div><strong>Jam Layanan</strong><span>Senin - Jumat, 08.00 - 16.00 WIB</span></div>
+                        </li>
                     </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- end contact section -->
+                </section>
 
-<!-- start contact form -->
-<section class="bg-light-gray contact-form">
-    <div class="container margin-30px-top">
-        <div class="row">
-            <div class="col-md-9 form-list center-col">
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <input type="text" class="form-control no-margin-bottom padding-10px-tb" name="exampleInputName" id="exampleInputName" placeholder="Your Name">
+                <section class="jdih-page-card jdih-page-card--padded">
+                    <div class="jdih-content">
+                        <h2>Kirim Pesan</h2>
+                        <p>Form ini masih berupa antarmuka frontend. Integrasi pengiriman pesan dapat mengikuti alur backend yang sudah tersedia.</p>
                     </div>
-                    <div class="form-group col-md-6">
-                        <input type="text" class="form-control no-margin-bottom padding-10px-tb" name="exampleInputEmail" id="exampleInputEmail" placeholder="Email">
-                    </div>
-                    <div class="form-group col-md-12">
-                        <input type="text" class="form-control no-margin-bottom padding-10px-tb" name="exampleInputTitle" id="exampleInputTitle" placeholder="Subject Title">
-                    </div>
-                    <div class="form-group col-md-12">
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" placeholder="Message"></textarea>
-                    </div>
-                    <div class="col-md-12">
-                        <button type="submit" class="butn"><span>submit message</span></button>
-                    </div>
-                </div>
+
+                    <form class="jdih-contact-form" action="#" method="post">
+                        <input type="text" name="name" placeholder="Nama lengkap" aria-label="Nama lengkap">
+                        <input type="email" name="email" placeholder="Email" aria-label="Email">
+                        <input type="text" name="subject" placeholder="Subjek pesan" aria-label="Subjek pesan">
+                        <textarea name="message" rows="6" placeholder="Tulis pesan Anda" aria-label="Pesan"></textarea>
+                        <button type="submit">Kirim Pesan <i class="bi bi-send" aria-hidden="true"></i></button>
+                    </form>
+                </section>
             </div>
         </div>
     </div>
 </section>
+>>>>>>> 5bef1a2f6a6de30f1f4e8c9f59bd9ee27d536d98

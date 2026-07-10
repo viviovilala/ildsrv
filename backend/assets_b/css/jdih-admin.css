@@ -1,0 +1,66 @@
+body.login-page {
+  background: radial-gradient(circle at 18% 18%, rgba(11,93,30,.12), transparent 34%), linear-gradient(135deg,#eef7ea 0%,#f8f7f2 54%,#f5efd7 100%);
+  font-family: Inter, Arial, system-ui, sans-serif;
+}
+.jdih-admin-login { width: min(100%,440px); margin: 0 auto; color: #1f2a1f; }
+.jdih-admin-login__brand { display: flex; align-items: center; justify-content: center; gap: 18px; margin-bottom: 34px; }
+.jdih-admin-login__brand img { width: 118px; height: 62px; object-fit: contain; background: rgba(255,255,255,.72); }
+.jdih-admin-login__brand strong { display: block; font-family: Georgia,"Times New Roman",serif; font-size: 28px; color: #064e0b; }
+.jdih-admin-login__brand span { color: #4d554b; font-size: 13px; font-weight: 900; letter-spacing: .08em; }
+.jdih-admin-login__card { overflow: hidden; background: #fff; border: 1px solid #cbd5c0; border-radius: 12px; box-shadow: 0 24px 54px rgba(31,42,31,.12); }
+.jdih-admin-login__accent { height: 7px; background: #8a6b00; }
+.jdih-admin-login__card h1 { margin: 34px 40px 8px; text-align: center; font-family: Georgia,"Times New Roman",serif; font-size: 34px; color: #1f2a1f; }
+.jdih-admin-login__card > p { margin: 0 40px 30px; text-align: center; color: #4d554b; }
+.jdih-admin-login__form { padding: 0 40px 36px; }
+.jdih-admin-login__form label { color: #4d554b; font-size: 12px; font-weight: 900; letter-spacing: .08em; }
+.jdih-admin-input { min-height: 52px; display: flex; align-items: center; gap: 14px; padding: 0 14px; border: 1px solid #cbd5c0; border-radius: 8px; background: #fbfbf8; }
+.jdih-admin-input .form-control { height: 50px; border: 0; padding: 0; background: transparent; box-shadow: none; }
+.jdih-admin-login__options { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 8px 0 18px; }
+.jdih-admin-login__submit { width: 100%; min-height: 54px; border: 0; border-radius: 8px; background: #064e0b; color: #fff; font-weight: 900; }
+.jdih-admin-login__footer { padding: 20px 24px; background: #ecebe4; border-top: 1px solid #cbd5c0; text-align: center; font-weight: 800; }
+.jdih-admin-login__copy { margin-top: 26px; text-align: center; color: #7c8378; font-size: 13px; font-weight: 700; }
+
+body.skin-red,.skin-red .wrapper,.skin-red .content-wrapper { background: #f8f7f2; color: #1f2a1f; font-family: Inter,Arial,system-ui,sans-serif; }
+.skin-red .main-header .logo,.skin-red .main-header .navbar { background: #fff; color: #064e0b; border-bottom: 1px solid #cbd5c0; }
+.skin-red .main-header .logo { width: 300px; height: 76px; line-height: 76px; border-right: 1px solid #cbd5c0; font-size: 28px; font-weight: 900; }
+.skin-red .main-header .navbar { min-height: 76px; margin-left: 300px; }
+.skin-red .main-header .sidebar-toggle { height: 76px; padding: 27px 24px; color: #064e0b; }
+.jdih-admin-search { width: min(360px,36vw); height: 48px; display: flex; align-items: center; gap: 12px; margin: 14px 20px 0 auto; padding: 0 18px; border-radius: 999px; background: #f2f1ec; color: #4d554b; float: left; }
+.jdih-admin-search input { width: 100%; border: 0; outline: 0; background: transparent; font-size: 16px; }
+.main-sidebar { width: 300px; padding-top: 76px; background: #f5f6f2; border-right: 1px solid #cbd5c0; }
+.skin-red .content-wrapper,.skin-red .main-footer { margin-left: 300px; }
+.content-header { display: none; }
+.content { padding: 28px 46px 48px; }
+.jdih-sidebar-brand { display: flex; gap: 14px; align-items: center; padding: 28px 28px 20px; color: #064e0b; }
+.jdih-sidebar-brand img { width: 44px; height: 44px; object-fit: contain; }
+.jdih-sidebar-brand strong { display: block; font-size: 21px; font-weight: 900; }
+.jdih-sidebar-section { padding: 0 32px 18px; color: #4d554b; font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: .12em; }
+.jdih-sidebar-menu { padding: 0 24px; }
+.jdih-sidebar-menu > li > a { display: flex!important; align-items: center; gap: 16px; margin-bottom: 8px; border-radius: 8px; color: #4d554b!important; padding: 15px 18px!important; font-size: 17px; font-weight: 700; }
+.jdih-sidebar-menu > li.active > a,.jdih-sidebar-menu > li > a:hover { background: #2d6727!important; color: #d7f6d4!important; }
+.jdih-sidebar-menu--bottom { position: absolute; left: 0; right: 0; bottom: 32px; padding-top: 28px; }
+.jdih-sidebar-menu--bottom:before { content: ""; display: block; height: 1px; margin: 0 24px 26px; background: #cbd5c0; }
+.main-footer { min-height: 72px; background: #064e0b; border: 0; color: rgba(255,255,255,.74); padding: 24px 46px; }
+.jdih-dashboard__head { display: flex; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+.jdih-dashboard__head h1 { margin: 0 0 6px; color: #064e0b; font-size: 22px; }
+.jdih-stat-grid-admin { display: grid; grid-template-columns: repeat(4,1fr); gap: 28px; margin-bottom: 56px; }
+.jdih-stat-box { position: relative; overflow: hidden; min-height: 174px; border-radius: 12px; color: #fff; box-shadow: 0 14px 34px rgba(31,42,31,.12); }
+.jdih-stat-box > div { padding: 26px 28px 0; }
+.jdih-stat-box strong { display: block; font-size: 48px; line-height: 1; font-weight: 900; }
+.jdih-stat-box span { display: block; margin-top: 18px; font-size: 18px; }
+.jdih-stat-box > i { position: absolute; right: 20px; bottom: 48px; font-size: 78px; opacity: .24; }
+.jdih-stat-box a { position: absolute; left: 0; right: 0; bottom: 0; display: block; padding: 14px; background: rgba(0,0,0,.12); color: #fff; text-align: center; font-size: 17px; text-decoration: none; }
+.jdih-stat-box.is-blue{background:#108dcc}.jdih-stat-box.is-green{background:#2d842f}.jdih-stat-box.is-orange{background:#f58300}.jdih-stat-box.is-red{background:#d3222a}
+.jdih-admin-grid { display: grid; grid-template-columns: minmax(0,1fr) 360px; gap: 28px; }
+.jdih-admin-panel,.jdih-collection-card,.jdih-system-card { border: 1px solid #cbd5c0; border-radius: 12px; background: #fff; box-shadow: 0 16px 34px rgba(31,42,31,.07); }
+.jdih-chart-panel { padding: 28px 30px; min-height: 420px; }
+.jdih-panel-title { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.jdih-bars { height: 310px; display: grid; grid-template-columns: repeat(7,1fr); align-items: end; gap: 12px; padding-top: 58px; }
+.jdih-bars div { height: 100%; display: flex; flex-direction: column; justify-content: flex-end; text-align: center; }
+.jdih-bars span { display: block; border-radius: 9px 9px 0 0; background: #e6ece7; }
+.jdih-admin-side { display: grid; gap: 28px; }
+.jdih-survey-card { padding: 26px; border-radius: 12px; background: #064e0b; color: rgba(255,255,255,.78); }
+.jdih-survey-card h2 { color: #fff; }
+.jdih-survey-card a { display: block; margin-top: 24px; border-radius: 8px; background: #ffd200; color: #064e0b; text-align: center; padding: 13px; font-weight: 900; text-decoration: none; }
+@media(max-width:1199px){.jdih-stat-grid-admin,.jdih-admin-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:767px){.skin-red .main-header .logo,.skin-red .main-header .navbar{width:100%;margin-left:0}.jdih-admin-search{display:none}.skin-red .content-wrapper,.skin-red .main-footer{margin-left:0}.content{padding:22px 16px 36px}.jdih-stat-grid-admin,.jdih-admin-grid{grid-template-columns:1fr}}
