@@ -1,19 +1,31 @@
 <?php
 
-use yii\helpers\Html;
 use backend\models\Circulation;
+<<<<<<< HEAD
+use yii\helpers\Url;
+=======
+use yii\helpers\Html;
+>>>>>>> d1a316e3a76d3b83e0d4b7c9d7be2d1f9f96d4d0
 
-
-
-
+$user = Yii::$app->user->identity;
+$pinjam = Circulation::find()->where(['status_peminjaman' => 'Dipinjam'])->count();
+$picture = !empty($user->picture) ? \Yii::getAlias('@imageurl') . '/common/dokumen/' . $user->picture : Yii::getAlias('@web') . '/img/user2-160x160.jpg';
 ?>
+
 <header class="main-header">
+<<<<<<< HEAD
   <!-- Logo -->
   <a href="index" class="logo">
     <!-- mini logo for sidebar mini 50x50 pixels -->
-    <span class="logo-mini"><b><?= $title ?></b></span>
+    <span class="logo-mini"><b>J</b></span>
     <!-- logo for regular state and mobile devices -->
-    <span class="logo-lg"></span>
+    <span class="logo-lg admin-brand">
+      <?= Html::img(Url::to('@web/assets_b/img/upnvjt-logo-yellow.png'), ['class' => 'admin-brand__logo', 'alt' => 'Logo UPN Veteran Jawa Timur']) ?>
+      <span class="admin-brand__text">
+        <span class="admin-brand__name">JDIH UPNVJT</span>
+        <span class="admin-brand__meta">ADMIN</span>
+      </span>
+    </span>
   </a>
   <!-- Header Navbar: style can be found in header.less -->
   <nav class="navbar navbar-static-top" role="navigation">
@@ -69,70 +81,23 @@ echo
                   <a href="#">
                     <i class="fa fa-users text-aqua"></i> '.$pinjam.' buku dipinjam
                   </a>
+=======
+    <a href="<?= Yii::$app->homeUrl ?>" class="logo"><span class="logo-mini">J</span><span class="logo-lg">JDIH UPNVJT</span></a>
+    <nav class="navbar navbar-static-top" role="navigation">
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button"><span class="sr-only">Toggle navigation</span></a>
+        <form class="jdih-admin-search" action="#" method="get"><i class="fa fa-search"></i><input type="search" placeholder="Cari dokumen..."></form>
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <li class="dropdown notifications-menu"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell-o"></i><?php if ($pinjam > 0): ?><span class="label label-warning"><?= (int) $pinjam ?></span><?php endif; ?></a></li>
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?= Html::img($picture, ['class' => 'user-image', 'alt' => 'User Image']) ?><span class="hidden-xs"><?= Html::encode($user->username) ?></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="user-header"><?= Html::img($picture, ['class' => 'img-circle', 'alt' => 'User Image']) ?><p><?= Html::encode($user->username) ?><small><?= Html::encode($user->email ?? '') ?></small></p></li>
+                        <li class="user-footer"><div class="pull-left"><?= Html::a('Profile', ['/admin/user/profile', 'id' => $user->id], ['class' => 'btn btn-default btn-flat']) ?></div><div class="pull-right"><?= Html::a('Sign out', ['/site/logout'], ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']) ?></div></li>
+                    </ul>
+>>>>>>> d1a316e3a76d3b83e0d4b7c9d7be2d1f9f96d4d0
                 </li>
-
-                                <li>
-                  <a href="#">
-                    <i class="fa fa-users text-danger"></i> '.$i.' buku terlambat kembali
-                  </a>
-                </li>
-     
-              </ul>
-            </li>
-           <li class="footer">'. Html::a('Lihat Semua', ['sirkulasi/pengembalian']).'
-           </li>
-          </ul>';
-        }
-          ?>
-        </li>
-
-
-        <!-- User Account: style can be found in dropdown.less -->
-        <li class="dropdown user user-menu">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-
-            <?= Html::img(\Yii::getAlias('@imageurl') . '/common/dokumen/' . \Yii::$app->user->identity->picture, ['class' => 'user-image', 'alt' => 'myImage', 'width' => '160', 'height' => 'auto']); ?>
-
-            <span class="hidden-xs"><?= \Yii::$app->user->identity->username ?></span>
-          </a>
-          <ul class="dropdown-menu">
-            <!-- User image -->
-            <li class="user-header">
-              <?= Html::img('@web/img/user2-160x160.jpg', ['class' => 'img-circle', 'alt' => 'User Image']) ?>
-              <p>
-                <?= \Yii::$app->user->identity->username ?>
-              </p>
-              <p>
-                <?= \Yii::$app->user->identity->email ?>
-              </p>
-            </li>
-            <!-- Menu Body -->
-
-            <!-- Menu Footer-->
-            <li class="user-footer">
-              <div class="pull-left">
-
-                <?= Html::a(
-                  'Profile',
-                  ['/admin/user/profile', 'id' => Yii::$app->user->identity->id],
-                  ['class' => 'btn btn-default btn-flat']
-                ) ?>
-              </div>
-              <div class="pull-right">
-                <?= Html::a(
-                  'Sign out',
-                  ['/site/logout'],
-                  ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']
-                ) ?>
-              </div>
-            </li>
-          </ul>
-        </li>
-        <!-- Control Sidebar Toggle Button -->
-        <!-- <li>
-                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-              </li> -->
-      </ul>
-    </div>
-  </nav>
+            </ul>
+        </div>
+    </nav>
 </header>

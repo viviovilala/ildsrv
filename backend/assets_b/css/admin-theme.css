@@ -1,0 +1,311 @@
+:root {
+    --primary-green: #064e0b;
+    --dark-green: #003f0a;
+    --gold: #ffd200;
+    --cream-bg: #f8f6ef;
+    --soft-green: #e8f3e4;
+    --border-color: #cbd5c0;
+    --text-color: #1b271b;
+}
+
+body,
+.content-wrapper,
+.right-side {
+    background: var(--cream-bg) !important;
+    color: var(--text-color);
+    font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+}
+
+.main-header {
+    border-bottom: 1px solid rgba(6, 78, 11, 0.14) !important;
+    box-shadow: 0 6px 18px rgba(6, 78, 11, 0.08);
+}
+
+.skin-red .main-header .navbar,
+.skin-red .main-header .logo {
+    background: #fff !important;
+}
+
+.skin-red .main-header .navbar .sidebar-toggle,
+.skin-red .main-header .logo,
+.skin-red .main-header .navbar .nav > li > a {
+    color: var(--primary-green) !important;
+}
+
+.admin-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 50px;
+    padding: 0 12px;
+    color: var(--primary-green);
+    font-weight: 800;
+}
+
+.admin-brand__logo {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: var(--primary-green);
+    padding: 4px;
+}
+
+.admin-brand__text {
+    line-height: 1.05;
+    text-align: left;
+}
+
+.admin-brand__name {
+    display: block;
+    font-size: 16px;
+}
+
+.admin-brand__meta {
+    display: block;
+    font-size: 10px;
+    color: rgba(27, 39, 27, 0.62);
+    letter-spacing: 0.08em;
+}
+
+.main-sidebar,
+.left-side {
+    background: #f5f4ec !important;
+    border-right: 1px solid rgba(6, 78, 11, 0.13);
+}
+
+.sidebar-menu > li.header {
+    color: rgba(27, 39, 27, 0.62) !important;
+    background: transparent !important;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.skin-red .sidebar-menu > li > a {
+    color: rgba(27, 39, 27, 0.78) !important;
+    border-left: 0 !important;
+    margin: 4px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+.skin-red .sidebar-menu > li:hover > a,
+.skin-red .sidebar-menu > li.active > a,
+.skin-red .sidebar-menu > li.menu-open > a {
+    background: var(--primary-green) !important;
+    color: #fff !important;
+}
+
+.user-panel {
+    margin: 12px;
+    border-radius: 8px;
+    background: #fff !important;
+    border: 1px solid var(--border-color);
+}
+
+.box,
+.info-box,
+.small-box,
+.content .panel,
+.grid-view,
+.form-control {
+    border-radius: 8px !important;
+}
+
+.box {
+    border-top-color: var(--primary-green) !important;
+    border-color: var(--border-color);
+    box-shadow: 0 12px 26px rgba(6, 78, 11, 0.08);
+}
+
+.btn-primary,
+.btn-success {
+    background: var(--primary-green) !important;
+    border-color: var(--primary-green) !important;
+}
+
+.btn-warning {
+    background: var(--gold) !important;
+    border-color: var(--gold) !important;
+    color: var(--dark-green) !important;
+}
+
+.main-footer {
+    background: var(--dark-green) !important;
+    color: rgba(255, 255, 255, 0.82) !important;
+    border-top: 0 !important;
+}
+
+.login-page {
+    min-height: 100vh;
+    background:
+        linear-gradient(120deg, rgba(232, 243, 228, 0.92), rgba(248, 246, 239, 0.96)),
+        url("../img/login-building-bg.png") center/cover no-repeat !important;
+}
+
+.jdih-login-shell {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 32px 16px;
+}
+
+.jdih-login {
+    width: min(440px, 100%);
+}
+
+.jdih-login__brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.jdih-login__logo,
+.admin-splash__logo {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    border-radius: 14px;
+    background: var(--primary-green);
+    padding: 7px;
+}
+
+.jdih-login__title {
+    margin: 0;
+    color: var(--primary-green);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.jdih-login__subtitle {
+    margin: 2px 0 0;
+    color: rgba(27, 39, 27, 0.68);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.jdih-login__card {
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-top: 7px solid var(--gold);
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 24px 60px rgba(6, 78, 11, 0.18);
+}
+
+.jdih-login__body {
+    padding: 36px 40px 30px;
+}
+
+.jdih-login__heading {
+    margin: 0 0 8px;
+    text-align: center;
+    color: var(--text-color);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.jdih-login__caption {
+    margin: 0 0 28px;
+    text-align: center;
+    color: rgba(27, 39, 27, 0.68);
+}
+
+.jdih-login .form-control {
+    height: 48px;
+    border-color: var(--border-color);
+    box-shadow: none;
+}
+
+.jdih-login .form-control:focus {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(6, 78, 11, 0.12);
+}
+
+.jdih-login .form-control-feedback {
+    height: 48px;
+    line-height: 48px;
+    color: rgba(27, 39, 27, 0.55);
+}
+
+.jdih-login__button {
+    width: 100%;
+    height: 52px;
+    margin-top: 8px;
+    border-radius: 8px !important;
+    background: var(--primary-green) !important;
+    border-color: var(--primary-green) !important;
+    font-weight: 800;
+}
+
+.jdih-login__footer {
+    padding: 18px 20px;
+    text-align: center;
+    background: #f1f1ec;
+    border-top: 1px solid var(--border-color);
+    color: rgba(27, 39, 27, 0.72);
+    font-weight: 700;
+}
+
+.jdih-login__copy {
+    margin: 22px 0 0;
+    text-align: center;
+    color: rgba(27, 39, 27, 0.58);
+    font-weight: 700;
+}
+
+.admin-splash {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: grid;
+    place-items: center;
+    background:
+        linear-gradient(rgba(0, 63, 10, 0.88), rgba(0, 63, 10, 0.76)),
+        url("../img/login-building-bg.png") center/cover no-repeat;
+    color: #fff;
+    transition: opacity 0.34s ease, visibility 0.34s ease;
+}
+
+.admin-splash.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.admin-splash__panel {
+    text-align: center;
+}
+
+.admin-splash__title {
+    margin: 14px 0 4px;
+    color: #fff;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.8rem, 6vw, 3rem);
+}
+
+.admin-splash__subtitle {
+    margin: 0;
+    color: var(--gold);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+}
+
+@media (max-width: 767px) {
+    .jdih-login__body {
+        padding: 30px 24px 24px;
+    }
+
+    .jdih-login__brand {
+        gap: 12px;
+    }
+
+    .jdih-login__logo {
+        width: 60px;
+        height: 60px;
+    }
+}

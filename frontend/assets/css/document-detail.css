@@ -1,0 +1,522 @@
+/* ============================================
+   JDIH UPNVJT - DOCUMENT DETAIL STYLES
+   ============================================ */
+
+/* ============================================
+   DETAIL LAYOUT
+   ============================================ */
+
+.jdih-detail-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  padding: 40px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.jdih-detail-main {
+  width: 100%;
+}
+
+.jdih-detail-sidebar {
+  position: sticky;
+  top: 120px;
+  height: fit-content;
+}
+
+/* ============================================
+   PDF VIEWER
+   ============================================ */
+
+.jdih-pdf-viewer {
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 32px;
+}
+
+.jdih-pdf-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #F9FAFB;
+  border-bottom: 1px solid #E5E7EB;
+  flex-wrap: wrap;
+}
+
+.jdih-pdf-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.jdih-pdf-btn {
+  background: white;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--color-text-dark);
+  transition: all 200ms ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.jdih-pdf-btn:hover {
+  background: #F9FAFB;
+  border-color: var(--color-primary-medium);
+  color: var(--color-primary-medium);
+}
+
+.jdih-pdf-btn.active {
+  background: var(--color-primary-medium);
+  color: white;
+  border-color: var(--color-primary-medium);
+}
+
+.jdih-pdf-info {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.jdih-pdf-container {
+  background: #F3F4F6;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.jdih-pdf-placeholder {
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.jdih-pdf-placeholder-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.jdih-pdf-placeholder-text {
+  font-size: 14px;
+}
+
+/* ============================================
+   DETAIL CONTENT
+   ============================================ */
+
+.jdih-doc-header {
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+.jdih-doc-header-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.jdih-doc-header-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.jdih-doc-header-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.jdih-doc-header-badge.status-berlaku {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10B981;
+}
+
+.jdih-doc-header-badge.status-tidak-berlaku {
+  background: rgba(239, 68, 68, 0.1);
+  color: #EF4444;
+}
+
+.jdih-doc-header-badge.status-proses {
+  background: rgba(245, 158, 11, 0.1);
+  color: #F59E0B;
+}
+
+.jdih-doc-header-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  line-height: 1.3;
+  margin-bottom: 16px;
+}
+
+.jdih-doc-header-subtitle {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+/* ============================================
+   DESCRIPTION SECTION
+   ============================================ */
+
+.jdih-doc-description {
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+.jdih-doc-description-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--color-primary-medium);
+}
+
+.jdih-doc-description-content {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.8;
+}
+
+.jdih-doc-description-content p {
+  margin-bottom: 12px;
+}
+
+.jdih-doc-description-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* ============================================
+   RELATED DOCUMENTS
+   ============================================ */
+
+.jdih-related-section {
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+.jdih-related-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--color-primary-medium);
+}
+
+.jdih-related-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.jdih-related-item {
+  padding: 12px;
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  transition: all 200ms ease;
+}
+
+.jdih-related-item:hover {
+  background: #F3F4F6;
+  border-color: var(--color-primary-medium);
+}
+
+.jdih-related-item a {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  gap: 10px;
+}
+
+.jdih-related-item-icon {
+  color: var(--color-primary-medium);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.jdih-related-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.jdih-related-item-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-dark);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.jdih-related-item-meta {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+
+/* ============================================
+   SIDEBAR INFORMATION CARD
+   ============================================ */
+
+.jdih-info-card {
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.jdih-info-card-header {
+  background: linear-gradient(135deg, var(--color-primary-medium), var(--color-primary-dark));
+  color: white;
+  padding: 16px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.jdih-info-card-body {
+  padding: 20px;
+}
+
+.jdih-info-card-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.jdih-info-card-row:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.jdih-info-card-label {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 120px;
+  flex-shrink: 0;
+}
+
+.jdih-info-card-value {
+  font-size: 14px;
+  color: var(--color-text-dark);
+  font-weight: 500;
+  word-break: break-word;
+}
+
+/* ============================================
+   ACTION BUTTONS SIDEBAR
+   ============================================ */
+
+.jdih-action-card {
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.jdih-action-card-header {
+  background: #F9FAFB;
+  padding: 16px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-text-dark);
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.jdih-action-card-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.jdih-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 200ms ease;
+  text-decoration: none;
+  border: none;
+  text-align: center;
+}
+
+.jdih-action-btn-primary {
+  background: var(--color-primary-medium);
+  color: white;
+}
+
+.jdih-action-btn-primary:hover {
+  background: var(--color-primary-dark);
+  box-shadow: 0 4px 12px rgba(11, 93, 30, 0.2);
+}
+
+.jdih-action-btn-secondary {
+  background: white;
+  color: var(--color-primary-medium);
+  border: 1px solid var(--color-primary-medium);
+}
+
+.jdih-action-btn-secondary:hover {
+  background: #E8F5E9;
+}
+
+.jdih-action-btn-outline {
+  background: white;
+  color: var(--color-text-dark);
+  border: 1px solid #D1D5DB;
+}
+
+.jdih-action-btn-outline:hover {
+  background: #F9FAFB;
+  border-color: var(--color-primary-medium);
+  color: var(--color-primary-medium);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1200px) {
+  .jdih-detail-wrapper {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .jdih-detail-sidebar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    position: static;
+    top: auto;
+  }
+
+  .jdih-info-card,
+  .jdih-action-card {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .jdih-detail-wrapper {
+    padding: 24px 16px;
+    gap: 16px;
+  }
+
+  .jdih-detail-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .jdih-pdf-container {
+    min-height: 400px;
+  }
+
+  .jdih-doc-header-title {
+    font-size: 22px;
+  }
+
+  .jdih-related-item {
+    padding: 10px;
+  }
+
+  .jdih-related-item-title {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 576px) {
+  .jdih-detail-wrapper {
+    padding: 16px 12px;
+  }
+
+  .jdih-pdf-toolbar {
+    padding: 10px 12px;
+  }
+
+  .jdih-pdf-controls {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .jdih-pdf-btn {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+
+  .jdih-pdf-container {
+    min-height: 300px;
+  }
+
+  .jdih-doc-header {
+    padding: 16px;
+  }
+
+  .jdih-doc-header-title {
+    font-size: 18px;
+  }
+
+  .jdih-doc-header-meta {
+    gap: 8px;
+  }
+
+  .jdih-action-btn {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .jdih-info-card-row {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .jdih-info-card-label {
+    min-width: auto;
+  }
+}

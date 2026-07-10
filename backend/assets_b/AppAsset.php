@@ -10,6 +10,7 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web/assets_b';
     public $css = [
         'css/site.css',
+        'css/admin-theme.css',
     ];
     public $depends = [
         'yii\web\YiiAsset',

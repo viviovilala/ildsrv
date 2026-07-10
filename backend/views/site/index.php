@@ -1,76 +1,32 @@
 <?php
 
 use backend\models\Peraturan;
-// use backend\models\Monografi;
-// use backend\models\Artikel;
-// use backend\models\Putusan;
-// use backend\models\Berita;
-//use miloschuman\highcharts\Highcharts;
-//use yii\web\JsExpression;
 use yii\helpers\Html;
 
 $this->title = Yii::t('app', 'Dashboard');
-$this->params['breadcrumbs'][] = $this->title;
+$totalPeraturan = Peraturan::find()->where(['tipe_dokumen' => 1])->count();
+$totalMonografi = Peraturan::find()->where(['tipe_dokumen' => 2])->count();
+$totalArtikel = Peraturan::find()->where(['tipe_dokumen' => 3])->count();
+$totalPutusan = Peraturan::find()->where(['tipe_dokumen' => 4])->count();
 ?>
-<div class="row">
-    <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-aqua">
-            <div class="inner">
-                <h3><?= Peraturan::find()->where(['tipe_dokumen' => 1])->count(); ?></h3>
 
-                <p>Peraturan</p>
-            </div>
-            <div class="icon">
-                <i class="ion ion-bag"></i>
-            </div>
-            <?= Html::a('More info <i class="fa fa-arrow-circle-right"></i>', ['peraturan/index'], ['class' => 'small-box-footer']) ?>
-        </div>
+<div class="jdih-dashboard">
+    <div class="jdih-dashboard__head"><div><h1>Dashboard Overview</h1><p>Selamat datang kembali, Admin JDIH.</p></div><div><strong>Home</strong> / Dashboard</div></div>
+    <div class="jdih-stat-grid-admin">
+        <article class="jdih-stat-box is-blue"><div><strong><?= number_format($totalPeraturan) ?></strong><span>Peraturan</span></div><i class="fa fa-shield"></i><?= Html::a('More info <i class="fa fa-arrow-circle-o-right"></i>', ['peraturan/index']) ?></article>
+        <article class="jdih-stat-box is-green"><div><strong><?= number_format($totalMonografi) ?></strong><span>Monografi</span></div><i class="fa fa-book"></i><?= Html::a('More info <i class="fa fa-arrow-circle-o-right"></i>', ['monografi/index']) ?></article>
+        <article class="jdih-stat-box is-orange"><div><strong><?= number_format($totalArtikel) ?></strong><span>Artikel</span></div><i class="fa fa-newspaper-o"></i><?= Html::a('More info <i class="fa fa-arrow-circle-o-right"></i>', ['artikel/index']) ?></article>
+        <article class="jdih-stat-box is-red"><div><strong><?= number_format($totalPutusan) ?></strong><span>Putusan</span></div><i class="fa fa-balance-scale"></i><?= Html::a('More info <i class="fa fa-arrow-circle-o-right"></i>', ['putusan/index']) ?></article>
     </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-green">
-            <div class="inner">
-                <h3><?= Peraturan::find()->where(['tipe_dokumen' => 2])->count(); ?></h3>
-
-                <p>Monografi</p>
-            </div>
-            <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-            </div>
-            <?= Html::a('More info <i class="fa fa-arrow-circle-right"></i>', ['monografi/index'], ['class' => 'small-box-footer']) ?>
-        </div>
+    <div class="jdih-admin-grid">
+        <section class="jdih-admin-panel jdih-chart-panel">
+            <div class="jdih-panel-title"><h2><i class="fa fa-line-chart"></i> Statistik Pengunjung</h2><div><button>Mingguan</button><button>Bulanan</button></div></div>
+            <div class="jdih-bars"><?php foreach ([38,62,48,78,88,66,72] as $i => $height): ?><div><span style="height:<?= $height ?>%"></span><strong><?= ['JAN','FEB','MAR','APR','MEI','JUN','JUL'][$i] ?></strong></div><?php endforeach; ?></div>
+        </section>
+        <aside class="jdih-admin-side">
+            <section class="jdih-survey-card"><h2><i class="fa fa-bar-chart"></i> Survey Kepuasan</h2><h3>4.8/5.0</h3><p>Total responden bulan ini: 124 orang</p><?= Html::a('Lihat Laporan Lengkap', ['survey-kepuasan/index']) ?></section>
+            <section class="jdih-collection-card"><h2>Koleksi Digital</h2><p><i class="fa fa-file-pdf-o"></i> <strong>PDF Scan</strong><br>1,842 Files</p><p><i class="fa fa-image"></i> <strong>Infografis</strong><br>215 Files</p><p><i class="fa fa-folder-open-o"></i> <strong>Arsip Lampiran</strong><br>42 Active Bundles</p></section>
+            <section class="jdih-system-card"><strong><i class="fa fa-circle"></i> Semua Sistem Optimal</strong></section>
+        </aside>
     </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-yellow">
-            <div class="inner">
-                <h3><?= Peraturan::find()->where(['tipe_dokumen' => 3])->count(); ?></h3>
-
-                <p>Artikel</p>
-            </div>
-            <div class="icon">
-                <i class="ion ion-person-add"></i>
-            </div>
-            <?= Html::a('More info <i class="fa fa-arrow-circle-right"></i>', ['artikel/index'], ['class' => 'small-box-footer']) ?>
-        </div>
-    </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-red">
-            <div class="inner">
-                <h3><?= Peraturan::find()->where(['tipe_dokumen' => 4])->count(); ?></h3>
-
-                <p>Putusan</p>
-            </div>
-            <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-            </div>
-            <?= Html::a('More info <i class="fa fa-arrow-circle-right"></i>', ['putusan/index'], ['class' => 'small-box-footer']) ?>
-        </div>
-    </div>
-    <!-- ./col -->
 </div>

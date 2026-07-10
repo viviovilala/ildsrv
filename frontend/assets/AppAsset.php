@@ -21,8 +21,19 @@ class AppAsset extends AssetBundle
         'vendor/boxicons/css/boxicons.min.css',
         'vendor/swiper/swiper-bundle.min.css',
         ['css/lazyload.css', 'appendTimestamp' => true],
+<<<<<<< HEAD
+        ['css/jdih-upnvjt.css', 'appendTimestamp' => true],
+=======
+        ['css/jdih-theme.css', 'appendTimestamp' => true],
+        ['css/jdih-components.css', 'appendTimestamp' => true],
+        ['css/homepage.css', 'appendTimestamp' => true],
+        ['css/catalog.css', 'appendTimestamp' => true],
+        ['css/document-detail.css', 'appendTimestamp' => true],
+        ['css/news.css', 'appendTimestamp' => true],
+>>>>>>> 5bef1a2f6a6de30f1f4e8c9f59bd9ee27d536d98
         ['css/style.css', 'appendTimestamp' => true],
         ['css/mobile-menu.css', 'appendTimestamp' => true],
+        ['css/jdih-theme.css', 'appendTimestamp' => true],
         ['css/a11y.css', 'appendTimestamp' => true],
     ];
 

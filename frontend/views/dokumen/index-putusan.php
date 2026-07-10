@@ -1,41 +1,10 @@
-<?php
-
-use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\widgets\ListView;
-
-$this->title = 'Dokumen Putusan Pengadilan';
-$this->registerMetaTag(['name' => 'description', 'content' => 'Koleksi putusan pengadilan Indonesia - cari dan telusuri putusan MA, pengadilan banding, dan pengadilan negeri di ILDIS.']);
-$this->registerMetaTag(['name' => 'robots', 'content' => 'index, follow']);
-?>
-
-<h1 class="visually-hidden">Putusan Pengadilan Indonesia</h1>
-<div class="dokumen-index-wrapper" style="background-color: #f8fafc; min-height: 100vh; padding-top: 80px;">
-    <!-- Main Content -->
-    <div class="container py-5">
-        <div class="row">
-            <?= $this->render('_search-sidebar', ['model' => $searchModel]) ?>
-
-            <!-- Results List -->
-            <div class="col-lg-9">
-                <div class="results-container bg-white rounded-4 p-4 p-md-5" style="box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
-                    <div class="results-summary mb-4 pb-3 border-bottom d-flex justify-content-between align-items-center">
-                        <div class="small text-muted">
-                            <?= $dataProvider->getTotalCount() > 0 ? "Menampilkan " . ($dataProvider->pagination->offset + 1) . " - " . min($dataProvider->pagination->offset + $dataProvider->pagination->limit, $dataProvider->getTotalCount()) . " dari " . number_format($dataProvider->getTotalCount()) . " dokumen" : "Tidak ada dokumen ditemukan" ?>
-                        </div>
-                    </div>
-
-                    <?= ListView::widget([
-                        'dataProvider' => $dataProvider,
-                        'options' => ['class' => 'results-list'],
-                        'itemOptions' => ['class' => 'item'],
-                        'itemView' => '_data',
-                        'summary' => false,
-                        'pager' => require __DIR__ . '/_pager.php',
-                    ]) ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
+<<<<<<< HEAD
+<?= $this->render('index', ['searchModel' => $searchModel, 'dataProvider' => $dataProvider, 'pageTitle' => 'Putusan']) ?>
+=======
+<?= $this->render('index', [
+    'searchModel' => $searchModel,
+    'dataProvider' => $dataProvider,
+    'pageTitle' => 'Putusan',
+    'pageDescription' => 'Katalog putusan dan yurisprudensi untuk mendukung dokumentasi hukum dan referensi kelembagaan.',
+]) ?>
+>>>>>>> 5bef1a2f6a6de30f1f4e8c9f59bd9ee27d536d98
