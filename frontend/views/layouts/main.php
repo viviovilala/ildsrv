@@ -16,6 +16,8 @@ use backend\models\FrontendConfig;
 $logo = FrontendConfig::findOne(1);
 $siteName = 'JDIH - Jaringan Dokumentasi dan Informasi Hukum';
 $canonicalUrl = Url::canonical();
+$brandLogo = Url::to('@web/images/upnvjt-logo-yellow.png');
+$splashBackground = Url::to('@web/images/hero-bg.png');
 
 if (empty($this->params['description'])) {
     $this->registerMetaTag(['name' => 'description', 'content' => 'Jaringan Dokumentasi dan Informasi Hukum - Portal hukum terlengkap untuk peraturan, monografi, putusan, dan artikel hukum.']);
@@ -59,10 +61,15 @@ if (empty($this->params['description'])) {
         <div class="container d-flex justify-content-between align-items-center">
 
             <div class="logo">
-              <?= Html::a(\common\components\LazyImage::img('@web/common/dokumen/' . $logo->isi_konfig, [
-                  'id' => 'logo',
-                  'alt' => Html::encode($siteName),
-              ], false), ['/'], ['class' => 'navbar-brand width-200px sm-width-180px xs-width-150px']); ?>
+              <?= Html::a(
+                  Html::img($brandLogo, [
+                      'class' => 'jdih-brand-mark',
+                      'alt' => 'Logo UPN Veteran Jawa Timur',
+                  ]) .
+                  '<span class="jdih-brand-text"><span class="jdih-brand-name">JDIH UPNVJT</span><span class="jdih-brand-subtitle">Portal Dokumentasi Hukum</span></span>',
+                  ['/'],
+                  ['class' => 'navbar-brand']
+              ); ?>
             </div>
 
           <nav id="navbar" class="navbar" aria-label="Navigasi utama">
@@ -81,10 +88,10 @@ if (empty($this->params['description'])) {
         <div class="mobile-nav-header">
           <div class="mobile-nav-header__brand">
             <a href="<?= Url::to(['/']) ?>" class="mobile-nav-header__logo-link">
-              <?= \common\components\LazyImage::img('@web/common/dokumen/' . $logo->isi_konfig, [
+              <?= Html::img($brandLogo, [
                   'class' => 'mobile-nav-header__logo',
-                  'alt' => Html::encode($siteName),
-              ], false) ?>
+                  'alt' => 'Logo UPN Veteran Jawa Timur',
+              ]) ?>
             </a>
             <span class="mobile-nav-header__title">Menu</span>
           </div>
@@ -197,6 +204,21 @@ if (empty($this->params['description'])) {
         </div>
     </div>
 
+    <div
+      id="jdih-splash"
+      class="jdih-splash"
+      role="status"
+      aria-live="polite"
+      style="background-image: linear-gradient(rgba(0, 63, 10, 0.86), rgba(0, 63, 10, 0.78)), url('<?= Html::encode($splashBackground) ?>');"
+    >
+      <div class="jdih-splash__panel">
+        <?= Html::img($brandLogo, ['class' => 'jdih-splash__logo', 'alt' => 'Logo UPN Veteran Jawa Timur']) ?>
+        <p class="jdih-splash__subtitle">JDIH UPNVJT</p>
+        <h2 class="jdih-splash__title">Portal Informasi Hukum</h2>
+        <span class="jdih-splash__loader" aria-hidden="true"></span>
+      </div>
+    </div>
+
     <!-- end main-wrapper section -->
 
     <!-- start scroll to top -->
@@ -211,6 +233,28 @@ if (empty($this->params['description'])) {
     <!-- all js include end -->
 
     <?php $this->endBody() ?>
+
+    <script>
+      (function () {
+        var splash = document.getElementById('jdih-splash');
+        if (!splash) {
+          return;
+        }
+        var splashKey = 'jdih-upnvjt-splash-shown';
+        if (window.sessionStorage && window.sessionStorage.getItem(splashKey)) {
+          splash.classList.add('is-hidden');
+          return;
+        }
+        window.addEventListener('load', function () {
+          window.setTimeout(function () {
+            splash.classList.add('is-hidden');
+            if (window.sessionStorage) {
+              window.sessionStorage.setItem(splashKey, '1');
+            }
+          }, 520);
+        });
+      }());
+    </script>
 
     <!-- Google Analytics Start -->
 

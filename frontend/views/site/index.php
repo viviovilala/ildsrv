@@ -12,9 +12,8 @@ $this->title = 'JDIH - Jaringan Dokumentasi dan Informasi Hukum';
 $this->description = 'Jaringan Dokumentasi dan Informasi Hukum';
 $this->keywords = ['Jaringan', 'Dokumentasi', 'Informasi', 'Hukum'];
 
-$heroWebp = Url::to('@web/images/hero-bg.webp');
 $heroPng = Url::to('@web/images/hero-bg.png');
-$this->registerLinkTag(['rel' => 'preload', 'as' => 'image', 'href' => $heroWebp, 'type' => 'image/webp']);
+$this->registerLinkTag(['rel' => 'preload', 'as' => 'image', 'href' => $heroPng, 'type' => 'image/png']);
 
 $instansi = FrontendConfig::findOne(2);
 $rawInstansi = $instansi ? $instansi->isi_konfig : '';
@@ -460,7 +459,6 @@ $totalTidakBerlaku  = Dokumen::find()->where(['status' => 'Tidak Berlaku', 'is_p
 
         <div class="search-landing-container">
             <picture class="search-landing-media" aria-hidden="true">
-                <source srcset="<?= Html::encode($heroWebp) ?>" type="image/webp">
                 <img
                     src="<?= Html::encode($heroPng) ?>"
                     alt=""
@@ -473,7 +471,8 @@ $totalTidakBerlaku  = Dokumen::find()->where(['status' => 'Tidak Berlaku', 'is_p
             </picture>
 
             <h1 class="hero-brand" data-aos="fade-up">
-                JDIH
+                Jaringan Dokumentasi &amp;<br>
+                <span class="hero-gold">Informasi Hukum</span>
                 <?php if ($instansiText !== ''): ?>
                     <span class="hero-instansi"><?= Html::encode($instansiText) ?></span>
                 <?php endif; ?>

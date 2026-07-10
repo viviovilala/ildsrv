@@ -35,41 +35,14 @@ $linkTemplate = static function (string $icon): string {
 
 $menuItems = [
     [
-        'label' => 'Beranda',
+        'label' => 'Home',
         'url' => ['/site/index'],
         'options' => ['class' => 'mobile-menu-item'],
         'template' => $linkTemplate('bi-house-door'),
     ],
 
     [
-        'label' => 'Tentang Kami',
-        'url' => '#',
-        'options' => ['class' => 'dropdown mobile-menu-item'],
-        'template' => $parentTemplate('bi-info-circle'),
-        'items' => [
-            ['label' => 'Sekilas Sejarah', 'url' => ['site/sekilas-sejarah']],
-            ['label' => 'Dasar Hukum', 'url' => ['site/dasar-hukum']],
-            ['label' => 'Visi ', 'url' => ['site/visi']],
-            ['label' => 'Misi', 'url' => ['site/misi']],
-            [
-                'label' => 'Struktur Organisasi',
-                'options' => ['class' => 'dropdown'],
-                'template' => '<a href="javascript:void(0)" class="mobile-menu-link mobile-menu-link--parent href_class">'
-                    . '<span class="mobile-menu-label">{label}</span>'
-                    . '<i class="bi bi-chevron-down mobile-menu-chevron" aria-hidden="true"></i>'
-                    . '</a>',
-                'items' => [
-                    ['label' => 'JDIH Instansi', 'url' => ['site/sto']],
-                    ['label' => 'Biro/Bagian Hukum', 'url' => ['site/stoinstansi']],
-                ]
-            ],
-            ['label' => 'SK Tim Pengelola', 'url' => ['site/pengelola']],
-            ['label' => 'SOP', 'url' => ['site/sop']],
-        ]
-    ],
-
-    [
-        'label' => 'Jenis Dokumen',
+        'label' => 'Produk Hukum',
         'url' => '#',
         'options' => ['class' => 'dropdown mobile-menu-item'],
         'activateItems' => true,
@@ -83,6 +56,7 @@ $menuItems = [
             ['label' => 'Putusan', 'url' => ['dokumen/putusan']],
         ]
     ],
+
     [
         'label' => \common\components\DocumentGroup::label(
             \common\components\DocumentGroup::LEGISLATION_FORMATION
@@ -108,7 +82,33 @@ $menuItems = [
         'template' => $linkTemplate('bi-newspaper'),
     ],
     [
-        'label' => 'Link Terkait',
+        'label' => 'Tentang',
+        'url' => '#',
+        'options' => ['class' => 'dropdown mobile-menu-item'],
+        'template' => $parentTemplate('bi-info-circle'),
+        'items' => [
+            ['label' => 'Sekilas Sejarah', 'url' => ['site/sekilas-sejarah']],
+            ['label' => 'Dasar Hukum', 'url' => ['site/dasar-hukum']],
+            ['label' => 'Visi ', 'url' => ['site/visi']],
+            ['label' => 'Misi', 'url' => ['site/misi']],
+            [
+                'label' => 'Struktur Organisasi',
+                'options' => ['class' => 'dropdown'],
+                'template' => '<a href="javascript:void(0)" class="mobile-menu-link mobile-menu-link--parent href_class">'
+                    . '<span class="mobile-menu-label">{label}</span>'
+                    . '<i class="bi bi-chevron-down mobile-menu-chevron" aria-hidden="true"></i>'
+                    . '</a>',
+                'items' => [
+                    ['label' => 'JDIH Instansi', 'url' => ['site/sto']],
+                    ['label' => 'Biro/Bagian Hukum', 'url' => ['site/stoinstansi']],
+                ]
+            ],
+            ['label' => 'SK Tim Pengelola', 'url' => ['site/pengelola']],
+            ['label' => 'SOP', 'url' => ['site/sop']],
+        ]
+    ],
+    [
+        'label' => 'Informasi',
         'url' => '#',
         'options' => ['class' => 'dropdown mobile-menu-item'],
         'activateItems' => true,
@@ -119,6 +119,15 @@ $menuItems = [
             ['label' => 'jdihn.go.id', 'url' => Url::to('https://jdihn.go.id/')],
             ['label' => 'bphn.go.id', 'url' => Url::to('https://bphn.go.id/')],
         ]
+    ],
+    [
+        'label' => '',
+        'url' => ['/dokumen/index'],
+        'options' => ['class' => 'mobile-menu-item nav-search-item'],
+        'template' => '<a href="{url}" class="mobile-menu-link nav-search-link" title="Cari dokumen" aria-label="Cari dokumen">'
+            . '<span class="mobile-menu-icon" aria-hidden="true"><i class="bi bi-search"></i></span>'
+            . '<span class="mobile-menu-label">Cari</span>'
+            . '</a>',
     ],
     [
         'label' => 'Statistik dokumen hukum',
@@ -134,9 +143,13 @@ $menuItems = [
 
 if (Yii::$app->user->isGuest) {
     $menuItems[] = [
-        'label' => '',
+        'label' => 'Masuk',
         'url' => ['site/login'],
-        'options' => ['class' => 'mobile-menu-item--hidden'],
+        'options' => ['class' => 'mobile-menu-item mobile-menu-login'],
+        'template' => '<a href="{url}" class="mobile-menu-link nav-login-link">'
+            . '<span class="mobile-menu-icon" aria-hidden="true"><i class="bi bi-box-arrow-in-right"></i></span>'
+            . '<span class="mobile-menu-label">{label}</span>'
+            . '</a>',
     ];
 } else {
     $menuItems[] = [

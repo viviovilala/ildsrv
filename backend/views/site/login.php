@@ -5,6 +5,7 @@
 /* @var $model \common\models\LoginForm */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 
 $this->title = 'Login';
@@ -26,25 +27,23 @@ $fieldOptions2 = [
 
 
 
-<div class="login-box">
-    <div class="login-logo">
-        <center>
-            <?php
-            echo '<img class="img-responsive" src="' . Yii::$app->homeUrl . 'assets_b/img/logo-default.png"  alt="User Image">';
-            ?>
-        </center>
-        <!--         <a href="#"><b>JDIH</b></a>
-        <h6><p>Jaringan Dokumentasi dan Informasi Hukum</p></h6> -->
-    </div>
-    <!-- /.login-logo -->
+<div class="jdih-login-shell">
+    <div class="jdih-login">
+        <div class="jdih-login__brand">
+            <?= Html::img(Url::to('@web/assets_b/img/upnvjt-logo-yellow.png'), [
+                'class' => 'jdih-login__logo',
+                'alt' => 'Logo UPN Veteran Jawa Timur',
+            ]) ?>
+            <div>
+                <h1 class="jdih-login__title">JDIH</h1>
+                <p class="jdih-login__subtitle">UPNVJT</p>
+            </div>
+        </div>
 
-    <div class="box box-warning direct-chat direct-chat-warning">
-
-
-
-        <div class="login-box-body">
-
-            <p class="login-box-msg">Silahkan Login</p>
+        <div class="jdih-login__card">
+            <div class="jdih-login__body">
+                <h2 class="jdih-login__heading">Silahkan Login</h2>
+                <p class="jdih-login__caption">Akses Portal Dokumentasi &amp; Informasi Hukum</p>
 
             <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => true,'enableAjaxValidation' => false,]); ?>
 
@@ -69,16 +68,8 @@ $fieldOptions2 = [
             ) ?>
             <?php endif; ?>
 
-            <div class="row">
-                <div class="col-xs-8">
-                    <?= $form->field($model, 'rememberMe')->checkbox() ?>
-                </div>
-                <!-- /.col -->
-                <div class="col-xs-4">
-                    <?= Html::submitButton('Sign in', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>
-                </div>
-                <!-- /.col -->
-            </div>
+            <?= $form->field($model, 'rememberMe')->checkbox() ?>
+            <?= Html::submitButton('Sign In', ['class' => 'btn btn-primary jdih-login__button', 'name' => 'login-button']) ?>
 
 
             <?php ActiveForm::end(); ?>
@@ -86,9 +77,11 @@ $fieldOptions2 = [
 
             <!-- /.social-auth-links -->
 
+            </div>
+            <div class="jdih-login__footer">
+                Bukan administrator? <?= Html::a('Kembali ke Beranda', '/') ?>
+            </div>
         </div>
-        <!-- /.login-box-body -->
-    </div><!-- /.login-box -->
-    <!-- <h6><p><center>Badan Pengawas Pemilu</center></p></h6> -->
-
+        <p class="jdih-login__copy">&copy; <?= date('Y') ?> JDIH UPN Veteran Jawa Timur. All Rights Reserved.</p>
+    </div>
 </div>

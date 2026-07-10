@@ -23,6 +23,7 @@ class AppAsset extends AssetBundle
         ['css/lazyload.css', 'appendTimestamp' => true],
         ['css/style.css', 'appendTimestamp' => true],
         ['css/mobile-menu.css', 'appendTimestamp' => true],
+        ['css/jdih-theme.css', 'appendTimestamp' => true],
         ['css/a11y.css', 'appendTimestamp' => true],
     ];
 
