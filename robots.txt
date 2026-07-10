@@ -1,8 +1,2 @@
 User-agent: *
-Allow: /
-Disallow: /backend/
-Disallow: /profile/
-Disallow: /site/login
-Disallow: /site/error
-
-Sitemap: /sitemap.xml
+Disallow: /
