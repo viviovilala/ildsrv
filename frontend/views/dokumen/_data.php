@@ -11,6 +11,7 @@ $year = $model->tahun_terbit ?: ($model->tanggal_penetapan ? date('Y', strtotime
 ?>
 
 <article class="catalog-doc-card">
+<<<<<<< HEAD
     <div class="catalog-doc-card__icon"><i class="bi bi-file-earmark-text" aria-hidden="true"></i></div>
     <div>
         <div class="catalog-doc-card__meta">
@@ -27,4 +28,32 @@ $year = $model->tahun_terbit ?: ($model->tanggal_penetapan ? date('Y', strtotime
         ?>
         <?= Html::a('Detail', ['/dokumen/view', 'id' => $model->id], ['class' => 'catalog-doc-card__detail']) ?>
     </div>
+=======
+    <div class="catalog-doc-card__icon">
+        <i class="bi bi-file-earmark-text" aria-hidden="true"></i>
+    </div>
+
+    <div>
+        <div class="catalog-doc-card__meta">
+            <span class="catalog-doc-card__status<?= $isRevoked ? ' is-revoked' : '' ?>"><?= Html::encode($status) ?></span>
+            <span><?= Html::encode($jenis) ?></span>
+            <span>&bull;</span>
+            <span><?= Html::encode($year) ?></span>
+        </div>
+        <h3><?= Html::a(Html::encode($model->judul), ['/dokumen/view', 'id' => $model->id]) ?></h3>
+        <p>
+            Nomor <?= Html::encode($model->nomor_peraturan ?: '-') ?>
+            &bull; Tanggal Penetapan: <?= Html::encode($model->tanggal_penetapan ? $model->getTanggal($model->tanggal_penetapan) : '-') ?>
+        </p>
+    </div>
+
+    <div class="catalog-doc-card__actions">
+        <?php if ($lampiran): ?>
+            <?= Html::a('<i class="bi bi-download" aria-hidden="true"></i> Unduh PDF', ['/dokumen/download', 'id' => $lampiran->dokumen_lampiran, 'docId' => $model->id], ['class' => 'catalog-doc-card__download']) ?>
+        <?php else: ?>
+            <?= Html::a('<i class="bi bi-download" aria-hidden="true"></i> Unduh PDF', ['/dokumen/view', 'id' => $model->id], ['class' => 'catalog-doc-card__download']) ?>
+        <?php endif; ?>
+        <?= Html::a('Detail', ['/dokumen/view', 'id' => $model->id], ['class' => 'catalog-doc-card__detail']) ?>
+    </div>
+>>>>>>> 5bef1a2f6a6de30f1f4e8c9f59bd9ee27d536d98
 </article>

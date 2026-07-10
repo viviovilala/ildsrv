@@ -47,6 +47,7 @@ if (empty($this->params['description'])) {
 
     <a class="visually-hidden-focusable skip-link" href="#main-content">Lewati ke konten utama</a>
 
+<<<<<<< HEAD
     <header class="jdih-public-header">
         <div class="container jdih-public-header__inner">
             <?= Html::a('<img src="' . Html::encode($brandLogo) . '" alt="" aria-hidden="true"><span><strong>JDIH UPNVJT</strong><small>Jaringan Dokumentasi Hukum</small></span>', ['/'], ['class' => 'jdih-brand']) ?>
@@ -57,12 +58,34 @@ if (empty($this->params['description'])) {
                 <?= Html::a('Informasi', ['/site/kontak']) ?>
                 <?= Html::a('Tentang', ['/site/about']) ?>
             </nav>
+=======
+    <header class="jdih-public-header" role="banner">
+        <div class="container jdih-public-header__inner">
+            <?= Html::a(
+                '<span class="jdih-logo-mark"><img src="' . Html::encode($brandLogo) . '" alt="" aria-hidden="true"></span><span class="jdih-brand-text"><strong>JDIH UPNVJT</strong><small>Jaringan Dokumentasi Hukum</small></span>',
+                ['/'],
+                ['class' => 'jdih-public-brand', 'aria-label' => 'Beranda JDIH UPNVJT']
+            ) ?>
+
+            <nav class="jdih-public-nav" aria-label="Navigasi utama">
+                <?= Html::a('Home', ['/site/index'], ['class' => 'jdih-public-nav__link']) ?>
+                <?= Html::a('Produk Hukum', ['/dokumen/index'], ['class' => 'jdih-public-nav__link']) ?>
+                <?= Html::a('Berita', ['/berita/index'], ['class' => 'jdih-public-nav__link']) ?>
+                <?= Html::a('Informasi', ['/site/kontak'], ['class' => 'jdih-public-nav__link']) ?>
+                <?= Html::a('Tentang', ['/site/about'], ['class' => 'jdih-public-nav__link']) ?>
+            </nav>
+
+>>>>>>> 5bef1a2f6a6de30f1f4e8c9f59bd9ee27d536d98
             <div class="jdih-public-actions">
                 <form class="jdih-header-search" action="<?= Url::to(['/dokumen/index']) ?>" method="get" role="search">
                     <i class="bi bi-search" aria-hidden="true"></i>
                     <input type="search" name="DokumenSearch[judul]" placeholder="Cari dokumen..." aria-label="Cari dokumen">
                 </form>
+<<<<<<< HEAD
                 <?= Html::a('Masuk', ['/site/login'], ['class' => 'jdih-login-btn']) ?>
+=======
+                <?= Html::a('Masuk', ['/site/login'], ['class' => 'jdih-login-button']) ?>
+>>>>>>> 5bef1a2f6a6de30f1f4e8c9f59bd9ee27d536d98
                 <button type="button" class="mobile-nav-toggle bi bi-list" aria-label="Buka menu" aria-expanded="false" aria-controls="mobile-nav"></button>
             </div>
         </div>
@@ -74,7 +97,11 @@ if (empty($this->params['description'])) {
         <div class="mobile-nav-header">
           <div class="mobile-nav-header__brand">
             <a href="<?= Url::to(['/']) ?>" class="mobile-nav-header__logo-link">
+<<<<<<< HEAD
               <img src="<?= Html::encode($brandLogo) ?>" class="mobile-nav-header__logo" alt="<?= Html::encode($siteName) ?>">
+=======
+              <span class="jdih-logo-mark"><img src="<?= Html::encode($brandLogo) ?>" alt="" aria-hidden="true"></span>
+>>>>>>> 5bef1a2f6a6de30f1f4e8c9f59bd9ee27d536d98
             </a>
             <span class="mobile-nav-header__title">Menu</span>
           </div>
@@ -186,8 +213,6 @@ if (empty($this->params['description'])) {
             </ul>
         </div>
     </div>
-
-    <!-- end main-wrapper section -->
 
     <!-- start scroll to top -->
     <a href="#" class="back-to-top" aria-label="Kembali ke atas"><i class="bi bi-chevron-up" aria-hidden="true"></i></a>

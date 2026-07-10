@@ -2,8 +2,8 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Statistik Pengunjung ILDIS';
-$this->registerMetaTag(['name' => 'description', 'content' => 'Statistik pengunjung ILDIS - Indonesian Law Documentation Information System.']);
+$this->title = 'Statistik Pengunjung JDIH UPNVJT';
+$this->registerMetaTag(['name' => 'description', 'content' => 'Statistik pengunjung JDIH UPN Veteran Jawa Timur.']);
 $this->registerMetaTag(['name' => 'robots', 'content' => 'index, follow']);
 
 $s = $stats;
@@ -96,7 +96,7 @@ $cards = [
             </div>
             <div>
                 <h1 class="visitor-title">Statistik Pengunjung</h1>
-                <p class="visitor-subtitle">Data kunjungan Jaringan Dokumentasi dan Informasi Hukum Nasional</p>
+                <p class="visitor-subtitle">Data kunjungan JDIH UPN Veteran Jawa Timur</p>
             </div>
         </div>
 
