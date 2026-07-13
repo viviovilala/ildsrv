@@ -30,6 +30,7 @@ RUN apk add --no-cache \
     icu-dev \
     icu \
     icu-libs \
+    postgresql-dev \
     gcc \
     make \
     musl-dev
@@ -45,6 +46,8 @@ RUN curl -L -o /tmp/s6-overlay-noarch.tar.xz https://github.com/just-containers/
 RUN docker-php-ext-install -j$(nproc) \
     pdo \
     pdo_mysql \
+    pdo_pgsql \
+    pgsql \
     zip \
     gd \
     intl \

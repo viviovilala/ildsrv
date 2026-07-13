@@ -1,70 +1,96 @@
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: ildis_mysql
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: ildis_postgres
     restart: unless-stopped
+
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set}
-      MYSQL_DATABASE: ${DB_DATABASE:-ildis_v4}
-      MYSQL_USER: ${DB_USER:-ildis}
-      MYSQL_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set}
+      POSTGRES_DB: ${DB_DATABASE:-ildis_v4}
+      POSTGRES_USER: ${DB_USER:-ildis}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-ildis2024}
+
     ports:
-      - "3308:3306"
+      - "5432:5432"
+
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
+
     healthcheck:
-      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD}" ]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-ildis} -d ${DB_DATABASE:-ildis_v4}"]
       interval: 10s
       timeout: 5s
       retries: 5
+
 
   app:
     build:
       context: .
       dockerfile: Dockerfile
+
+    container_name: ildis_app
+
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy
+
     ports:
       - "8080:80"
+
     volumes:
       - runtime:/var/www/runtime
       - backend-assets:/var/www/backend/web/assets
       - frontend-assets:/var/www/frontend/web/assets
       - backend-uploads:/var/www/backend/web/uploads
       - frontend-uploads:/var/www/frontend/web/uploads
-      # Optional: mount custom nginx config without rebuilding the image.
-      # Remove this line to use the default config baked into the image.
       - ./docker/nginx/default.conf:/etc/nginx/http.d/default.conf:ro
       - ./.env:/var/www/.env:ro
+
+
     environment:
-      - S6_KEEP_ENV=1
-      - YII_ENV=${YII_ENV:-prod}
-      - YII_DEBUG=${YII_DEBUG:-false}
-      - DB_HOST=${DB_HOST:-mysql}
-      - DB_USER=${DB_USER:-root}
-      - DB_PASSWORD=${DB_PASSWORD:?DB_PASSWORD must be set}
-      - DB_DATABASE=${DB_DATABASE:-ildis_v4}
-      - DB_DATABASE_PORT=${DB_DATABASE_PORT:-3306}
-      - PUBLIC_DOMAIN=${PUBLIC_DOMAIN:-http://localhost:8080}
-      - COOKIE_VALIDATION_KEY_BE=${COOKIE_VALIDATION_KEY_BE}
-      - COOKIE_VALIDATION_KEY_FE=${COOKIE_VALIDATION_KEY_FE}
-      - RECAPTCHA_ENABLED=${RECAPTCHA_ENABLED:-false}
-      - RECAPTCHA_SITE_KEY=${RECAPTCHA_SITE_KEY}
-      - RECAPTCHA_SECRET_KEY=${RECAPTCHA_SECRET_KEY}
-      - PHP_DISPLAY_ERRORS=Off
-      - PHP_ERROR_REPORTING='E_ALL & ~E_DEPRECATED'
+      S6_KEEP_ENV: 1
+
+      YII_ENV: ${YII_ENV:-prod}
+      YII_DEBUG: ${YII_DEBUG:-false}
+
+      DB_HOST: postgres
+      DB_USER: ${DB_USER:-ildis}
+      DB_PASSWORD: ${DB_PASSWORD:-ildis2024}
+      DB_DATABASE: ${DB_DATABASE:-ildis_v4}
+      DB_DATABASE_PORT: 5432
+
+      PUBLIC_DOMAIN: ${PUBLIC_DOMAIN:-http://localhost:8080}
+
+      COOKIE_VALIDATION_KEY_BE: ${COOKIE_VALIDATION_KEY_BE}
+      COOKIE_VALIDATION_KEY_FE: ${COOKIE_VALIDATION_KEY_FE}
+
+      RECAPTCHA_ENABLED: ${RECAPTCHA_ENABLED:-false}
+      RECAPTCHA_SITE_KEY: ${RECAPTCHA_SITE_KEY}
+      RECAPTCHA_SECRET_KEY: ${RECAPTCHA_SECRET_KEY}
+
+      PHP_DISPLAY_ERRORS: "Off"
+      PHP_ERROR_REPORTING: "E_ALL & ~E_DEPRECATED"
+
+
     restart: unless-stopped
+
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost/" ]
+      test: ["CMD", "curl", "-f", "http://localhost/"]
       interval: 30s
       timeout: 10s
       retries: 3
 
+
 volumes:
-  mysql_data:
+
+  postgres_data:
+
   runtime:
+
   backend-assets:
+
   frontend-assets:
+
   backend-uploads:
+
   frontend-uploads:

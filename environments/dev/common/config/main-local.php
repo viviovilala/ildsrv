@@ -6,7 +6,7 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=' . getenv('DB_HOST') . ';port=' . getenv('DB_DATABASE_PORT') . ';dbname=' . getenv('DB_DATABASE'),
+            'dsn' => 'pgsql:host=' . getenv('DB_HOST') . ';port=' . getenv('DB_DATABASE_PORT') . ';dbname=' . getenv('DB_DATABASE'),
             'username' => getenv('DB_USER'),
             'password' => getenv('DB_PASSWORD'),
             'charset' => 'utf8',

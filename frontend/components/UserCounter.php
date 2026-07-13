@@ -92,7 +92,7 @@ class UserCounter extends Component
                     ->createTable(
                         $this->tableUsers,
         				array(
-        					'id' => 'int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY',
+        					'id' => \yii\db\Schema::TYPE_PK,
         					'user_ip' => 'VARCHAR(255) NOT NULL',
         					'user_time' => 'int(10) unsigned NOT NULL',
         					'creation_date' => ' datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0)'
