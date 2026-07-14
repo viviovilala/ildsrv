@@ -9,6 +9,7 @@ class m250514_121417_create_table_user_member extends Migration
     public function safeUp()
     {
         $tableOptions = null;
+
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
         }
@@ -31,9 +32,26 @@ class m250514_121417_create_table_user_member extends Migration
             $tableOptions
         );
 
-        $this->createIndex('email', '{{%user_member}}', ['email'], true);
-        $this->createIndex('password_reset_token', '{{%user_member}}', ['password_reset_token'], true);
-        $this->createIndex('username', '{{%user_member}}', ['username'], true);
+        $this->createIndex(
+            'idx_user_member_email',
+            '{{%user_member}}',
+            ['email'],
+            true
+        );
+
+        $this->createIndex(
+            'idx_user_member_password_reset_token',
+            '{{%user_member}}',
+            ['password_reset_token'],
+            true
+        );
+
+        $this->createIndex(
+            'idx_user_member_username',
+            '{{%user_member}}',
+            ['username'],
+            true
+        );
     }
 
     public function safeDown()
@@ -41,3 +59,6 @@ class m250514_121417_create_table_user_member extends Migration
         $this->dropTable('{{%user_member}}');
     }
 }
+
+
+

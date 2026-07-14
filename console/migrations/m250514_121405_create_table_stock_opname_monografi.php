@@ -35,3 +35,8 @@ class m250514_121405_create_table_stock_opname_monografi extends Migration
         $this->dropTable('{{%stock_opname_monografi}}');
     }
 }
+
+
+
+
+

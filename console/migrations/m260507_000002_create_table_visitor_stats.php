@@ -18,9 +18,9 @@ class m260507_000002_create_table_visitor_stats extends Migration
             'stat_type' => "ENUM('daily','weekly','monthly','yearly','all_time') NOT NULL",
             'stat_date' => $this->date()->notNull(),
             'document_id' => $this->string(100),
-            'total_visits' => $this->integer()->unsigned()->notNull()->defaultValue(0),
-            'unique_visits' => $this->integer()->unsigned()->notNull()->defaultValue(0),
-            'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
+            'total_visits' => $this->integer()->notNull()->defaultValue(0),
+            'unique_visits' => $this->integer()->notNull()->defaultValue(0),
+            'updated_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
         ], $tableOptions);
 
         $this->createIndex(
@@ -36,3 +36,8 @@ class m260507_000002_create_table_visitor_stats extends Migration
         $this->dropTable('{{%visitor_stats}}');
     }
 }
+
+
+
+
+

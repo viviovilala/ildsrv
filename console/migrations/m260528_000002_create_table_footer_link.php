@@ -146,3 +146,7 @@ class m260528_000002_create_table_footer_link extends Migration
         $this->dropTable('{{%footer_link}}');
     }
 }
+
+
+
+

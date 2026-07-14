@@ -37,3 +37,8 @@ class m250514_121326_create_table_inisialisasi extends Migration
         $this->dropTable('{{%inisialisasi}}');
     }
 }
+
+
+
+
+

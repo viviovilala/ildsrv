@@ -57,3 +57,8 @@ class m250514_121328_create_table_item extends Migration
         $this->dropTable('{{%item}}');
     }
 }
+
+
+
+
+

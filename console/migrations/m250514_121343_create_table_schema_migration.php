@@ -16,7 +16,7 @@ class m250514_121343_create_table_schema_migration extends Migration
         $this->createTable(
             '{{%schema_migration}}',
             [
-                'id' => $this->primaryKey()->unsigned(),
+                'id' => $this->primaryKey(),
                 'migration' => $this->string()->notNull(),
                 'batch' => $this->integer()->notNull(),
             ],
@@ -29,3 +29,8 @@ class m250514_121343_create_table_schema_migration extends Migration
         $this->dropTable('{{%schema_migration}}');
     }
 }
+
+
+
+
+

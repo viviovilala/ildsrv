@@ -32,3 +32,8 @@ class m250514_121306_create_table_daerah extends Migration
         $this->dropTable('{{%daerah}}');
     }
 }
+
+
+
+
+

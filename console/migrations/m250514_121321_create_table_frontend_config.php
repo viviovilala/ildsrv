@@ -31,3 +31,8 @@ class m250514_121321_create_table_frontend_config extends Migration
         $this->dropTable('{{%frontend_config}}');
     }
 }
+
+
+
+
+

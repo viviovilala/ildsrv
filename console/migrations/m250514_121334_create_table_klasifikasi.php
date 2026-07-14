@@ -33,3 +33,8 @@ class m250514_121334_create_table_klasifikasi extends Migration
         $this->dropTable('{{%klasifikasi}}');
     }
 }
+
+
+
+
+

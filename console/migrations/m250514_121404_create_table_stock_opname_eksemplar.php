@@ -35,3 +35,8 @@ class m250514_121404_create_table_stock_opname_eksemplar extends Migration
         $this->dropTable('{{%stock_opname_eksemplar}}');
     }
 }
+
+
+
+
+

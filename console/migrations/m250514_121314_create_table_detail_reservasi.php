@@ -31,3 +31,8 @@ class m250514_121314_create_table_detail_reservasi extends Migration
         $this->dropTable('{{%detail_reservasi}}');
     }
 }
+
+
+
+
+

@@ -16,7 +16,7 @@ class m250514_121257_create_table_auth_item extends Migration
         $this->createTable(
             '{{%auth_item}}',
             [
-                'name' => $this->string(64)->notNull()->append('PRIMARY KEY'),
+                'name' => $this->string(64)->notNull()->notNull(),
                 'type' => $this->smallInteger()->notNull(),
                 'description' => $this->text(),
                 'rule_name' => $this->string(64),
@@ -36,3 +36,8 @@ class m250514_121257_create_table_auth_item extends Migration
         $this->dropTable('{{%auth_item}}');
     }
 }
+
+
+
+
+

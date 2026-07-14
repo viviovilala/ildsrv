@@ -29,3 +29,8 @@ class m250514_121401_create_table_sejarah extends Migration
         $this->dropTable('{{%sejarah}}');
     }
 }
+
+
+
+
+

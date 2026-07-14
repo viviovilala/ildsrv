@@ -38,3 +38,8 @@ class m250514_121316_create_table_document_terkait extends Migration
         $this->dropTable('{{%document_terkait}}');
     }
 }
+
+
+
+
+

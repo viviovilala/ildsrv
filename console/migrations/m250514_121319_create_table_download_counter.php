@@ -34,3 +34,8 @@ class m250514_121319_create_table_download_counter extends Migration
         $this->dropTable('{{%download_counter}}');
     }
 }
+
+
+
+
+

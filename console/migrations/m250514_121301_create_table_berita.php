@@ -36,3 +36,8 @@ class m250514_121301_create_table_berita extends Migration
         $this->dropTable('{{%berita}}');
     }
 }
+
+
+
+
+

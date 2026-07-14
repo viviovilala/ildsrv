@@ -32,3 +32,8 @@ class m250514_121409_create_table_survey_kepuasan extends Migration
         $this->dropTable('{{%survey_kepuasan}}');
     }
 }
+
+
+
+
+

@@ -21,3 +21,8 @@ class m260507_000003_insert_visitor_report_menu extends Migration
         $this->delete('{{%menu}}', ['route' => '/visitor-report/index']);
     }
 }
+
+
+
+
+

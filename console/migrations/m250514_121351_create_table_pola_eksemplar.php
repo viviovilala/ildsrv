@@ -36,3 +36,8 @@ class m250514_121351_create_table_pola_eksemplar extends Migration
         $this->dropTable('{{%pola_eksemplar}}');
     }
 }
+
+
+
+
+

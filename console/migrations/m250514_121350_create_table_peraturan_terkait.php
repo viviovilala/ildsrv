@@ -37,3 +37,8 @@ class m250514_121350_create_table_peraturan_terkait extends Migration
         $this->dropTable('{{%peraturan_terkait}}');
     }
 }
+
+
+
+
+

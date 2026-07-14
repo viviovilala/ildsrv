@@ -33,3 +33,8 @@ class m250514_121337_create_table_lokasi extends Migration
         $this->dropTable('{{%lokasi}}');
     }
 }
+
+
+
+
+

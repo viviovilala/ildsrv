@@ -34,3 +34,8 @@ class m250514_121302_create_table_bidang_hukum extends Migration
         $this->dropTable('{{%bidang_hukum}}');
     }
 }
+
+
+
+
+

@@ -44,3 +44,8 @@ class m250514_121253_create_table_abstrak extends Migration
         $this->dropTable('{{%abstrak}}');
     }
 }
+
+
+
+
+

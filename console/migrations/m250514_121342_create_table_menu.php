@@ -34,3 +34,8 @@ class m250514_121342_create_table_menu extends Migration
         $this->dropTable('{{%menu}}');
     }
 }
+
+
+
+
+

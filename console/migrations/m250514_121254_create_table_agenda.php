@@ -32,3 +32,8 @@ class m250514_121254_create_table_agenda extends Migration
         $this->dropTable('{{%agenda}}');
     }
 }
+
+
+
+
+

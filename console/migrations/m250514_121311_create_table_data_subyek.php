@@ -40,3 +40,8 @@ class m250514_121311_create_table_data_subyek extends Migration
         $this->dropTable('{{%data_subyek}}');
     }
 }
+
+
+
+
+

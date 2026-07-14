@@ -9,6 +9,7 @@ class m250514_121418_create_table_user_member_profile extends Migration
     public function safeUp()
     {
         $tableOptions = null;
+
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
         }
@@ -47,3 +48,6 @@ class m250514_121418_create_table_user_member_profile extends Migration
         $this->dropTable('{{%user_member_profile}}');
     }
 }
+
+
+

@@ -16,7 +16,7 @@ class m250514_121330_create_table_kabupaten extends Migration
         $this->createTable(
             '{{%kabupaten}}',
             [
-                'id' => $this->char(4)->notNull()->append('PRIMARY KEY'),
+                'id' => $this->char(4)->notNull()->notNull(),
                 'province_id' => $this->char(2)->notNull(),
                 'name' => $this->string()->notNull(),
                 'created_at' => $this->date(),
@@ -34,3 +34,8 @@ class m250514_121330_create_table_kabupaten extends Migration
         $this->dropTable('{{%kabupaten}}');
     }
 }
+
+
+
+
+

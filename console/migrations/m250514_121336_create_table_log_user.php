@@ -31,3 +31,8 @@ class m250514_121336_create_table_log_user extends Migration
         $this->dropTable('{{%log_user}}');
     }
 }
+
+
+
+
+

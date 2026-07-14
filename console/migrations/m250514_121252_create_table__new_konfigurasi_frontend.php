@@ -35,3 +35,8 @@ class m250514_121252_create_table__new_konfigurasi_frontend extends Migration
         $this->dropTable('{{%_new_konfigurasi_frontend}}');
     }
 }
+
+
+
+
+

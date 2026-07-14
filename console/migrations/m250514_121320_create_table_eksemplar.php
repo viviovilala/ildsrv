@@ -50,3 +50,8 @@ class m250514_121320_create_table_eksemplar extends Migration
         $this->dropTable('{{%eksemplar}}');
     }
 }
+
+
+
+
+

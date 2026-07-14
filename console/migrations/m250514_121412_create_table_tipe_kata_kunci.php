@@ -34,3 +34,8 @@ class m250514_121412_create_table_tipe_kata_kunci extends Migration
         $this->dropTable('{{%tipe_kata_kunci}}');
     }
 }
+
+
+
+
+

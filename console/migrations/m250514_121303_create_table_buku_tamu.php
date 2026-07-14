@@ -38,3 +38,8 @@ class m250514_121303_create_table_buku_tamu extends Migration
         $this->dropTable('{{%buku_tamu}}');
     }
 }
+
+
+
+
+

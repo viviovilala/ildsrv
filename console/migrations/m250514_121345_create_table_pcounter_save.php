@@ -20,8 +20,8 @@ class m250514_121345_create_table_pcounter_save extends Migration
         $this->createTable(
             '{{%pcounter_save}}',
             [
-                'save_name' => $this->string(10)->notNull()->append('PRIMARY KEY'),
-                'save_value' => $this->integer()->unsigned()->notNull(),
+                'save_name' => $this->string(10)->notNull()->notNull(),
+                'save_value' => $this->integer()->notNull(),
             ],
             $tableOptions
         );
@@ -32,3 +32,8 @@ class m250514_121345_create_table_pcounter_save extends Migration
         $this->dropTable('{{%pcounter_save}}');
     }
 }
+
+
+
+
+

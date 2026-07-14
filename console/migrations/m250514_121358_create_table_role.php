@@ -34,3 +34,8 @@ class m250514_121358_create_table_role extends Migration
         $this->dropTable('{{%role}}');
     }
 }
+
+
+
+
+

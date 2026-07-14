@@ -33,3 +33,8 @@ class m250514_121304_create_table_catatan_verifikasi extends Migration
         $this->dropTable('{{%catatan_verifikasi}}');
     }
 }
+
+
+
+
+

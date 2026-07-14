@@ -9,6 +9,7 @@ class m250514_121317_create_table_document_type extends Migration
     public function safeUp()
     {
         $tableOptions = null;
+
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
         }
@@ -31,9 +32,23 @@ class m250514_121317_create_table_document_type extends Migration
             $tableOptions
         );
 
-        $this->createIndex('name', '{{%document_type}}', ['name']);
-        $this->createIndex('parent_id', '{{%document_type}}', ['parent_id']);
-        $this->createIndex('second_id', '{{%document_type}}', ['second_id']);
+        $this->createIndex(
+            'idx_document_type_name',
+            '{{%document_type}}',
+            ['name']
+        );
+
+        $this->createIndex(
+            'idx_document_type_parent_id',
+            '{{%document_type}}',
+            ['parent_id']
+        );
+
+        $this->createIndex(
+            'idx_document_type_second_id',
+            '{{%document_type}}',
+            ['second_id']
+        );
     }
 
     public function safeDown()
@@ -41,3 +56,6 @@ class m250514_121317_create_table_document_type extends Migration
         $this->dropTable('{{%document_type}}');
     }
 }
+
+
+

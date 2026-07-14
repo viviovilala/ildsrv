@@ -38,3 +38,8 @@ class m250514_121352_create_table_previleges extends Migration
         $this->dropTable('{{%previleges}}');
     }
 }
+
+
+
+
+

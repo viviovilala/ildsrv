@@ -29,3 +29,8 @@ class m250514_121419_create_table_visi_misi extends Migration
         $this->dropTable('{{%visi_misi}}');
     }
 }
+
+
+
+
+

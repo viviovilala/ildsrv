@@ -35,3 +35,8 @@ class m250514_121327_create_table_integrasi extends Migration
         $this->dropTable('{{%integrasi}}');
     }
 }
+
+
+
+
+

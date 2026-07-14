@@ -33,3 +33,8 @@ class m250514_121415_create_table_urusan_pemerintahan extends Migration
         $this->dropTable('{{%urusan_pemerintahan}}');
     }
 }
+
+
+
+
+

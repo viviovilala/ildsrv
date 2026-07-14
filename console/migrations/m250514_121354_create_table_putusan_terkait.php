@@ -36,3 +36,8 @@ class m250514_121354_create_table_putusan_terkait extends Migration
         $this->dropTable('{{%putusan_terkait}}');
     }
 }
+
+
+
+
+

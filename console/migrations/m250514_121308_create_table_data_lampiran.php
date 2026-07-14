@@ -45,3 +45,8 @@ class m250514_121308_create_table_data_lampiran extends Migration
         $this->dropTable('{{%data_lampiran}}');
     }
 }
+
+
+
+
+

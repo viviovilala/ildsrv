@@ -34,3 +34,8 @@ class m250514_121344_create_table_notif extends Migration
         $this->dropTable('{{%notif}}');
     }
 }
+
+
+
+
+

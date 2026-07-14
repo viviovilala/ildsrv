@@ -34,3 +34,8 @@ class m250514_121325_create_table_hit_counter extends Migration
         $this->dropTable('{{%hit_counter}}');
     }
 }
+
+
+
+
+

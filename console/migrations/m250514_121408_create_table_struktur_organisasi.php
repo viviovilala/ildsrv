@@ -29,3 +29,8 @@ class m250514_121408_create_table_struktur_organisasi extends Migration
         $this->dropTable('{{%struktur_organisasi}}');
     }
 }
+
+
+
+
+

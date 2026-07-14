@@ -16,7 +16,7 @@ class m250514_121353_create_table_provinsi extends Migration
         $this->createTable(
             '{{%provinsi}}',
             [
-                'id' => $this->char(2)->notNull()->append('PRIMARY KEY'),
+                'id' => $this->char(2)->notNull()->notNull(),
                 'name' => $this->string()->notNull(),
                 'created_at' => $this->date(),
                 'updated_at' => $this->date(),
@@ -30,3 +30,8 @@ class m250514_121353_create_table_provinsi extends Migration
         $this->dropTable('{{%provinsi}}');
     }
 }
+
+
+
+
+

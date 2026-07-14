@@ -93,3 +93,8 @@ class m250514_121318_create_table_dokumen_data_subyek extends Migration
         $this->dropTable('{{%dokumen_data_subyek}}');
     }
 }
+
+
+
+
+

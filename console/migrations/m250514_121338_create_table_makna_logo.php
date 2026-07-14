@@ -30,3 +30,8 @@ class m250514_121338_create_table_makna_logo extends Migration
         $this->dropTable('{{%makna_logo}}');
     }
 }
+
+
+
+
+

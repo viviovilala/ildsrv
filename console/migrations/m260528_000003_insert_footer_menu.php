@@ -49,3 +49,7 @@ class m260528_000003_insert_footer_menu extends Migration
         }
     }
 }
+
+
+
+

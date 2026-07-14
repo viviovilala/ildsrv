@@ -16,7 +16,7 @@ class m250514_121333_create_table_kecamatan extends Migration
         $this->createTable(
             '{{%kecamatan}}',
             [
-                'id' => $this->char(7)->notNull()->append('PRIMARY KEY'),
+                'id' => $this->char(7)->notNull()->notNull(),
                 'regency_id' => $this->char(4)->notNull(),
                 'name' => $this->string()->notNull(),
                 'created_at' => $this->date(),
@@ -34,3 +34,8 @@ class m250514_121333_create_table_kecamatan extends Migration
         $this->dropTable('{{%kecamatan}}');
     }
 }
+
+
+
+
+

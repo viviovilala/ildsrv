@@ -22,7 +22,7 @@ class m250514_121346_create_table_pcounter_users extends Migration
             [
                 'id' => $this->primaryKey(),
                 'user_ip' => $this->string()->notNull(),
-                'user_time' => $this->integer()->unsigned()->notNull(),
+                'user_time' => $this->integer()->notNull(),
                 'creation_date' => $this->dateTime()->defaultExpression('CURRENT_TIMESTAMP'),
             ],
             $tableOptions
@@ -34,3 +34,8 @@ class m250514_121346_create_table_pcounter_users extends Migration
         $this->dropTable('{{%pcounter_users}}');
     }
 }
+
+
+
+
+

@@ -57,3 +57,7 @@ class m260528_000001_create_table_footer_section extends Migration
         $this->dropTable('{{%footer_section}}');
     }
 }
+
+
+
+

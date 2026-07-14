@@ -37,3 +37,8 @@ class m250514_121410_create_table_sysparam extends Migration
         $this->dropTable('{{%sysparam}}');
     }
 }
+
+
+
+
+

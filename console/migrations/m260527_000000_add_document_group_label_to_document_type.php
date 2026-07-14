@@ -155,3 +155,8 @@ class m260527_000000_add_document_group_label_to_document_type extends Migration
         $this->dropColumn('{{%document_type}}', 'document_group_label');
     }
 }
+
+
+
+
+

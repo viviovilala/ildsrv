@@ -33,3 +33,8 @@ class m250514_121413_create_table_tipe_koleksi extends Migration
         $this->dropTable('{{%tipe_koleksi}}');
     }
 }
+
+
+
+
+

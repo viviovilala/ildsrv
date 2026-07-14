@@ -42,3 +42,8 @@ class m250514_121309_create_table_data_pengarang extends Migration
         $this->dropTable('{{%data_pengarang}}');
     }
 }
+
+
+
+
+

@@ -35,3 +35,7 @@ class m250515_000000_add_update_log_table extends Migration
         $this->dropTable('{{%update_log}}');
     }
 }
+
+
+
+

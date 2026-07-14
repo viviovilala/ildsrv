@@ -53,3 +53,8 @@ class m250514_121340_create_table_member extends Migration
         $this->dropTable('{{%member}}');
     }
 }
+
+
+
+
+

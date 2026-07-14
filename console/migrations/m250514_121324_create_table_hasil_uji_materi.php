@@ -37,3 +37,8 @@ class m250514_121324_create_table_hasil_uji_materi extends Migration
         $this->dropTable('{{%hasil_uji_materi}}');
     }
 }
+
+
+
+
+

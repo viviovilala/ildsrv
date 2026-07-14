@@ -35,3 +35,8 @@ class m250514_121312_create_table_denda extends Migration
         $this->dropTable('{{%denda}}');
     }
 }
+
+
+
+
+

@@ -34,3 +34,8 @@ class m250514_121332_create_table_kategori extends Migration
         $this->dropTable('{{%kategori}}');
     }
 }
+
+
+
+
+

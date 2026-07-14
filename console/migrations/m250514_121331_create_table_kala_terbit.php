@@ -33,3 +33,8 @@ class m250514_121331_create_table_kala_terbit extends Migration
         $this->dropTable('{{%kala_terbit}}');
     }
 }
+
+
+
+
+

@@ -34,3 +34,8 @@ class m250514_121313_create_table_detail_peminjaman extends Migration
         $this->dropTable('{{%detail_peminjaman}}');
     }
 }
+
+
+
+
+

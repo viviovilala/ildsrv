@@ -22,9 +22,17 @@ class m250514_121258_create_table_auth_item_child extends Migration
             $tableOptions
         );
 
-        $this->addPrimaryKey('PRIMARYKEY', '{{%auth_item_child}}', ['parent', 'child']);
+        $this->addPrimaryKey(
+            'pk_auth_item_child',
+            '{{%auth_item_child}}',
+            ['parent', 'child']
+        );
 
-        $this->createIndex('child', '{{%auth_item_child}}', ['child']);
+        $this->createIndex(
+            'idx_auth_item_child_child',
+            '{{%auth_item_child}}',
+            ['child']
+        );
     }
 
     public function safeDown()
@@ -32,3 +40,8 @@ class m250514_121258_create_table_auth_item_child extends Migration
         $this->dropTable('{{%auth_item_child}}');
     }
 }
+
+
+
+
+

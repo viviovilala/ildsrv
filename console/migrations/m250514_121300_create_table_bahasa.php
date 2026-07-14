@@ -33,3 +33,8 @@ class m250514_121300_create_table_bahasa extends Migration
         $this->dropTable('{{%bahasa}}');
     }
 }
+
+
+
+
+

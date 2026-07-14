@@ -34,3 +34,8 @@ class m250514_121407_create_table_stock_search_result extends Migration
         $this->dropTable('{{%stock_search_result}}');
     }
 }
+
+
+
+
+

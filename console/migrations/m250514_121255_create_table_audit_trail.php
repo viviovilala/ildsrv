@@ -39,3 +39,8 @@ class m250514_121255_create_table_audit_trail extends Migration
         $this->dropTable('{{%audit_trail}}');
     }
 }
+
+
+
+
+

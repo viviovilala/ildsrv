@@ -30,3 +30,8 @@ class m250514_121402_create_table_status extends Migration
         $this->dropTable('{{%status}}');
     }
 }
+
+
+
+
+

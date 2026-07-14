@@ -47,3 +47,8 @@ class m260507_000001_create_table_visitor_log extends Migration
         $this->dropTable('{{%visitor_log}}');
     }
 }
+
+
+
+
+

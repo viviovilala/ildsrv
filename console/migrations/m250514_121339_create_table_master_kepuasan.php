@@ -28,3 +28,8 @@ class m250514_121339_create_table_master_kepuasan extends Migration
         $this->dropTable('{{%master_kepuasan}}');
     }
 }
+
+
+
+
+

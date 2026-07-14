@@ -30,3 +30,8 @@ class m250514_121307_create_table_dasar_hukum extends Migration
         $this->dropTable('{{%dasar_hukum}}');
     }
 }
+
+
+
+
+

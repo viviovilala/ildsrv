@@ -31,3 +31,8 @@ class m250514_121355_create_table_rekaman_aktif extends Migration
         $this->dropTable('{{%rekaman_aktif}}');
     }
 }
+
+
+
+
+

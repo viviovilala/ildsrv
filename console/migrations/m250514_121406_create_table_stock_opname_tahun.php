@@ -32,3 +32,8 @@ class m250514_121406_create_table_stock_opname_tahun extends Migration
         $this->dropTable('{{%stock_opname_tahun}}');
     }
 }
+
+
+
+
+

@@ -9,6 +9,7 @@ class m250514_121411_create_table_tempat_penetapan extends Migration
     public function safeUp()
     {
         $tableOptions = null;
+
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
         }
@@ -28,7 +29,11 @@ class m250514_121411_create_table_tempat_penetapan extends Migration
             $tableOptions
         );
 
-        $this->createIndex('name', '{{%tempat_penetapan}}', ['name']);
+        $this->createIndex(
+            'idx_tempat_penetapan_name',
+            '{{%tempat_penetapan}}',
+            ['name']
+        );
     }
 
     public function safeDown()
@@ -36,3 +41,6 @@ class m250514_121411_create_table_tempat_penetapan extends Migration
         $this->dropTable('{{%tempat_penetapan}}');
     }
 }
+
+
+

@@ -9,6 +9,7 @@ class m250514_121348_create_table_penerbit extends Migration
     public function safeUp()
     {
         $tableOptions = null;
+
         if ($this->db->driverName === 'mysql') {
             $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
         }
@@ -27,7 +28,11 @@ class m250514_121348_create_table_penerbit extends Migration
             $tableOptions
         );
 
-        $this->createIndex('name', '{{%penerbit}}', ['name']);
+        $this->createIndex(
+            'idx_penerbit_name',
+            '{{%penerbit}}',
+            ['name']
+        );
     }
 
     public function safeDown()
@@ -35,3 +40,6 @@ class m250514_121348_create_table_penerbit extends Migration
         $this->dropTable('{{%penerbit}}');
     }
 }
+
+
+

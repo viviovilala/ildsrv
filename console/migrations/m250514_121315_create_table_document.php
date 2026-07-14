@@ -85,7 +85,7 @@ class m250514_121315_create_table_document extends Migration
             $tableOptions
         );
 
-        $this->createIndex('judul', '{{%document}}', ['judul(255)']);
+        $this->createIndex('judul', '{{%document}}', ['judul']);
         $this->createIndex('nomor_peraturan', '{{%document}}', ['nomor_peraturan']);
         $this->createIndex('tahun_terbit', '{{%document}}', ['tahun_terbit']);
         $this->createIndex('tipe_dokumen', '{{%document}}', ['tipe_dokumen']);
@@ -96,3 +96,8 @@ class m250514_121315_create_table_document extends Migration
         $this->dropTable('{{%document}}');
     }
 }
+
+
+
+
+

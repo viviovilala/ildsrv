@@ -33,3 +33,8 @@ class m250514_121323_create_table_gmd_ extends Migration
         $this->dropTable('{{%gmd_}}');
     }
 }
+
+
+
+
+
