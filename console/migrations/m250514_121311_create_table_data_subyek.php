@@ -10,7 +10,7 @@ class m250514_121311_create_table_data_subyek extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
+            $tableOptions = '  ';
         }
 
         $this->createTable(
@@ -31,8 +31,8 @@ class m250514_121311_create_table_data_subyek extends Migration
             $tableOptions
         );
 
-        $this->createIndex('id_dokumen', '{{%data_subyek}}', ['id_dokumen']);
-        $this->createIndex('subyek', '{{%data_subyek}}', ['subyek']);
+        $this->createIndex('idx_data_subyek_id_dokumen','{{%data_subyek}}',['id_dokumen']);
+        $this->createIndex('idx_data_subyek_subyek','{{%data_subyek}}',['subyek']);
     }
 
     public function safeDown()
@@ -40,6 +40,15 @@ class m250514_121311_create_table_data_subyek extends Migration
         $this->dropTable('{{%data_subyek}}');
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

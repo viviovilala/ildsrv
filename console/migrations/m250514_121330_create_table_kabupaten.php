@@ -10,7 +10,7 @@ class m250514_121330_create_table_kabupaten extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
+            $tableOptions = '  ';
         }
 
         $this->createTable(
@@ -26,7 +26,7 @@ class m250514_121330_create_table_kabupaten extends Migration
             $tableOptions
         );
 
-        $this->createIndex('regencies_province_id_index', '{{%kabupaten}}', ['province_id']);
+        $this->createIndex('idx_kabupaten_province_id','{{%kabupaten}}',['province_id']);
     }
 
     public function safeDown()
@@ -34,6 +34,15 @@ class m250514_121330_create_table_kabupaten extends Migration
         $this->dropTable('{{%kabupaten}}');
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

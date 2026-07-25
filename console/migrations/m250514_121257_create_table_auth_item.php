@@ -10,7 +10,7 @@ class m250514_121257_create_table_auth_item extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
+            $tableOptions = '  ';
         }
 
         $this->createTable(
@@ -27,8 +27,8 @@ class m250514_121257_create_table_auth_item extends Migration
             $tableOptions
         );
 
-        $this->createIndex('idx-auth_item-type', '{{%auth_item}}', ['type']);
-        $this->createIndex('rule_name', '{{%auth_item}}', ['rule_name']);
+        $this->createIndex('idx_auth_item_type','{{%auth_item}}',['type']);
+        $this->createIndex('idx_auth_item_rule_name','{{%auth_item}}',['rule_name']);
     }
 
     public function safeDown()
@@ -36,6 +36,15 @@ class m250514_121257_create_table_auth_item extends Migration
         $this->dropTable('{{%auth_item}}');
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

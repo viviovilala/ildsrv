@@ -10,7 +10,7 @@ class m250514_121341_create_table_member_type extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
+            $tableOptions = '  ';
         }
 
         $this->createTable(
@@ -38,7 +38,7 @@ class m250514_121341_create_table_member_type extends Migration
             $tableOptions
         );
 
-        $this->createIndex('member_type_name', '{{%member_type}}', ['member_type_name'], true);
+        $this->createIndex('idx_member_type_member_type_name','{{%member_type}}',['member_type_name'] , true);
     }
 
     public function safeDown()
@@ -46,6 +46,15 @@ class m250514_121341_create_table_member_type extends Migration
         $this->dropTable('{{%member_type}}');
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

@@ -19,7 +19,7 @@ class m260612_000000_add_suspended_until_to_user extends Migration
         }
 
         if (!isset($schema->columns['suspended_until'])) {
-            $this->addColumn($table, 'suspended_until', $this->dateTime()->null()->after('status'));
+            $this->addColumn($table, 'suspended_until', $this->dateTime()->null());
         }
     }
 
@@ -33,6 +33,15 @@ class m260612_000000_add_suspended_until_to_user extends Migration
         }
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

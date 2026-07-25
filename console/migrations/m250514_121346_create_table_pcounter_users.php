@@ -10,7 +10,7 @@ class m250514_121346_create_table_pcounter_users extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
+            $tableOptions = '  ';
         }
 
         if ($this->db->getTableSchema('{{%pcounter_users}}', true) !== null) {
@@ -34,6 +34,15 @@ class m250514_121346_create_table_pcounter_users extends Migration
         $this->dropTable('{{%pcounter_users}}');
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

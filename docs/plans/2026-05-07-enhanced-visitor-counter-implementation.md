@@ -123,7 +123,7 @@ class m260507_000002_create_table_visitor_stats extends Migration
 
         $this->createTable('{{%visitor_stats}}', [
             'id' => $this->primaryKey(),
-            'stat_type' => "ENUM('daily','weekly','monthly','yearly','all_time') NOT NULL",
+            'stat_type' => $this->string()->notNull(),
             'stat_date' => $this->date()->notNull(),
             'document_id' => $this->string(100),
             'total_visits' => $this->integer()->unsigned()->notNull()->defaultValue(0),

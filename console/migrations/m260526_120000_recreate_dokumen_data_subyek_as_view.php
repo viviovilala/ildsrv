@@ -14,6 +14,13 @@ class m260526_120000_recreate_dokumen_data_subyek_as_view extends Migration
     {
         $this->dropTable('{{%dokumen_data_subyek}}');
 
+        $subjectAggregate = $this->db->driverName === 'pgsql'
+            ? "STRING_AGG(DISTINCT ds.subyek, ', ' ORDER BY ds.subyek)"
+            : "GROUP_CONCAT(DISTINCT ds.subyek ORDER BY ds.subyek SEPARATOR ', ')";
+        $authorAggregate = $this->db->driverName === 'pgsql'
+            ? "STRING_AGG(DISTINCT COALESCE(p.name, CAST(dp.nama_pengarang AS TEXT)), ', ' ORDER BY COALESCE(p.name, CAST(dp.nama_pengarang AS TEXT)))"
+            : "GROUP_CONCAT(DISTINCT COALESCE(p.name, CAST(dp.nama_pengarang AS CHAR)) ORDER BY p.name SEPARATOR ', ')";
+
         $sql = <<<'SQL'
 CREATE VIEW {{%dokumen_data_subyek}} AS
 SELECT
@@ -83,18 +90,23 @@ SELECT
     d.subjek_data,
     d.slug,
     COALESCE((
-        SELECT GROUP_CONCAT(DISTINCT ds.subyek ORDER BY ds.subyek SEPARATOR ', ')
+        SELECT {{subjectAggregate}}
         FROM {{%data_subyek}} ds
         WHERE ds.id_dokumen = d.id
     ), '') AS subyek,
     COALESCE((
-        SELECT GROUP_CONCAT(DISTINCT COALESCE(p.name, CAST(dp.nama_pengarang AS CHAR)) ORDER BY p.name SEPARATOR ', ')
+        SELECT {{authorAggregate}}
         FROM {{%data_pengarang}} dp
         LEFT JOIN {{%pengarang}} p ON p.id = dp.nama_pengarang
         WHERE dp.id_dokumen = d.id
     ), '-') AS nama_pengarang
 FROM {{%document}} d
 SQL;
+
+        $sql = strtr($sql, [
+            '{{subjectAggregate}}' => $subjectAggregate,
+            '{{authorAggregate}}' => $authorAggregate,
+        ]);
 
         $this->execute($sql);
     }
@@ -177,8 +189,3 @@ SQL;
         );
     }
 }
-
-
-
-
-

@@ -10,7 +10,7 @@ class m250514_121342_create_table_menu extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
+            $tableOptions = '  ';
         }
 
         $this->createTable(
@@ -26,7 +26,7 @@ class m250514_121342_create_table_menu extends Migration
             $tableOptions
         );
 
-        $this->createIndex('parent', '{{%menu}}', ['parent']);
+        $this->createIndex('idx_menu_parent','{{%menu}}',['parent']);
     }
 
     public function safeDown()
@@ -34,6 +34,15 @@ class m250514_121342_create_table_menu extends Migration
         $this->dropTable('{{%menu}}');
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

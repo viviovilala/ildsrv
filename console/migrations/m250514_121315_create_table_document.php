@@ -10,7 +10,7 @@ class m250514_121315_create_table_document extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
+            $tableOptions = '  ';
         }
 
         $this->createTable(
@@ -85,10 +85,10 @@ class m250514_121315_create_table_document extends Migration
             $tableOptions
         );
 
-        $this->createIndex('judul', '{{%document}}', ['judul']);
-        $this->createIndex('nomor_peraturan', '{{%document}}', ['nomor_peraturan']);
-        $this->createIndex('tahun_terbit', '{{%document}}', ['tahun_terbit']);
-        $this->createIndex('tipe_dokumen', '{{%document}}', ['tipe_dokumen']);
+        $this->createIndex('idx_document_judul','{{%document}}',['judul']);
+        $this->createIndex('idx_document_nomor_peraturan','{{%document}}',['nomor_peraturan']);
+        $this->createIndex('idx_document_tahun_terbit','{{%document}}',['tahun_terbit']);
+        $this->createIndex('idx_document_tipe_dokumen','{{%document}}',['tipe_dokumen']);
     }
 
     public function safeDown()
@@ -96,6 +96,15 @@ class m250514_121315_create_table_document extends Migration
         $this->dropTable('{{%document}}');
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

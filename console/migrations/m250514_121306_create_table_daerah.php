@@ -10,7 +10,7 @@ class m250514_121306_create_table_daerah extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
+            $tableOptions = '  ';
         }
 
         $this->createTable(
@@ -32,6 +32,15 @@ class m250514_121306_create_table_daerah extends Migration
         $this->dropTable('{{%daerah}}');
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

@@ -27,7 +27,7 @@ return [
             // You can setup these options:
             'tableUsers' => 'pcounter_users',
             'tableSave' => 'pcounter_save',
-            'autoInstallTables' => false,
+            'autoInstallTables' => true,
             'onlineTime' => 10, // min
         ],
 
@@ -52,6 +52,7 @@ return [
         ],
         'session' => [
             'name' => 'ildis-frontend',
+            'savePath' => '@frontend/runtime/session',
             'cookieParams' => [
                 'httponly' => true,
                 'secure' => getenv('YII_ENV') === 'prod',

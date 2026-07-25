@@ -96,7 +96,10 @@ class VisitorController extends Controller
 
     protected function acquireLock()
     {
-        $result = Yii::$app->db->createCommand("SELECT GET_LOCK('visitor_aggregate', 60)")->queryScalar();
+        $db = Yii::$app->db;
+        $result = $db->driverName === 'pgsql'
+            ? $db->createCommand("SELECT pg_try_advisory_lock(hashtext('visitor_aggregate'))")->queryScalar()
+            : $db->createCommand("SELECT GET_LOCK('visitor_aggregate', 60)")->queryScalar();
         if (!$result) {
             throw new \Exception("Could not acquire aggregation lock. Another process may be running.");
         }
@@ -104,6 +107,10 @@ class VisitorController extends Controller
 
     protected function releaseLock()
     {
-        Yii::$app->db->createCommand("SELECT RELEASE_LOCK('visitor_aggregate')")->execute();
+        $db = Yii::$app->db;
+        $sql = $db->driverName === 'pgsql'
+            ? "SELECT pg_advisory_unlock(hashtext('visitor_aggregate'))"
+            : "SELECT RELEASE_LOCK('visitor_aggregate')";
+        $db->createCommand($sql)->execute();
     }
 }

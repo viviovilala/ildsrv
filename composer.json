@@ -51,6 +51,7 @@
         "himiklab/yii2-recaptcha-widget": "^2.0",
         "ext-json": "*",
         "ext-openssl": "*",
+        "ext-pdo_pgsql": "*",
         "yiisoft/yii2-shell": "^2.0"
     },
     "require-dev": {
@@ -60,9 +61,7 @@
         "codeception/codeception": "^5.1",
         "codeception/module-yii2": "^2.0",
         "codeception/module-asserts": "^3.0",
-        "codeception/verify": "^3.0"
-    },
-    "require-dev": {
+        "codeception/verify": "^3.0",
         "bizley/migration": "^4.0"
     },
     "config": {

@@ -11,7 +11,7 @@ class m260528_000001_create_table_footer_section extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
+            $tableOptions = '  ';
         }
 
         $this->createTable('{{%footer_section}}', [
@@ -19,7 +19,7 @@ class m260528_000001_create_table_footer_section extends Migration
             'title' => $this->string(255)->notNull(),
             'type' => $this->string(20)->notNull()->defaultValue('nav'),
             'sort_order' => $this->integer()->notNull()->defaultValue(0),
-            'status' => $this->tinyInteger(1)->notNull()->defaultValue(1),
+            'status' => $this->smallInteger(1)->notNull()->defaultValue(1),
             'created_at' => $this->dateTime(),
             'updated_at' => $this->dateTime(),
         ], $tableOptions);
@@ -57,6 +57,15 @@ class m260528_000001_create_table_footer_section extends Migration
         $this->dropTable('{{%footer_section}}');
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

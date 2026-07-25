@@ -14,12 +14,12 @@ class m260527_000000_add_document_group_label_to_document_type extends Migration
 
         if ($schema->getColumn('document_group_label') === null) {
             $this->addColumn($table, 'document_group_label',
-                $this->string(64)->null()->defaultValue(null)->after('singkatan'));
+                $this->string(64)->null()->defaultValue(null));
         }
         $schema = $this->db->schema->getTableSchema('document_type', true);
         if ($schema->getColumn('slug') === null) {
             $this->addColumn($table, 'slug',
-                $this->string(128)->null()->defaultValue(null)->after('document_group_label'));
+                $this->string(128)->null()->defaultValue(null));
         }
 
         $indexNames = array_column($this->db->schema->getTableIndexes('document_type', true), 'name');
@@ -155,6 +155,15 @@ class m260527_000000_add_document_group_label_to_document_type extends Migration
         $this->dropColumn('{{%document_type}}', 'document_group_label');
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

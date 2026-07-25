@@ -10,7 +10,7 @@ class m250515_000000_add_update_log_table extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
+            $tableOptions = '  ';
         }
 
         $this->createTable('{{%update_log}}', [
@@ -24,8 +24,8 @@ class m250515_000000_add_update_log_table extends Migration
             'notes' => $this->text()->null(),
         ], $tableOptions);
 
-        $this->createIndex('idx-update_log-status', '{{%update_log}}', 'status');
-        $this->createIndex('idx-update_log-version_to', '{{%update_log}}', 'version_to');
+        $this->createIndex('idx_update_log_status','{{%update_log}}','status');
+        $this->createIndex('idx_update_log_version_to','{{%update_log}}','version_to');
     }
 
     public function safeDown()
@@ -35,6 +35,15 @@ class m250515_000000_add_update_log_table extends Migration
         $this->dropTable('{{%update_log}}');
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

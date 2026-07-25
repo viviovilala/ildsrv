@@ -10,7 +10,7 @@ class m250514_121328_create_table_item extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
+            $tableOptions = '  ';
         }
 
         $this->createTable(
@@ -46,10 +46,10 @@ class m250514_121328_create_table_item extends Migration
             $tableOptions
         );
 
-        $this->createIndex('biblio_id_idx', '{{%item}}', ['id_dokumen']);
-        $this->createIndex('item_code', '{{%item}}', ['item_code'], true);
-        $this->createIndex('item_references_idx', '{{%item}}', ['coll_type_id', 'location_id', 'item_status_id']);
-        $this->createIndex('uid', '{{%item}}', ['uid']);
+        $this->createIndex('idx_item_id_dokumen','{{%item}}',['id_dokumen']);
+        $this->createIndex('idx_item_item_code','{{%item}}',['item_code'] , true);
+        $this->createIndex('idx_item_coll_type_location_id_item_status_id', '{{%item}}', ['coll_type_id', 'location_id', 'item_status_id']);
+        $this->createIndex('idx_item_uid','{{%item}}',['uid']);
     }
 
     public function safeDown()
@@ -57,6 +57,17 @@ class m250514_121328_create_table_item extends Migration
         $this->dropTable('{{%item}}');
     }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

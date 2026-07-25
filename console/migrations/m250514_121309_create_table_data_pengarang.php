@@ -10,7 +10,7 @@ class m250514_121309_create_table_data_pengarang extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
+            $tableOptions = '  ';
         }
 
         $this->createTable(
@@ -31,10 +31,10 @@ class m250514_121309_create_table_data_pengarang extends Migration
             $tableOptions
         );
 
-        $this->createIndex('id_dokumen', '{{%data_pengarang}}', ['id_dokumen']);
-        $this->createIndex('idjp_fk', '{{%data_pengarang}}', ['jenis_pengarang']);
-        $this->createIndex('idtp_fk', '{{%data_pengarang}}', ['tipe_pengarang']);
-        $this->createIndex('nama_pengarang', '{{%data_pengarang}}', ['nama_pengarang']);
+        $this->createIndex('idx_data_pengarang_id_dokumen','{{%data_pengarang}}',['id_dokumen']);
+        $this->createIndex('idx_data_pengarang_jenis_pengarang','{{%data_pengarang}}',['jenis_pengarang']);
+        $this->createIndex('idx_data_pengarang_tipe_pengarang','{{%data_pengarang}}',['tipe_pengarang']);
+        $this->createIndex('idx_data_pengarang_nama_pengarang','{{%data_pengarang}}',['nama_pengarang']);
     }
 
     public function safeDown()
@@ -42,6 +42,15 @@ class m250514_121309_create_table_data_pengarang extends Migration
         $this->dropTable('{{%data_pengarang}}');
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

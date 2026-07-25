@@ -10,7 +10,7 @@ class m260507_000001_create_table_visitor_log extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
+            $tableOptions = '  ';
         }
 
         $this->createTable('{{%visitor_log}}', [
@@ -21,7 +21,7 @@ class m260507_000001_create_table_visitor_log extends Migration
             'page_url' => $this->string(500)->notNull(),
             'visit_date' => $this->date()->notNull(),
             'visit_time' => $this->dateTime()->notNull(),
-            'is_unique' => $this->tinyInteger(1)->notNull()->defaultValue(0),
+            'is_unique' => $this->smallInteger(1)->notNull()->defaultValue(0),
             'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
         ], $tableOptions);
 
@@ -35,11 +35,7 @@ class m260507_000001_create_table_visitor_log extends Migration
             '{{%visitor_log}}',
             ['document_id', 'visit_date']
         );
-        $this->createIndex(
-            'idx_visitor_log_visit_time',
-            '{{%visitor_log}}',
-            'visit_time'
-        );
+        $this->createIndex('idx_visitor_log_visit_time','{{%visitor_log}}','visit_time');
     }
 
     public function safeDown()
@@ -47,6 +43,15 @@ class m260507_000001_create_table_visitor_log extends Migration
         $this->dropTable('{{%visitor_log}}');
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

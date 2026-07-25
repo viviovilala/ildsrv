@@ -10,7 +10,7 @@ class m250514_121313_create_table_detail_peminjaman extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
+            $tableOptions = '  ';
         }
 
         $this->createTable(
@@ -34,6 +34,15 @@ class m250514_121313_create_table_detail_peminjaman extends Migration
         $this->dropTable('{{%detail_peminjaman}}');
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

@@ -40,9 +40,9 @@
  * it is not commercial and the script does not get modified.
  *
  *
- * @author Armin Pfäffle <mail@armin-pfaeffle.de>
+ * @author Armin Pfaeffle <mail@armin-pfaeffle.de>
  * @author Andreas "Pr0g" Droesch
- * @copyright Copyright (c) 2015, Armin Pfäffle <mail@armin-pfaeffle.de>
+ * @copyright Copyright (c) 2015, Armin Pfaeffle <mail@armin-pfaeffle.de>
  * @link https://github.com/armin-pfaeffle/yii-usercounter/
  * @link http://www.yiiframework.com/extension/yii-usercounter/
  * @link http://andreas.droesch.de
@@ -91,12 +91,12 @@ class UserCounter extends Component
 				Yii::$app->db->createCommand()
                     ->createTable(
                         $this->tableUsers,
-        				array(
-        					'id' => \yii\db\Schema::TYPE_PK,
-        					'user_ip' => 'VARCHAR(255) NOT NULL',
-        					'user_time' => 'int(10) unsigned NOT NULL',
-        					'creation_date' => ' datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0)'
-        				))
+				array(
+					'id' => \yii\db\Schema::TYPE_PK,
+					'user_ip' => 'VARCHAR(255) NOT NULL',
+					'user_time' => \yii\db\Schema::TYPE_INTEGER . ' NOT NULL',
+					'creation_date' => \yii\db\Schema::TYPE_DATETIME . ' NULL DEFAULT CURRENT_TIMESTAMP'
+				))
                     ->execute();
 			}
 		}
@@ -104,11 +104,11 @@ class UserCounter extends Component
 			if ($this->autoInstallTables) {
 				Yii::$app->db->createCommand()
                     ->createTable(
-    					$this->tableSave,
-    					array(
-    						'save_name' => 'VARCHAR(10) NOT NULL PRIMARY KEY',
-    						'save_value' => 'int(10) unsigned NOT NULL',
-    					))
+					$this->tableSave,
+					array(
+						'save_name' => 'VARCHAR(10) NOT NULL PRIMARY KEY',
+						'save_value' => \yii\db\Schema::TYPE_INTEGER . ' NOT NULL',
+					))
                     ->execute();
 
 				Yii::$app->db->createCommand()
@@ -143,15 +143,15 @@ class UserCounter extends Component
 			$lastUpdateTotalUsers = $this->getLastLoggedUsers();
                         $this->yesterday = $this->getYesterdayQuery();
 			//$this->yesterday = ($daysSinceLastUpdate == 1 ? $lastUpdateTotalUsers : 0);
-			$this->update($this->tableSave, array('save_value' => $this->yesterday), 'save_name = "yesterday"');
+			$this->update($this->tableSave, array('save_value' => $this->yesterday), ['save_name' => 'yesterday']);
 			if ($this->isNewMaximum($lastUpdateTotalUsers)) {
 				$this->maxCount = $lastUpdateTotalUsers;
 				$this->maxDate = mktime(12, 0, 0, date('n'), date('j'), date('Y')) - 86400;
-				$this->update($this->tableSave, array('save_value' => $this->maxCount), 'save_name = "max_count"');
-				$this->update($this->tableSave, array('save_value' => $this->maxDate), 'save_name = "max_time"');
+				$this->update($this->tableSave, array('save_value' => $this->maxCount), ['save_name' => 'max_count']);
+				$this->update($this->tableSave, array('save_value' => $this->maxDate), ['save_name' => 'max_time']);
 			}
-			$this->update($this->tableSave, array('save_value' => $this->total + $lastUpdateTotalUsers), 'save_name = "counter"');
-			$this->update($this->tableSave, array('save_value' => $today), 'save_name = "day_time"');
+			$this->update($this->tableSave, array('save_value' => $this->total + $lastUpdateTotalUsers), ['save_name' => 'counter']);
+			$this->update($this->tableSave, array('save_value' => $today), ['save_name' => 'day_time']);
 			//$this->truncate($this->tableUsers);
 			$this->total += $lastUpdateTotalUsers;
 		}
@@ -179,6 +179,16 @@ class UserCounter extends Component
 		foreach ($rows as $row) {
 			$data[ $row['save_name'] ] = $row['save_value'];
 		}
+
+        $data = array_merge([
+            'day_time' => 0,
+            'counter' => 0,
+            'yesterday' => 0,
+            'max_count' => 0,
+            'max_time' => 0,
+        ], $data);
+
+
 		$this->dayTime = $data['day_time'];
 		$this->total = $data['counter'];
 		$this->yesterday = $data['yesterday'];
@@ -201,7 +211,7 @@ class UserCounter extends Component
 		$count = (new \yii\db\Query())
             ->select(array('count(user_ip) AS user_count'))
             ->from($this->tableUsers)
-            ->where(['like','creation_date',$yesterday]);
+            ->where(new \yii\db\Expression('DATE([[creation_date]]) = :date', [':date' => $yesterday]));
 
         return $count->scalar();
 	}
@@ -236,14 +246,16 @@ class UserCounter extends Component
 		$ipAddress = isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
 		$hashedIpAddress = md5($ipAddress);
 		$currentTimestamp = time();
-		$today = date('Y-m-d')."%";
+		$today = date('Y-m-d');
+		$exists = (new \yii\db\Query())
+            ->from($this->tableUsers)
+            ->where(['user_ip' => $hashedIpAddress])
+            ->andWhere(new \yii\db\Expression('DATE([[creation_date]]) = :date', [':date' => $today]))
+            ->exists();
 
-		$sql = 'INSERT INTO ' . $this->tableUsers . ' (user_ip, user_time) select :ipAddress, :time from dual where not exists (SELECT * from '.$this->tableUsers.' where user_ip = :ipAddress and creation_date like :today) ';
-		Yii::$app->db->createCommand($sql)
-            ->bindParam(':ipAddress', $hashedIpAddress, \PDO::PARAM_STR)
-            ->bindParam(':time', $currentTimestamp, \PDO::PARAM_INT)
-            ->bindParam(':today', $today, \PDO::PARAM_STR)
-            ->execute();
+		if (!$exists) {
+			$this->insert($this->tableUsers, ['user_ip' => $hashedIpAddress, 'user_time' => $currentTimestamp]);
+		}
 	}
 
 	/**

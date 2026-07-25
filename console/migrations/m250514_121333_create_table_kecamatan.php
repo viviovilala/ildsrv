@@ -10,7 +10,7 @@ class m250514_121333_create_table_kecamatan extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
+            $tableOptions = '  ';
         }
 
         $this->createTable(
@@ -26,7 +26,7 @@ class m250514_121333_create_table_kecamatan extends Migration
             $tableOptions
         );
 
-        $this->createIndex('districts_id_index', '{{%kecamatan}}', ['regency_id']);
+        $this->createIndex('idx_kecamatan_regency_id','{{%kecamatan}}',['regency_id']);
     }
 
     public function safeDown()
@@ -34,6 +34,15 @@ class m250514_121333_create_table_kecamatan extends Migration
         $this->dropTable('{{%kecamatan}}');
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 

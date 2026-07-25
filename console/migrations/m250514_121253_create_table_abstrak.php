@@ -10,7 +10,7 @@ class m250514_121253_create_table_abstrak extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB';
+            $tableOptions = '  ';
         }
 
         $this->createTable(
@@ -44,6 +44,15 @@ class m250514_121253_create_table_abstrak extends Migration
         $this->dropTable('{{%abstrak}}');
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 
