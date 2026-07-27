@@ -61,19 +61,6 @@ body {
   padding: 26px 0;
 }
 .jdih-public-nav a:hover { color: var(--jdih-green); text-decoration: none; }
-.jdih-public-nav a:after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 18px;
-  height: 2px;
-  background: var(--jdih-green);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform .18s ease;
-}
-.jdih-public-nav a:hover:after { transform: scaleX(1); }
 
 .jdih-public-actions { display: flex; align-items: center; gap: 12px; }
 .jdih-header-search {

@@ -6,7 +6,7 @@ This document provides guidelines for agentic coding agents working on the ILDIS
 
 - **Framework**: Yii 2 (PHP)
 - **Testing**: Codeception
-- **Database**: MySQL/MariaDB
+- **Database**: PostgreSQL 16
 - **Architecture**: Advanced template with backend/frontend/common separation
 
 ---
