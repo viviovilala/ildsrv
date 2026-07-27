@@ -18,7 +18,7 @@ $year = $model->tahun_terbit ?: ($model->tanggal_penetapan ? date('Y', strtotime
             <span><?= Html::encode($jenis) ?></span><span>&bull;</span><span><?= Html::encode($year) ?></span>
         </div>
         <h3><?= Html::a(Html::encode($model->judul), ['/dokumen/view', 'id' => $model->id]) ?></h3>
-        <p>Nomor <?= Html::encode($model->nomor_peraturan ?: '-') ?> &bull; Tanggal Penetapan: <?= Html::encode($model->tanggal_penetapan ? $model->getTanggal($model->tanggal_penetapan) : '-') ?></p>
+        <p>Nomor <?= Html::encode($model->nomor_peraturan ?: '-') ?> &bull; Tanggal Penetapan: <?= Html::encode($model->tanggal_penetapan ? date('d M Y', strtotime($model->tanggal_penetapan)) : '-') ?></p>
     </div>
     <div class="catalog-doc-card__actions">
         <?= $lampiran
