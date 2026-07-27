@@ -1,27 +1,27 @@
 #!/bin/sh -e
 # ILDIS database initialization script
 # Runs as a oneshot s6-overlay service before php-fpm starts.
-# Waits for MySQL to be ready, then applies any pending Yii2 database migrations.
+# Waits for PostgreSQL to be ready, then applies any pending Yii2 database migrations.
 
-s6-echo "[ildis-init] Waiting for MySQL to be ready..."
+s6-echo "[ildis-init] Waiting for PostgreSQL to be ready..."
 
 MAX_RETRIES=30
 RETRY_COUNT=0
 
 while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
     if php /var/www/yii migrate/history 1 --interactive=0 >/dev/null 2>&1; then
-        s6-echo "[ildis-init] MySQL is ready."
+        s6-echo "[ildis-init] PostgreSQL is ready."
         break
     fi
     RETRY_COUNT=$((RETRY_COUNT + 1))
-    s6-echo "[ildis-init] MySQL not ready, retrying in 2s... ($RETRY_COUNT/$MAX_RETRIES)"
+    s6-echo "[ildis-init] PostgreSQL not ready, retrying in 2s... ($RETRY_COUNT/$MAX_RETRIES)"
     sleep 2
 done
 
 if [ $RETRY_COUNT -ge $MAX_RETRIES ]; then
-    s6-echo "[ildis-init] WARNING: MySQL not ready after $MAX_RETRIES attempts."
+    s6-echo "[ildis-init] WARNING: PostgreSQL not ready after $MAX_RETRIES attempts."
     s6-echo "[ildis-init] Application will start without running migrations."
-    s6-echo "[ildis-init] Run 'php /var/www/yii migrate' manually when MySQL is available."
+    s6-echo "[ildis-init] Run 'php /var/www/yii migrate' manually when PostgreSQL is available."
     exit 0
 fi
 
