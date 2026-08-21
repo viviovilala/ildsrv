@@ -1,2 +1,8 @@
 User-agent: *
-Disallow: /
+Allow: /
+Disallow: /backend/
+Disallow: /admin/
+Disallow: /vendor/
+Disallow: /runtime/
+
+Sitemap: https://jdih.upnjatim.ac.id/sitemap.xml

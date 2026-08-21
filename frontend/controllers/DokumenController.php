@@ -233,7 +233,10 @@ class DokumenController extends Controller
         }
 
         $title = $model->judul;
-        $deskripsi = $model->judul;
+        $deskripsi = $model->abstrak ? strip_tags($model->abstrak) : $model->judul;
+
+        // Dynamic meta description
+        $this->view->params['description'] = mb_substr($deskripsi, 0, 160);
 
         $jenisperaturan = DocumentType::find()->where(['singkatan' => $model->singkatan_jenis])->one();
         if (!empty($jenisperaturan)) {
@@ -246,6 +249,42 @@ class DokumenController extends Controller
                 $jenisperaturan->singkatan . '-no-' . $model->nomor_peraturan . '-tahun-' . $model->tahun_terbit,
             ];
         }
+
+        // Open Graph tags
+        $canonicalUrl = Yii::$app->urlManager->createAbsoluteUrl(['/dokumen/view', 'id' => $model->id, 'slug' => $model->getUrlSlug()]);
+        $this->view->registerMetaTag(['property' => 'og:title', 'content' => $title]);
+        $this->view->registerMetaTag(['property' => 'og:description', 'content' => mb_substr($deskripsi, 0, 200)]);
+        $this->view->registerMetaTag(['property' => 'og:url', 'content' => $canonicalUrl]);
+        $this->view->registerMetaTag(['property' => 'og:type', 'content' => 'article']);
+        $this->view->registerMetaTag(['property' => 'og:site_name', 'content' => 'JDIH UPNVJT']);
+
+        // Twitter Card tags
+        $this->view->registerMetaTag(['name' => 'twitter:card', 'content' => 'summary']);
+        $this->view->registerMetaTag(['name' => 'twitter:title', 'content' => $title]);
+        $this->view->registerMetaTag(['name' => 'twitter:description', 'content' => mb_substr($deskripsi, 0, 200)]);
+
+        // Structured Data (Schema.org) for Legal Document
+        $structuredData = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Legislation',
+            'name' => $model->judul,
+            'url' => $canonicalUrl,
+        ];
+
+        if (!empty($model->nomor_peraturan)) {
+            $structuredData['legislationIdentifier'] = $model->nomor_peraturan;
+        }
+        if (!empty($model->tanggal_penetapan)) {
+            $structuredData['datePublished'] = date('Y-m-d', strtotime($model->tanggal_penetapan));
+        }
+        if (!empty($model->abstrak)) {
+            $structuredData['abstract'] = strip_tags($model->abstrak);
+        }
+        if (!empty($model->jenis_peraturan)) {
+            $structuredData['legislationType'] = $model->jenis_peraturan;
+        }
+
+        $this->view->params['structuredData'] = $structuredData;
 
         $viewParams = [
             'model' => $model,
