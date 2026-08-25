@@ -71,6 +71,7 @@ RUN php init --env=Production --overwrite=n
 RUN mkdir -p /var/www/runtime \
     && mkdir -p /var/www/console/runtime \
     && mkdir -p /var/www/backups \
+    && mkdir -p /var/www/frontend/runtime/session \
     && mkdir -p /var/www/backend/web/assets \
     && mkdir -p /var/www/backend/web/uploads \
     && mkdir -p /var/www/frontend/web/assets \

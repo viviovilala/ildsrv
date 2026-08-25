@@ -15,6 +15,30 @@ $currentJenis = Yii::$app->request->get('DokumenSearch')['jenis_peraturan'] ?? '
 $currentTahun = Yii::$app->request->get('DokumenSearch')['tahun_terbit'] ?? '';
 $currentStatus = Yii::$app->request->get('DokumenSearch')['status'] ?? '';
 $currentKeyword = Yii::$app->request->get('DokumenSearch')['judul'] ?? '';
+$currentParams = Yii::$app->request->get('DokumenSearch', []);
+
+$quickCategories = [
+    [
+        'label' => 'Semua Putusan',
+        'url' => Url::to(['/dokumen/putusan']),
+        'active' => $currentJenis === '',
+    ],
+    [
+        'label' => 'Putusan Mahkamah Agung',
+        'url' => Url::to(['/dokumen/ma', 'DokumenSearch' => array_merge($currentParams, ['jenis_peraturan' => 'PUTUSAN MAHKAMAH AGUNG'])]),
+        'active' => $currentJenis === 'PUTUSAN MAHKAMAH AGUNG',
+    ],
+    [
+        'label' => 'Putusan MA',
+        'url' => Url::to(['/dokumen/putusan', 'DokumenSearch' => array_merge($currentParams, ['jenis_peraturan' => 'PUTUSAN MA'])]),
+        'active' => $currentJenis === 'PUTUSAN MA',
+    ],
+    [
+        'label' => 'Putusan PTUN',
+        'url' => Url::to(['/dokumen/putusan', 'DokumenSearch' => array_merge($currentParams, ['jenis_peraturan' => 'PUTUSAN PTUN'])]),
+        'active' => $currentJenis === 'PUTUSAN PTUN',
+    ],
+];
 
 $this->registerCss('
 .peraturan-hero{background:#154212;border-radius:16px;padding:48px;color:#fff;max-width:1280px;margin:0 auto}

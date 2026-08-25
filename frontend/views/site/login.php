@@ -11,8 +11,6 @@ use yii\bootstrap\ActiveForm;
     <div class="container">
         <div class="text-center"><br><br>
             <!-- <p><?= Html::a('Home', ['/']); ?></p> -->
-            <p><span class="active">Login</span>
-            </p>
         </div>
     </div>
     <br>
@@ -20,7 +18,13 @@ use yii\bootstrap\ActiveForm;
 		<div class="row">
 			<div class="col-lg-6 center-col">
 				<div class="php-email-form"><br>
-					<h3 class="text-center margin-40px-bottom  bg-primary text-white">Login</h3>
+					<div class="text-center margin-40px-bottom">
+						<?= Html::img('@web/images/upnvjt-logo-yellow.png', [
+							'alt' => 'JDIH UPN Veteran Jawa Timur',
+							'class' => 'img-fluid',
+							'style' => 'max-width: 220px;',
+						]) ?>
+					</div>
 					<?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
 					<?= $form->field($model, 'username')->textInput(['autofocus' => true, 'placeholder' => 'Username'])->label(false) ?>
@@ -34,7 +38,7 @@ use yii\bootstrap\ActiveForm;
 						</div>
 
 					</div>
-					<?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+					<?= Html::submitButton('Masuk', ['class' => 'btn btn-success text-white', 'name' => 'login-button']) ?>
 				</div><br>
 			</div>
 		</div>

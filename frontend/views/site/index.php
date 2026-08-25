@@ -17,11 +17,7 @@ $this->registerLinkTag(['rel' => 'preload', 'as' => 'image', 'href' => $heroPng,
 
 $instansi = FrontendConfig::findOne(2);
 $rawInstansi = $instansi ? $instansi->isi_konfig : '';
-$instansiText = trim(strip_tags(str_ireplace(['<br>', '<br/>', '<br />'], ' ', $rawInstansi)));
-$instansiText = preg_replace('/^JDIH[\s\-–—]*/iu', '', $instansiText);
-if ($instansiText === '' || strcasecmp($instansiText, 'JDIH') === 0) {
-    $instansiText = '';
-}
+$instansiText = "UPN 'Veteran' Jawa Timur";
 
 // Get totals using the existing helper method
 $totalPeraturan = Dokumen::find()->total(1);
