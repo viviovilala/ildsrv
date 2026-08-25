@@ -39,6 +39,11 @@ services:
 
     volumes:
       - runtime:/var/www/runtime
+      - ./frontend/runtime/session:/var/www/frontend/runtime/session
+      - ./frontend/controllers:/var/www/frontend/controllers
+      - ./frontend/web/images/upnvjt-building.png:/var/www/images/upnvjt-building.png:ro
+      - ./frontend/views:/var/www/frontend/views
+      - ./frontend/assets/css:/var/www/frontend/assets/css
       - backend-assets:/var/www/backend/web/assets
       - frontend-assets:/var/www/frontend/web/assets
       - backend-uploads:/var/www/backend/web/uploads
