@@ -14,6 +14,8 @@ $splashBackground = Url::to('@web/images/hero-bg.png');
 
 if (empty($this->params['description'])) {
     $this->registerMetaTag(['name' => 'description', 'content' => 'Jaringan Dokumentasi dan Informasi Hukum - Portal hukum terlengkap untuk peraturan, monografi, putusan, dan artikel hukum.']);
+} else {
+    $this->registerMetaTag(['name' => 'description', 'content' => $this->params['description']]);
 }
 
 ?>
@@ -29,6 +31,9 @@ if (empty($this->params['description'])) {
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?> - <?= Html::encode($siteName) ?></title>
     <link rel="canonical" href="<?= Html::encode($canonicalUrl) ?>" />
+    <?php if (!empty($this->params['structuredData'])): ?>
+        <script type="application/ld+json"><?= json_encode($this->params['structuredData'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?></script>
+    <?php endif; ?>
     <?php $this->head() ?>
     <!-- Favicons -->
     <link href="assets/img/favicon.png" rel="icon">

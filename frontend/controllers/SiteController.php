@@ -270,6 +270,11 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
+    public function actionTanyaAi()
+    {
+        return $this->render('tanya-ai');
+    }
+
     public function actionKontak()
     {
         return $this->render('kontak');

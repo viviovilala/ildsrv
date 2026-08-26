@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Jika file/folder benar-benar ada, langsung gunakan
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Semua request lain diarahkan ke Yii
+RewriteRule . index.php [L]

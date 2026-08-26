@@ -18,15 +18,6 @@ $status = $model->status ?: 'Masih Berlaku';
 
 <section class="document-detail-page">
     <div class="container document-detail-shell">
-        <aside class="catalog-rail">
-            <div class="catalog-rail__brand"><i class="bi bi-hammer" aria-hidden="true"></i><div><strong>Katalog Hukum</strong><small>JDIH Portal</small></div></div>
-            <nav class="catalog-menu">
-                <?= Html::a('<i class="bi bi-grid" aria-hidden="true"></i> Dashboard', ['/site/index']) ?>
-                <?= Html::a('<i class="bi bi-hammer" aria-hidden="true"></i> Peraturan', ['/dokumen/peraturan'], ['class' => 'is-active']) ?>
-                <?= Html::a('<i class="bi bi-bank" aria-hidden="true"></i> Yurisprudensi', ['/dokumen/putusan']) ?>
-                <?= Html::a('<i class="bi bi-book" aria-hidden="true"></i> Monografi', ['/dokumen/monografi']) ?>
-            </nav>
-        </aside>
         <main class="document-detail-main">
             <div class="document-detail-hero">
                 <div>

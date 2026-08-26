@@ -38,4 +38,4 @@ $brandLogo = Url::to('@web/frontend/assets/img/logo-upn.png');
     </div>
 </footer>
 
-<?= Html::a('<i class="bi bi-stars" aria-hidden="true"></i> Tanya AI JDIH', '#', ['class' => 'jdih-ai-float']) ?>
+<?= Html::a('<i class="bi bi-stars" aria-hidden="true"></i> Tanya AI JDIH', ['/site/tanya-ai'], ['class' => 'jdih-ai-float']) ?>
