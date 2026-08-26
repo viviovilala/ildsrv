@@ -10,72 +10,21 @@ $category = Yii::$app->request->get('category');
 
 /*
  * =========================================================
- * BERITA UTAMA / HERO
+ * HERO BERITA
  * =========================================================
  *
- * Gambar:
- * frontend/web/uploads/berita/03-kkn-2026.jpg
+ * File:
+ * frontend/web/uploads/berita/hero-rektor-upnvjt.jpg
  *
- * Jadi file gambar:
- *
- * C:\laragon\www\ildis\frontend\web\uploads\berita\03-kkn-2026.jpg
+ * Hero menggunakan gambar khusus, bukan gambar kartu berita.
  */
-$featuredImage = Url::to('@web/uploads/berita/03-kkn-2026.jpg');
+$featuredImage = Url::to(
+    '@web/uploads/berita/hero-rektor-upnvjt.jpg'
+);
 
-$featuredTitle = 'UPN Veteran Jatim Berangkatkan Ribuan Mahasiswa KKN 2026, Sasaran Program Pengabdian Domestik Hingga Mancanegara';
+$featuredTitle = 'Reformasi Regulasi Kampus untuk Digitalisasi Berkelanjutan';
 
-$featuredExcerpt = 'UPN Veteran Jatim memberangkatkan ribuan mahasiswa dalam pelaksanaan KKN 2026 dengan sasaran program pengabdian di dalam negeri hingga mancanegara.';
-
-$featuredUrl = ['index'];
-
-
-/*
- * =========================================================
- * DATA BERITA
- * =========================================================
- *
- * Data utama tetap berasal dari database melalui $dataProvider.
- *
- * Data berikut menjadi informasi referensi untuk memastikan
- * judul dan nama gambar yang digunakan sesuai.
- */
-$newsReference = [
-    [
-        'title' => 'Mahasiswa KKN 21 UPN Veteran Jawa Timur Dorong Pengembangan UMKM Kelurahan Ledok Wetan Bojonegoro Melalui Program Spotlight UMKM',
-        'year' => '2026',
-        'category' => 'Kemahasiswaan',
-        'image' => '01-spotlight-umkm.jpg',
-        'slug' => 'mahasiswa-kkn-21-upnvjt-spotlight-umkm-ledok-wetan',
-    ],
-    [
-        'title' => 'Pelaksanaan Program Magang UPN Veteran Jawa Timur Fakultas Hukum di Pengadilan Negeri Jakarta Barat Kelas 1A Khusus',
-        'year' => '2024',
-        'category' => 'Akademik',
-        'image' => '02-magang-fh-jakbar.jpg',
-        'slug' => 'program-magang-fh-upnvjt-pengadilan-negeri-jakbar',
-    ],
-    [
-        'title' => 'UPN Veteran Jatim Berangkatkan Ribuan Mahasiswa KKN 2026, Sasaran Program Pengabdian Domestik Hingga Mancanegara',
-        'year' => '2026',
-        'category' => 'Kemahasiswaan',
-        'image' => '03-kkn-2026.jpg',
-        'slug' => 'kkn-upnvjt-2026-domestik-mancanegara',
-    ],
-    [
-        'title' => 'Wisuda ke-97 UPN Veteran Jatim, Rektor Tegaskan Lulusan Harus Berkompetensi dan Berintegritas',
-        'year' => '2026',
-        'category' => 'Akademik',
-        'image' => '04-wisuda-ke-97.jpg',
-        'slug' => 'wisuda-ke-97-upnvjt-2026',
-    ],
-    [
-        'title' => 'Tim Abdimas UPN Veteran Jatim Dampingi Proses Digitalisasi Manajemen Produksi Halal di UMKM Kedai Jerman',
-        'year' => '2026',
-        'category' => 'Akademik',
-        'image' => '05-abdimas-kedai-jerman.jpg',
-        'slug' => 'abdimas-upnvjt-digitalisasi-produksi-halal-kedai-jerman',
-    ],
-];
+$featuredExcerpt = 'Langkah strategis UPN Veteran Jawa Timur dalam menyinkronkan kebijakan internal dengan standar tata kelola universitas kelas dunia.';
 
 ?>
 
@@ -91,7 +40,7 @@ $newsReference = [
             $featuredImage,
             [
                 'class' => 'news-hero__image',
-                'alt' => $featuredTitle,
+                'alt' => 'UPN Veteran Jawa Timur',
             ]
         ) ?>
 
@@ -108,7 +57,13 @@ $newsReference = [
             </span>
 
             <h1 class="news-hero__title">
-                <?= Html::encode($featuredTitle) ?>
+                Reformasi Regulasi
+                <br>
+                Kampus untuk
+                <br>
+                Digitalisasi
+                <br>
+                Berkelanjutan
             </h1>
 
             <p class="news-hero__excerpt">
@@ -116,7 +71,7 @@ $newsReference = [
             </p>
 
             <?= Html::a(
-                'Lihat Berita <i class="bi bi-arrow-right" aria-hidden="true"></i>',
+                'Baca Selengkapnya <i class="bi bi-arrow-right" aria-hidden="true"></i>',
                 '#news-list',
                 [
                     'class' => 'news-hero__button',
@@ -194,9 +149,12 @@ $newsReference = [
 
             </div>
 
+
             <div class="news-sort">
 
-                <span>Urutkan:</span>
+                <span>
+                    Urutkan:
+                </span>
 
                 <?= Html::a(
                     'Terbaru',
@@ -224,81 +182,7 @@ $newsReference = [
 
 
 <!-- =========================================================
-     BERITA REFERENSI
-========================================================= -->
-
-<section class="news-reference-section">
-
-    <div class="container">
-
-        <div class="news-reference-grid">
-
-            <?php foreach ($newsReference as $news): ?>
-
-                <?php
-                $imageUrl = Url::to(
-                    '@web/uploads/berita/' . $news['image']
-                );
-                ?>
-
-                <article class="news-reference-card">
-
-                    <div class="news-reference-card__image">
-
-                        <?= Html::img(
-                            $imageUrl,
-                            [
-                                'alt' => $news['title'],
-                                'loading' => 'lazy',
-                            ]
-                        ) ?>
-
-                    </div>
-
-                    <div class="news-reference-card__body">
-
-                        <div class="news-reference-card__meta">
-
-                            <span class="news-reference-card__category">
-                                <?= Html::encode($news['category']) ?>
-                            </span>
-
-                            <span class="news-reference-card__year">
-                                <?= Html::encode($news['year']) ?>
-                            </span>
-
-                        </div>
-
-                        <h2 class="news-reference-card__title">
-                            <?= Html::encode($news['title']) ?>
-                        </h2>
-
-                        <?= Html::a(
-                            'Baca Selengkapnya <i class="bi bi-arrow-right"></i>',
-                            [
-                                'view',
-                                'slug' => $news['slug'],
-                            ],
-                            [
-                                'class' => 'news-reference-card__link',
-                            ]
-                        ) ?>
-
-                    </div>
-
-                </article>
-
-            <?php endforeach; ?>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================================================
-     DAFTAR BERITA DARI DATABASE
+     DAFTAR BERITA
 ========================================================= -->
 
 <section
@@ -310,24 +194,55 @@ $newsReference = [
 
         <?= ListView::widget([
 
+            /*
+             * Data berita tetap berasal dari database.
+             */
             'dataProvider' => $dataProvider,
 
+            /*
+             * Hilangkan:
+             * Showing 1-5 of ...
+             */
             'summary' => false,
 
+            /*
+             * Tidak membuat wrapper tambahan
+             * untuk setiap berita.
+             */
             'itemOptions' => [
                 'tag' => false,
             ],
 
+            /*
+             * Container utama kartu berita.
+             *
+             * CSS akan mengatur:
+             *
+             * BARIS 1
+             * [ berita 1 ] [ berita 2 ] [ berita 3 ]
+             *
+             * BARIS 2
+             * [       berita 4 besar       ] [ berita 5 ]
+             */
             'options' => [
                 'class' => 'news-card-grid',
             ],
 
+            /*
+             * Template kartu berita.
+             */
             'itemView' => '_data',
 
+            /*
+             * Kategori yang sedang aktif.
+             */
             'viewParams' => [
                 'currentCategory' => $category,
             ],
 
+            /*
+             * Pagination.
+             */
             'pager' => [
 
                 'options' => [
@@ -355,7 +270,6 @@ $newsReference = [
                 'nextPageCssClass' => 'page-item',
 
                 'maxButtonCount' => 5,
-
             ],
 
         ]) ?>
