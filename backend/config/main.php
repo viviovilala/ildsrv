@@ -12,6 +12,7 @@ return [
     'name' => 'ildis',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
+    'homeUrl' => ['site/index'],
     'bootstrap' => ['log'],
     'modules' => [
         'admin' => [
@@ -102,6 +103,9 @@ return [
             'showScriptName' => false,
             //'suffix' => '.html',
             'rules' => [
+                'statistik-pengunjung<slash:/?>' => 'visitor-report/index',
+                'statistik-pengunjung/<action:[\w-]+>/' => 'visitor-report/<action>',
+                'statistik-pengunjung/<action:[\w-]+>' => 'visitor-report/<action>',
 
                 // 'article/<id:\d+>/<slug>' => 'article/view',
                 //'<controller:\w+>/<id:\d+>/' => '<controller>/view',
@@ -116,8 +120,8 @@ return [
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
-              //'site/*', 
-              
+            'site/login',
+            'site/error',
         ],
     ],
     'params' => $params,

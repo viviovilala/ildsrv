@@ -10,6 +10,7 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Peraturan */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $lampiran backend\models\DataLampiran */
 
 
 $jenis = \backend\models\JenisPeraturan::find()->where(['name' => $model->jenis_peraturan])->one();
@@ -160,6 +161,10 @@ $jenis = \backend\models\JenisPeraturan::find()->where(['name' => $model->jenis_
                     ]
                 )->label('Status Peraturan');
                 ?>
+
+                <?= $form->field($lampiran, 'dokumen_lampiran')->widget(FileInput::classname(), [
+                    'pluginOptions' => ['allowedFileExtensions' => ['pdf'], 'showUpload' => false, 'showPreview' => false],
+                ])->hint($lampiran->dokumen_lampiran ? 'File saat ini: ' . Html::encode($lampiran->dokumen_lampiran) : 'Pilih PDF baru bila ingin mengganti file.') ?>
 
             </div>
         </div>

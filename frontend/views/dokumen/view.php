@@ -12,7 +12,10 @@ $lampiran = DataLampiran::find()->where(['id_dokumen' => $model->id])->one();
 $relatedRules = PeraturanTerkait::find()->where(['id_dokumen' => $model->id])->limit(3)->all();
 $relatedDocs = DokumenTerkait::find()->where(['id_dokumen' => $model->id])->limit(3)->all();
 $statusHistory = DataStatus::find()->where(['id_dokumen' => $model->id])->limit(3)->all();
-$documentUrl = $lampiran ? Url::to(['/dokumen/download', 'id' => $lampiran->dokumen_lampiran, 'docId' => $model->id]) : null;
+$documentUrl = $lampiran && $lampiran->dokumen_lampiran ? Url::to(['/dokumen/download', 'id' => $lampiran->dokumen_lampiran, 'docId' => $model->id]) : null;
+$documentFileUrl = $lampiran && $lampiran->dokumen_lampiran
+    ? Url::to('@web/uploads/dokumen/' . rawurlencode($lampiran->dokumen_lampiran))
+    : null;
 $status = $model->status ?: 'Masih Berlaku';
 ?>
 
@@ -37,16 +40,11 @@ $status = $model->status ?: 'Masih Berlaku';
                         <button type="button"><i class="bi bi-zoom-in"></i></button><button type="button"><i class="bi bi-zoom-out"></i></button><span>Halaman 1 dari 42</span><button type="button"><i class="bi bi-printer"></i></button><button type="button"><i class="bi bi-fullscreen"></i></button>
                     </div>
                     <div class="document-page-preview">
-                        <article>
-                            <h2><?= Html::encode($model->bentuk_peraturan ?: 'PERATURAN REKTOR') ?></h2>
-                            <h3>UNIVERSITAS PEMBANGUNAN NASIONAL "VETERAN" JAWA TIMUR</h3>
-                            <strong>Nomor <?= Html::encode($model->nomor_peraturan ?: '-') ?></strong>
-                            <hr>
-                            <p>TENTANG</p>
-                            <h4><?= Html::encode($model->judul) ?></h4>
-                            <em>Menimbang:</em>
-                            <p>Bahwa untuk menjamin kepastian hukum dalam penyelenggaraan pendidikan dan tata kelola universitas...</p>
-                        </article>
+                        <?php if ($documentFileUrl): ?>
+                            <iframe src="<?= Html::encode($documentFileUrl) ?>#toolbar=1&navpanes=0" title="PDF <?= Html::encode($model->judul) ?>"></iframe>
+                        <?php else: ?>
+                            <p>PDF dokumen belum tersedia.</p>
+                        <?php endif; ?>
                     </div>
                 </section>
                 <aside class="document-side">

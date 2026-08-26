@@ -13,7 +13,7 @@ use backend\models\Circulation;
     <!-- mini logo for sidebar mini 50x50 pixels -->
     <span class="logo-mini"><b><?= $title ?></b></span>
     <!-- logo for regular state and mobile devices -->
-    <span class="logo-lg"></span>
+    <span class="logo-lg"><i class="fa fa-th-large"></i> JDIH UPNVJT</span>
   </a>
   <!-- Header Navbar: style can be found in header.less -->
   <nav class="navbar navbar-static-top" role="navigation">
@@ -21,6 +21,7 @@ use backend\models\Circulation;
     <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
       <span class="sr-only">Toggle navigation</span>
     </a>
+    <div class="jdih-admin-search"><i class="fa fa-search"></i><input type="search" placeholder="Cari dokumen..." aria-label="Cari dokumen"></div>
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
         <!-- Messages: style can be found in dropdown.less-->
@@ -91,7 +92,7 @@ echo
         <li class="dropdown user user-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
-            <?= Html::img(\Yii::getAlias('@imageurl') . '/common/dokumen/' . \Yii::$app->user->identity->picture, ['class' => 'user-image', 'alt' => 'myImage', 'width' => '160', 'height' => 'auto']); ?>
+            <?= Html::img('@web/img/user2-160x160.jpg', ['class' => 'user-image', 'alt' => 'User Image', 'width' => '160', 'height' => 'auto']); ?>
 
             <span class="hidden-xs"><?= \Yii::$app->user->identity->username ?></span>
           </a>

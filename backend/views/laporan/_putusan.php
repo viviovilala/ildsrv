@@ -46,6 +46,7 @@ use yii\web\JsExpression;
 	<div class="box-body">
 		<?php
 
+		$b = [];
 		$produkhukum = \backend\models\TipeDokumen::find()
 			->where(['parent_id' => 4])
 			->orderBy(['id' => SORT_ASC])

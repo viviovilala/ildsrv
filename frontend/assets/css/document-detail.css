@@ -8,10 +8,10 @@
 
 .jdih-detail-wrapper {
   display: grid;
-  grid-template-columns: 1fr 380px;
-  gap: 32px;
-  padding: 40px 20px;
-  max-width: 1400px;
+  grid-template-columns: minmax(0, 7fr) minmax(280px, 3fr);
+  gap: 28px;
+  padding: 32px 20px;
+  max-width: 1280px;
   margin: 0 auto;
 }
 
@@ -89,7 +89,7 @@
 
 .jdih-pdf-container {
   background: #F3F4F6;
-  min-height: 600px;
+  min-height: 760px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -164,7 +164,7 @@
 }
 
 .jdih-doc-header-title {
-  font-size: 28px;
+  font-size: clamp(26px, 3.2vw, 48px);
   font-weight: 700;
   color: var(--color-text-dark);
   line-height: 1.3;
@@ -426,16 +426,13 @@
 
 @media (max-width: 1200px) {
   .jdih-detail-wrapper {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 7fr) minmax(260px, 3fr);
     gap: 24px;
   }
 
   .jdih-detail-sidebar {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    position: static;
-    top: auto;
+    position: sticky;
+    top: 96px;
   }
 
   .jdih-info-card,
@@ -446,6 +443,7 @@
 
 @media (max-width: 768px) {
   .jdih-detail-wrapper {
+    grid-template-columns: 1fr;
     padding: 24px 16px;
     gap: 16px;
   }
@@ -518,5 +516,50 @@
 
   .jdih-info-card-label {
     min-width: auto;
+  }
+}
+
+/* The public detail view uses the same proportions on every screen size. */
+.document-detail-shell {
+  max-width: 1280px;
+}
+
+.document-detail-hero h1 {
+  max-width: 900px;
+  font-size: clamp(26px, 4vw, 48px);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.document-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(280px, 3fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.document-page-preview {
+  min-height: 760px;
+  overflow: hidden;
+}
+
+.document-page-preview iframe {
+  display: block;
+  width: 100%;
+  height: 760px;
+  border: 0;
+}
+
+@media (max-width: 900px) {
+  .document-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .document-page-preview,
+  .document-page-preview iframe {
+    min-height: 480px;
+    height: 480px;
   }
 }

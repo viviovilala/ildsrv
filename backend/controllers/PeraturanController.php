@@ -168,11 +168,9 @@ class PeraturanController extends Controller
             $dokumen_lampiran = UploadedFile::getInstance($lampiran, 'dokumen_lampiran');
 
             if (!empty($dokumen_lampiran)) {
-                $lampiran->dokumen_lampiran = FileHelper::sanitizeFilename($dokumen_lampiran->name);
-                $path = Yii::getAlias('@common') . '/dokumen/' . $lampiran->dokumen_lampiran;
-                $dokumen_lampiran->saveAs($path);
+                $lampiran->dokumen_lampiran = $this->savePublicPdf($dokumen_lampiran);
             }
-            $lampiran->url_lampiran = Yii::getAlias('@imageurl') . '/common/dokumen/' . $lampiran->dokumen_lampiran;
+            $lampiran->url_lampiran = 'uploads/dokumen/' . $lampiran->dokumen_lampiran;
 
             if (!$lampiran->save()) {
                 Yii::$app->session->setFlash('error', 'Gagal menyimpan data lampiran.');
@@ -249,11 +247,9 @@ class PeraturanController extends Controller
             $dokumen_lampiran = UploadedFile::getInstance($lampiran, 'dokumen_lampiran');
 
             if (!empty($dokumen_lampiran)) {
-                $lampiran->dokumen_lampiran = FileHelper::sanitizeFilename($dokumen_lampiran->name);
-                $path = Yii::getAlias('@common') . '/dokumen/' . $lampiran->dokumen_lampiran;
-                $dokumen_lampiran->saveAs($path);
+                $lampiran->dokumen_lampiran = $this->savePublicPdf($dokumen_lampiran);
             }
-            $lampiran->url_lampiran = Yii::getAlias('@imageurl') . '/common/dokumen/' . $lampiran->dokumen_lampiran;
+            $lampiran->url_lampiran = 'uploads/dokumen/' . $lampiran->dokumen_lampiran;
 
             if (!$lampiran->save()) {
                 Yii::$app->session->setFlash('error', 'Gagal menyimpan data lampiran.');
@@ -281,9 +277,10 @@ class PeraturanController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $lampiran = DataLampiran::find()->where(['id_dokumen' => $id])->one() ?: new DataLampiran(['id_dokumen' => $id]);
         $old_abstrak = $model->abstrak;
 
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $lampiran->load(Yii::$app->request->post())) {
 
             $jenisperaturan = JenisPeraturan::find()->where(['name' => $model->jenis_peraturan])->one();
             if (!empty($jenisperaturan)) {
@@ -318,7 +315,13 @@ class PeraturanController extends Controller
             $model->pemrakarsa = htmlentities($model->pemrakarsa);
             $model->sumber = htmlentities($model->sumber);
 
-            if ($model->save()) {
+            $newPdf = UploadedFile::getInstance($lampiran, 'dokumen_lampiran');
+            if ($newPdf) {
+                $lampiran->dokumen_lampiran = $this->savePublicPdf($newPdf);
+                $lampiran->url_lampiran = 'uploads/dokumen/' . $lampiran->dokumen_lampiran;
+            }
+
+            if ($model->save() && $lampiran->save()) {
                 $log = new LogPustakawan();
                 $log->dokumen_id = $id;
                 $log->controller = 'Peraturan';
@@ -328,11 +331,12 @@ class PeraturanController extends Controller
                 Yii::$app->session->setFlash('success', 'Data Peraturan berhasil diubah');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
         }
+
+        return $this->render('update', [
+            'model' => $model,
+            'lampiran' => $lampiran,
+        ]);
     }
 
     public function actionUbahAbstrak($id)
@@ -409,6 +413,22 @@ class PeraturanController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    private function savePublicPdf(UploadedFile $file)
+    {
+        $directory = Yii::getAlias('@frontend/web/uploads/dokumen');
+        if (!is_dir($directory)) {
+            mkdir($directory, 0775, true);
+        }
+
+        $filename = FileHelper::sanitizeFilename($file->name);
+        $path = $directory . DIRECTORY_SEPARATOR . $filename;
+        if (!$file->saveAs($path)) {
+            throw new \RuntimeException('File PDF gagal disimpan.');
+        }
+
+        return $filename;
     }
 
     /*---------- BEGIN TEU -----------------*/

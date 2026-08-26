@@ -78,6 +78,8 @@ use yii\behaviors\BlameableBehavior;
  */
 class Dokumen extends \yii\db\ActiveRecord
 {
+    public $nama_pengarang;
+
     const TYPE_PERATURAN = 1;
     const TYPE_MONOGRAFI = 2;
     const TYPE_ARTIKEL = 3;

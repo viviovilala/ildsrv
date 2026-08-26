@@ -27,6 +27,7 @@ class AppAsset extends AssetBundle
         ['css/jdih-theme.css', 'appendTimestamp' => true],
         ['css/a11y.css', 'appendTimestamp' => true],
         ['css/redesign.css', 'appendTimestamp' => true],
+        ['css/document-detail.css', 'appendTimestamp' => true],
     ];
 
     public $js = [

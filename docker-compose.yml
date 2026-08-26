@@ -44,10 +44,16 @@ services:
       - ./frontend/web/images/upnvjt-building.png:/var/www/images/upnvjt-building.png:ro
       - ./frontend/views:/var/www/frontend/views
       - ./frontend/assets/css:/var/www/frontend/assets/css
+      - ./backend/assets_b:/var/www/backend/assets_b:ro
+      - ./backend/config:/var/www/backend/config:ro
+      - ./backend/controllers:/var/www/backend/controllers:ro
+      - ./backend/modules:/var/www/backend/modules:ro
+      - ./backend/views:/var/www/backend/views:ro
+      - ./console/migrations:/var/www/console/migrations:ro
       - backend-assets:/var/www/backend/web/assets
       - frontend-assets:/var/www/frontend/web/assets
       - backend-uploads:/var/www/backend/web/uploads
-      - frontend-uploads:/var/www/frontend/web/uploads
+      - ./frontend/web/uploads/dokumen:/var/www/frontend/web/uploads/dokumen
       - ./docker/nginx/default.conf:/etc/nginx/http.d/default.conf:ro
       - ./.env:/var/www/.env:ro
 

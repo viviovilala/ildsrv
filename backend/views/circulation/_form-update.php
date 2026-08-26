@@ -52,14 +52,6 @@ use kartik\datecontrol\DateControl;
 
 <?= $form->field($model, 'denda')->textInput(['maxlength' => true]) ?>
 
-<?= $form->field($model, '_created_by')->textInput() ?>
-
-<?= $form->field($model, '_updated_by')->textInput() ?>
-
-<?= $form->field($model, '_created_time')->textInput() ?>
-
-<?= $form->field($model, '_updated_time')->textInput() ?>
-
             </div>
             <div class="box-footer">
                 <?= Html::submitButton('<i class="fa fa-save"></i> Ubah', 

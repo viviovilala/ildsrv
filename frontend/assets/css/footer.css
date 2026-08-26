@@ -1,0 +1,369 @@
+:root {
+    --footer-bg: #21451a;
+    --footer-text: #d6dfd1;
+    --footer-accent: #f5cf57;
+    --footer-link: #d6dfd1;
+    --footer-link-hover: #ffcb05;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.jdih-footer {
+    box-sizing: border-box;
+    width: 100%;
+    background: var(--footer-bg);
+    color: var(--footer-text);
+    padding: 56px 32px 0;
+    margin-top: 72px;
+}
+
+.jdih-footer *,
+.jdih-footer *::before,
+.jdih-footer *::after {
+    box-sizing: border-box;
+}
+
+.jdih-footer .container {
+    width: min(100%, 1200px);
+    margin: 0 auto;
+    padding: 0;
+}
+
+/* =========================================================
+   FOOTER CONTENT
+   ========================================================= */
+
+.jdih-footer__content {
+    display: grid;
+    grid-template-columns: 1.35fr 0.85fr 1.15fr;
+    column-gap: 64px;
+    align-items: start;
+    min-width: 0;
+}
+
+.jdih-footer__col {
+    min-width: 0;
+}
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.jdih-footer__logo {
+    display: flex;
+    align-items: center;
+    margin: 0 0 14px;
+}
+
+.jdih-footer__logo-img {
+    display: block;
+    width: 205px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.jdih-footer__desc {
+    max-width: 390px;
+    margin: 0 0 22px;
+    color: var(--footer-text);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   HEADING
+   ========================================================= */
+
+.jdih-footer__heading {
+    margin: 0 0 20px;
+    color: var(--footer-accent);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+.jdih-footer__list {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.jdih-footer__list li {
+    margin: 0;
+    padding: 0;
+}
+
+.jdih-footer__list a {
+    display: inline-block;
+    max-width: 100%;
+    color: var(--footer-link);
+    font-size: 15px;
+    line-height: 1.5;
+    text-decoration: none;
+    overflow-wrap: break-word;
+    transition: color 0.2s ease;
+}
+
+.jdih-footer__list a:hover,
+.jdih-footer__list a:focus-visible {
+    color: var(--footer-link-hover);
+    text-decoration: none;
+}
+
+/* =========================================================
+   CONTACT
+   ========================================================= */
+
+.jdih-footer__contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    min-width: 0;
+    margin: 0 0 18px;
+    color: var(--footer-text);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.jdih-footer__contact-item i {
+    flex: 0 0 20px;
+    width: 20px;
+    margin-top: 3px;
+    color: var(--footer-accent);
+    font-size: 19px;
+    line-height: 1;
+}
+
+.jdih-footer__contact-item p {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    overflow-wrap: break-word;
+}
+
+.jdih-footer__contact-item a {
+    color: var(--footer-link);
+    text-decoration: none;
+    overflow-wrap: break-word;
+    transition: color 0.2s ease;
+}
+
+.jdih-footer__contact-item a:hover,
+.jdih-footer__contact-item a:focus-visible {
+    color: var(--footer-link-hover);
+    text-decoration: none;
+}
+
+/* =========================================================
+   SOCIAL
+   ========================================================= */
+
+.jdih-footer__social {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.jdih-footer__social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    border: 1px solid rgba(214, 223, 209, 0.35);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--footer-text);
+    font-size: 17px;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.jdih-footer__social-link:hover,
+.jdih-footer__social-link:focus-visible {
+    border-color: var(--footer-accent);
+    background: var(--footer-accent);
+    color: #21451a;
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
+/* =========================================================
+   BOTTOM / COPYRIGHT
+   ========================================================= */
+
+.jdih-footer__bottom {
+    margin-top: 42px;
+    padding: 22px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    text-align: center;
+}
+
+.jdih-footer__copyright {
+    margin: 0;
+    color: var(--footer-text);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.5;
+    opacity: 0.8;
+}
+
+/* =========================================================
+   GENERAL LINK SAFETY
+   ========================================================= */
+
+.jdih-footer a {
+    cursor: pointer;
+}
+
+.jdih-footer a[href] {
+    color: inherit;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+    .jdih-footer {
+        padding: 48px 28px 0;
+    }
+
+    .jdih-footer__content {
+        grid-template-columns: 1.2fr 0.9fr 1fr;
+        column-gap: 40px;
+    }
+
+    .jdih-footer__logo-img {
+        width: 190px;
+    }
+
+    .jdih-footer__heading {
+        font-size: 23px;
+    }
+
+    .jdih-footer__desc,
+    .jdih-footer__list a,
+    .jdih-footer__contact-item {
+        font-size: 14px;
+    }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+    .jdih-footer {
+        padding: 42px 24px 0;
+        margin-top: 56px;
+    }
+
+    .jdih-footer__content {
+        grid-template-columns: 1fr 1fr;
+        gap: 36px 32px;
+    }
+
+    .jdih-footer__col--primary {
+        grid-column: 1 / -1;
+    }
+
+    .jdih-footer__desc {
+        max-width: 520px;
+    }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+    .jdih-footer {
+        padding: 36px 20px 0;
+        margin-top: 44px;
+    }
+
+    .jdih-footer__content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .jdih-footer__col--primary {
+        grid-column: auto;
+    }
+
+    .jdih-footer__logo-img {
+        width: 180px;
+    }
+
+    .jdih-footer__heading {
+        margin-bottom: 16px;
+        font-size: 22px;
+    }
+
+    .jdih-footer__desc,
+    .jdih-footer__list a,
+    .jdih-footer__contact-item {
+        font-size: 14px;
+    }
+
+    .jdih-footer__social {
+        margin-top: 16px;
+    }
+
+    .jdih-footer__social-link {
+        width: 38px;
+        height: 38px;
+        flex-basis: 38px;
+        font-size: 16px;
+    }
+
+    .jdih-footer__bottom {
+        margin-top: 34px;
+        padding: 18px 0;
+    }
+
+    .jdih-footer__copyright {
+        font-size: 12px;
+    }
+}
+
+/* =========================================================
+   PRINT
+   ========================================================= */
+
+@media print {
+    .jdih-footer {
+        margin-top: 0;
+        background: #fff;
+        color: #000;
+        border-top: 1px solid #ccc;
+    }
+
+    .jdih-footer__social {
+        display: none;
+    }
+}

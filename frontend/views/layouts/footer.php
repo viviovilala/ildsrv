@@ -1,41 +1,196 @@
 <?php
 
 use yii\helpers\Html;
-use yii\helpers\Url;
-
-$brandLogo = Url::to('@web/frontend/assets/img/logo-upn.png');
 ?>
 
 <footer class="jdih-footer" role="contentinfo">
     <div class="container">
-        <div class="jdih-footer__grid">
-            <div>
-                <h2>JDIH UPNVJT</h2>
-                <p>Portal Jaringan Dokumentasi dan Informasi Hukum Universitas Pembangunan Nasional "Veteran" Jawa Timur sebagai sarana pelayanan informasi hukum yang terpadu, akurat, dan mudah diakses.</p>
+
+        <div class="jdih-footer__content">
+
+            <!-- KOLOM 1 — INFORMASI JDIH -->
+            <div class="jdih-footer__col jdih-footer__col--primary">
+
+                <div class="jdih-footer__logo">
+                    <?= Html::img('@web/images/upnvjt-logo-yellow.png', [
+                        'alt' => 'JDIH UPN Veteran Jawa Timur',
+                        'class' => 'jdih-footer__logo-img',
+                    ]) ?>
+                </div>
+
+                <p class="jdih-footer__desc">
+                    Portal Jaringan Dokumentasi dan Informasi Hukum UPN
+                    "Veteran" Jawa Timur sebagai sarana pelayanan informasi
+                    hukum yang terpadu, akurat, dan mudah diakses.
+                </p>
+
+                <div class="jdih-footer__social">
+
+                    <?= Html::a(
+                        '<i class="bi bi-facebook" aria-hidden="true"></i>',
+                        'https://facebook.com',
+                        [
+                            'class' => 'jdih-footer__social-link',
+                            'target' => '_blank',
+                            'rel' => 'noopener noreferrer',
+                            'aria-label' => 'Facebook',
+                        ]
+                    ) ?>
+
+                    <?= Html::a(
+                        '<i class="bi bi-twitter" aria-hidden="true"></i>',
+                        'https://twitter.com',
+                        [
+                            'class' => 'jdih-footer__social-link',
+                            'target' => '_blank',
+                            'rel' => 'noopener noreferrer',
+                            'aria-label' => 'Twitter',
+                        ]
+                    ) ?>
+
+                    <?= Html::a(
+                        '<i class="bi bi-linkedin" aria-hidden="true"></i>',
+                        'https://linkedin.com',
+                        [
+                            'class' => 'jdih-footer__social-link',
+                            'target' => '_blank',
+                            'rel' => 'noopener noreferrer',
+                            'aria-label' => 'LinkedIn',
+                        ]
+                    ) ?>
+
+                    <?= Html::a(
+                        '<i class="bi bi-youtube" aria-hidden="true"></i>',
+                        'https://youtube.com',
+                        [
+                            'class' => 'jdih-footer__social-link',
+                            'target' => '_blank',
+                            'rel' => 'noopener noreferrer',
+                            'aria-label' => 'YouTube',
+                        ]
+                    ) ?>
+
+                </div>
+
             </div>
-            <div>
-                <h3>Kontak Kami</h3>
-                <p><i class="bi bi-envelope" aria-hidden="true"></i> sekretariat@upnjatim.ac.id</p>
-                <p><i class="bi bi-geo-alt" aria-hidden="true"></i> Surabaya, Jawa Timur</p>
+
+
+            <!-- KOLOM 2 — TAUTAN CEPAT -->
+            <div class="jdih-footer__col">
+
+                <h3 class="jdih-footer__heading">
+                    Tautan Cepat
+                </h3>
+
+                <ul class="jdih-footer__list">
+
+                    <li>
+                        <?= Html::a(
+                            'JDIHN',
+                            'https://jdihn.go.id',
+                            [
+                                'target' => '_blank',
+                                'rel' => 'noopener noreferrer',
+                            ]
+                        ) ?>
+                    </li>
+
+                    <li>
+                        <?= Html::a(
+                            'UPN Veteran Jatim',
+                            'https://upnjatim.ac.id',
+                            [
+                                'target' => '_blank',
+                                'rel' => 'noopener noreferrer',
+                            ]
+                        ) ?>
+                    </li>
+
+                    <li>
+                        <?= Html::a(
+                            'Kontak Kami',
+                            ['/site/kontak']
+                        ) ?>
+                    </li>
+
+                    <li>
+                        <?= Html::a(
+                            'Peta Situs',
+                            ['/site/sitemap']
+                        ) ?>
+                    </li>
+
+                </ul>
+
             </div>
-            <div>
-                <h3>Tautan Penting</h3>
-                <p><?= Html::a('JDIHN Nasional', 'https://jdihn.go.id', ['target' => '_blank', 'rel' => 'noopener noreferrer']) ?></p>
-                <p><?= Html::a('UPN Veteran Jatim', 'https://upnjatim.ac.id', ['target' => '_blank', 'rel' => 'noopener noreferrer']) ?></p>
-                <p><?= Html::a('Kontak Kami', ['/site/kontak']) ?></p>
+
+
+            <!-- KOLOM 3 — KONTAK -->
+            <div class="jdih-footer__col">
+
+                <h3 class="jdih-footer__heading">
+                    Kontak
+                </h3>
+
+                <div class="jdih-footer__contact">
+
+                    <div class="jdih-footer__contact-item">
+                        <i class="bi bi-geo-alt" aria-hidden="true"></i>
+
+                        <p>
+                            Jl. Raya Rungkut Madya,
+                            Gunung Anyar, Surabaya,
+                            Jawa Timur 60294
+                        </p>
+                    </div>
+
+                    <div class="jdih-footer__contact-item">
+                        <i class="bi bi-telephone" aria-hidden="true"></i>
+
+                        <p>
+                            +62 (031) 870 6369
+                        </p>
+                    </div>
+
+                    <div class="jdih-footer__contact-item">
+                        <i class="bi bi-envelope" aria-hidden="true"></i>
+
+                        <p>
+                            <?= Html::a(
+                                'humas@upnjatim.ac.id',
+                                'mailto:humas@upnjatim.ac.id'
+                            ) ?>
+                        </p>
+                    </div>
+
+                </div>
+
             </div>
-            <div>
-                <h3>Peta Situs</h3>
-                <p><?= Html::a('Produk Hukum', ['/dokumen/peraturan']) ?></p>
-                <p><?= Html::a('Berita', ['/berita/index']) ?></p>
-                <p><?= Html::a('Tentang', ['/site/about']) ?></p>
-            </div>
+
         </div>
+
+
+        <!-- COPYRIGHT -->
         <div class="jdih-footer__bottom">
-            <span>&copy; <?= date('Y') ?> JDIH UPN Veteran Jawa Timur. All Rights Reserved.</span>
-            <span><?= Html::a('Privasi', '#') ?> &nbsp; <?= Html::a('Ketentuan', '#') ?> &nbsp; <?= Html::a('Kontak', ['/site/kontak']) ?></span>
+
+            <p class="jdih-footer__copyright">
+                &copy; <?= date('Y') ?>
+                JDIH UPN Veteran Jawa Timur.
+                All Rights Reserved.
+            </p>
+
         </div>
+
     </div>
 </footer>
 
-<?= Html::a('<i class="bi bi-stars" aria-hidden="true"></i> Tanya AI JDIH', ['/site/tanya-ai'], ['class' => 'jdih-ai-float']) ?>
+
+<!-- FLOATING AI BUTTON -->
+<?= Html::a(
+    '<i class="bi bi-stars" aria-hidden="true"></i> Tanya AI JDIH',
+    ['/site/tanya-ai'],
+    [
+        'class' => 'jdih-ai-float',
+        'aria-label' => 'Tanya AI JDIH',
+    ]
+) ?>
