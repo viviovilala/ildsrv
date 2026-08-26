@@ -4,5 +4,8 @@ Disallow: /backend/
 Disallow: /profile/
 Disallow: /site/login
 Disallow: /site/error
+Disallow: /admin/
+Disallow: /vendor/
+Disallow: /runtime/
 
-Sitemap: /sitemap.xml
+Sitemap: https://jdih.upnjatim.ac.id/sitemap.xml
