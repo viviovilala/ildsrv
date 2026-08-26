@@ -19,10 +19,10 @@ use yii\bootstrap\ActiveForm;
 			<div class="col-lg-6 center-col">
 				<div class="php-email-form"><br>
 					<div class="text-center margin-40px-bottom">
-						<?= Html::img('@web/images/upnvjt-logo-yellow.png', [
-							'alt' => 'JDIH UPN Veteran Jawa Timur',
+						<?= Html::img('@web/images/upnvjt-logo-yell.png', [
+							'alt' => 'UPN Veteran Jawa Timur',
 							'class' => 'img-fluid',
-							'style' => 'max-width: 220px;',
+							'style' => 'max-width: 200px;',
 						]) ?>
 					</div>
 					<?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
