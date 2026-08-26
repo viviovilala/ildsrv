@@ -8,7 +8,7 @@ $this->title = 'Berita & Informasi';
 <section class="news-hero">
     <div class="container">
         <span>Berita Utama</span>
-        <h1>Reformasi Regulasi<br>Kampus untuk<br>Digitalisasi Berkelanjutan</h1>
+        <h1>eformasi Regulasi<br>Kampus untuk<br>Digitalisasi Berkelanjutan</h1>
         <p>Langkah strategis UPN Veteran Jawa Timur dalam menyinkronkan kebijakan internal dengan standar tata kelola universitas kelas dunia.</p>
         <a href="#news-list">Baca Selengkapnya <i class="bi bi-arrow-right"></i></a>
     </div>

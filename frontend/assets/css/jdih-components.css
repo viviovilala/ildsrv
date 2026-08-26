@@ -1290,3 +1290,8 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+/* Asset bundles are served outside the source tree; use a web-root URL. */
+.news-hero {
+  background-image: linear-gradient(90deg, rgba(6,78,11,.88), rgba(6,78,11,.52)), url('/images/upnvjt-building.png') !important;
+}
