@@ -344,6 +344,11 @@ class DokumenController extends Controller
             DocumentCounter::recordDownload((int) $docId);
         }
 
-        return \common\components\SafeDownload::sendFile('@common/dokumen', $id);
+        $publicPath = Yii::getAlias('@frontend/web/uploads/dokumen');
+        $baseAlias = is_file($publicPath . DIRECTORY_SEPARATOR . basename($id))
+            ? '@frontend/web/uploads/dokumen'
+            : '@common/dokumen';
+
+        return \common\components\SafeDownload::sendFile($baseAlias, $id);
     }
 }

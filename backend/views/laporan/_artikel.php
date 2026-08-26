@@ -47,6 +47,7 @@ use miloschuman\highcharts\Highcharts;
 	<div class="box-body">
 		<?php
 
+		$b = [];
 		$produkhukum = \backend\models\TipeDokumen::find()
 			->where(['parent_id' => 3])
 			->orderBy(['id' => SORT_ASC])

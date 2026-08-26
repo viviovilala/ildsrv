@@ -15,7 +15,7 @@ $brandLogo = Yii::getAlias('@web') . '/assets_b/img/logo-upn.png';
             <li><?= Html::a('<i class="fa fa-shield"></i> <span>Verifikasi</span>', ['/catatan-verifikasi/index']) ?></li>
             <li><?= Html::a('<i class="fa fa-exchange"></i> <span>Sirkulasi</span>', ['/circulation/index']) ?></li>
             <li><?= Html::a('<i class="fa fa-newspaper-o"></i> <span>Berita</span>', ['/berita/index']) ?></li>
-            <li><?= Html::a('<i class="fa fa-file-text-o"></i> <span>Laporan</span>', ['/laporan/index']) ?></li>
+            <li><?= Html::a('<i class="fa fa-file-text-o"></i> <span>Laporan</span>', ['/laporan/koleksi']) ?></li>
             <li><?= Html::a('<i class="fa fa-database"></i> <span>Master Data</span>', ['/tipe-dokumen/index']) ?></li>
             <li><?= Html::a('<i class="fa fa-lock"></i> <span>Akses Kontrol</span>', ['/admin/assignment/index']) ?></li>
         </ul>

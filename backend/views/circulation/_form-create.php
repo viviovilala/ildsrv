@@ -42,23 +42,7 @@ use kartik\datecontrol\DateControl;
 
 <?= $form->field($model, 'item_id')->textInput() ?>
 
-<?= $form->field($model, 'item_code')->textInput(['maxlength' => true]) ?>
-
-<?= $form->field($model, 'tanggal_pinjam')->textInput() ?>
-
-<?= $form->field($model, 'tanggal_kembali')->textInput() ?>
-
-<?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
-
 <?= $form->field($model, 'denda')->textInput(['maxlength' => true]) ?>
-
-<?= $form->field($model, '_created_by')->textInput() ?>
-
-<?= $form->field($model, '_updated_by')->textInput() ?>
-
-<?= $form->field($model, '_created_time')->textInput() ?>
-
-<?= $form->field($model, '_updated_time')->textInput() ?>
 
             </div>
             <div class="box-footer">

@@ -23,7 +23,7 @@ class VisitorReportController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['superadmin'],
+                        'roles' => ['/visitor-report/*'],
                     ],
                 ],
             ],

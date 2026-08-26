@@ -73,7 +73,9 @@ use yii\widgets\DetailView;
                 'label' => 'Dokumen Lampiran',
                 'format' => 'raw',
                 'value' => function ($data) {
-                    return $data->getLampiran($data->dokumen->dokumen_lampiran);
+                    return $data->dokumen === null || empty($data->dokumen->dokumen_lampiran)
+                        ? 'Belum ada berkas lampiran.'
+                        : $data->getLampiran($data->dokumen->dokumen_lampiran);
                     //return Html::a($data->dokumen->dokumen_lampiran, ['download-peraturan', 'id' => $data->id], ['target' => '_blank']);
                     //return Html::a(Yii::$app->baseUrl.'../common/dokumen/'.$data->dokumen->dokumen_lampiran, ['class'=>'','target' => '_blank']);
                     // return Html::a($data->dokumen->dokumen_lampiran, ['../common/dokumen/' . $data->dokumen->dokumen_lampiran], ['class'=>'', 'target' => '_blank', 'title' => 'lihat file']);
@@ -111,7 +113,7 @@ use yii\widgets\DetailView;
             ],
 
             [
-                'attribute' => 'created_by',
+                'attribute' => '_created_by',
                 'value' => function ($data) {
                     return $data->getUserInput($data->_created_by);
                 },
@@ -123,7 +125,7 @@ use yii\widgets\DetailView;
                 },
             ],
             [
-                'attribute' => 'updated_by',
+                'attribute' => '_updated_by',
                 'value' => function ($data) {
                     return $data->getUserInput($data->_updated_by);
                 },

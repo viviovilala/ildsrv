@@ -6,11 +6,11 @@ use yii\web\AssetBundle;
 
 class AppAsset extends AssetBundle
 {
-    public $basePath = '@webroot';
-    public $baseUrl = '@web/assets_b';
+    public $sourcePath = '@backend/assets_b';
     public $css = [
         'css/site.css',
         'css/admin-theme.css',
+        'css/jdih-admin.css',
     ];
     public $depends = [
         'yii\web\YiiAsset',

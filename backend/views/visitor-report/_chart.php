@@ -12,7 +12,7 @@ use yii\helpers\Html;
 </div>
 <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
 <script>
-fetch('/visitor-report/ajax-chart')
+fetch('<?= \yii\helpers\Url::to(['/visitor-report/ajax-chart']) ?>')
     .then(res => res.json())
     .then(data => {
         new Chart(document.getElementById('visitorTrendChart'), {

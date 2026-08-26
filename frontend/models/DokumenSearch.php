@@ -11,8 +11,11 @@ use frontend\models\DokumenDataSubyek;
 /**
  * DokumenSearch represents the model behind the search form of `frontend\models\Dokumen`.
  */
-class DokumenSearch extends DokumenDataSubyek
+class DokumenSearch extends Dokumen
 {
+    public $subyek;
+    public $nama_pengarang;
+
     /**
      * @inheritdoc
      */
@@ -42,7 +45,7 @@ class DokumenSearch extends DokumenDataSubyek
      */
     public function search($params)
     {
-        $query = DokumenDataSubyek::find();
+        $query = Dokumen::find();
 
         // add conditions that should always apply here
 

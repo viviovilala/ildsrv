@@ -10,6 +10,7 @@ class SafeDownload
     private static $allowedBasePaths = [
         '@common/dokumen',
         '@common/uploads',
+        '@frontend/web/uploads/dokumen',
     ];
 
     private static $allowedExtensions = [

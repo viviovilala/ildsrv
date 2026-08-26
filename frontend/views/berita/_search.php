@@ -9,27 +9,40 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="berita-search-widget">
+
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
         'options' => [
-            'data-pjax' => 1,
             'class' => 'berita-search-form',
         ],
     ]); ?>
 
-    <div class="input-group">
-        <?= Html::activeTextInput($model, 'judul', [
-            'class' => 'form-control berita-search-form__input',
-            'placeholder' => 'Cari berita...',
-        ]) ?>
-        <?= Html::button('<i class="bi bi-search" aria-hidden="true"></i>', [
-            'type' => 'submit',
-            'class' => 'berita-search-form__submit',
-            'title' => 'Cari',
-            'aria-label' => 'Cari berita',
-        ]) ?>
-    </div>
+        <div class="berita-search-form__group">
+
+            <?= Html::activeTextInput(
+                $model,
+                'judul',
+                [
+                    'class' => 'berita-search-form__input',
+                    'placeholder' => 'Cari berita...',
+                    'autocomplete' => 'off',
+                    'aria-label' => 'Cari berita',
+                ]
+            ) ?>
+
+            <?= Html::button(
+                '<i class="bi bi-search" aria-hidden="true"></i>',
+                [
+                    'type' => 'submit',
+                    'class' => 'berita-search-form__submit',
+                    'title' => 'Cari berita',
+                    'aria-label' => 'Cari berita',
+                ]
+            ) ?>
+
+        </div>
 
     <?php ActiveForm::end(); ?>
+
 </div>

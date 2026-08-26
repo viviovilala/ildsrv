@@ -8,6 +8,9 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\components\AuthDebugLogger;
 use common\models\LoginForm;
+use common\models\SurveyKepuasan;
+use common\models\VisitorStats;
+use backend\models\Peraturan;
 
 /**
  * Site controller
@@ -62,7 +65,36 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $startDate = date('Y-m-d', strtotime('-6 days'));
+        $visitorStats = VisitorStats::find()
+            ->select(['stat_date', 'unique_visits'])
+            ->where(['stat_type' => VisitorStats::TYPE_DAILY, 'document_id' => null])
+            ->andWhere(['>=', 'stat_date', $startDate])
+            ->indexBy('stat_date')
+            ->asArray()
+            ->all();
+
+        $visitorTrend = [];
+        for ($offset = 6; $offset >= 0; $offset--) {
+            $date = date('Y-m-d', strtotime("-{$offset} days"));
+            $visitorTrend[] = [
+                'label' => date('d M', strtotime($date)),
+                'unique_visits' => (int) ($visitorStats[$date]['unique_visits'] ?? 0),
+            ];
+        }
+
+        $recentDocuments = Peraturan::find()
+            ->select(['id', 'judul', 'created_at', 'status_terakhir'])
+            ->orderBy(['created_at' => SORT_DESC])
+            ->limit(2)
+            ->asArray()
+            ->all();
+
+        return $this->render('index', [
+            'visitorTrend' => $visitorTrend,
+            'surveyAggregate' => SurveyKepuasan::getAggregateStats(),
+            'recentDocuments' => $recentDocuments,
+        ]);
     }
 
 
@@ -76,14 +108,14 @@ class SiteController extends Controller
     {
         $this->layout = 'login';
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->redirect(['index']);
         }
 
         $model = new LoginForm();
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post())) {
                 if ($model->login()) {
-                    return $this->goBack();
+                    return $this->redirect(['index']);
                 }
             } else {
                 AuthDebugLogger::log('backend_login_post_load_failed', [
@@ -106,8 +138,8 @@ class SiteController extends Controller
     {
         
         Yii::$app->user->logout();
-        
-        return $this->goHome();
+
+        return $this->redirect(['login']);
     }
 
 }

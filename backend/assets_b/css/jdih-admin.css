@@ -1,66 +1,1364 @@
-body.login-page {
-  background: radial-gradient(circle at 18% 18%, rgba(11,93,30,.12), transparent 34%), linear-gradient(135deg,#eef7ea 0%,#f8f7f2 54%,#f5efd7 100%);
-  font-family: Inter, Arial, system-ui, sans-serif;
-}
-.jdih-admin-login { width: min(100%,440px); margin: 0 auto; color: #1f2a1f; }
-.jdih-admin-login__brand { display: flex; align-items: center; justify-content: center; gap: 18px; margin-bottom: 34px; }
-.jdih-admin-login__brand img { width: 118px; height: 62px; object-fit: contain; background: rgba(255,255,255,.72); }
-.jdih-admin-login__brand strong { display: block; font-family: Georgia,"Times New Roman",serif; font-size: 28px; color: #064e0b; }
-.jdih-admin-login__brand span { color: #4d554b; font-size: 13px; font-weight: 900; letter-spacing: .08em; }
-.jdih-admin-login__card { overflow: hidden; background: #fff; border: 1px solid #cbd5c0; border-radius: 12px; box-shadow: 0 24px 54px rgba(31,42,31,.12); }
-.jdih-admin-login__accent { height: 7px; background: #8a6b00; }
-.jdih-admin-login__card h1 { margin: 34px 40px 8px; text-align: center; font-family: Georgia,"Times New Roman",serif; font-size: 34px; color: #1f2a1f; }
-.jdih-admin-login__card > p { margin: 0 40px 30px; text-align: center; color: #4d554b; }
-.jdih-admin-login__form { padding: 0 40px 36px; }
-.jdih-admin-login__form label { color: #4d554b; font-size: 12px; font-weight: 900; letter-spacing: .08em; }
-.jdih-admin-input { min-height: 52px; display: flex; align-items: center; gap: 14px; padding: 0 14px; border: 1px solid #cbd5c0; border-radius: 8px; background: #fbfbf8; }
-.jdih-admin-input .form-control { height: 50px; border: 0; padding: 0; background: transparent; box-shadow: none; }
-.jdih-admin-login__options { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 8px 0 18px; }
-.jdih-admin-login__submit { width: 100%; min-height: 54px; border: 0; border-radius: 8px; background: #064e0b; color: #fff; font-weight: 900; }
-.jdih-admin-login__footer { padding: 20px 24px; background: #ecebe4; border-top: 1px solid #cbd5c0; text-align: center; font-weight: 800; }
-.jdih-admin-login__copy { margin-top: 26px; text-align: center; color: #7c8378; font-size: 13px; font-weight: 700; }
+/* =========================================================
+   JDIH UPN VETERAN JAWA TIMUR
+   ADMIN DASHBOARD
+   ========================================================= */
 
-body.skin-red,.skin-red .wrapper,.skin-red .content-wrapper { background: #f8f7f2; color: #1f2a1f; font-family: Inter,Arial,system-ui,sans-serif; }
-.skin-red .main-header .logo,.skin-red .main-header .navbar { background: #fff; color: #064e0b; border-bottom: 1px solid #cbd5c0; }
-.skin-red .main-header .logo { width: 300px; height: 76px; line-height: 76px; border-right: 1px solid #cbd5c0; font-size: 28px; font-weight: 900; }
-.skin-red .main-header .navbar { min-height: 76px; margin-left: 300px; }
-.skin-red .main-header .sidebar-toggle { height: 76px; padding: 27px 24px; color: #064e0b; }
-.jdih-admin-search { width: min(360px,36vw); height: 48px; display: flex; align-items: center; gap: 12px; margin: 14px 20px 0 auto; padding: 0 18px; border-radius: 999px; background: #f2f1ec; color: #4d554b; float: left; }
-.jdih-admin-search input { width: 100%; border: 0; outline: 0; background: transparent; font-size: 16px; }
-.main-sidebar { width: 300px; padding-top: 76px; background: #f5f6f2; border-right: 1px solid #cbd5c0; }
-.skin-red .content-wrapper,.skin-red .main-footer { margin-left: 300px; }
-.content-header { display: none; }
-.content { padding: 28px 46px 48px; }
-.jdih-sidebar-brand { display: flex; gap: 14px; align-items: center; padding: 28px 28px 20px; color: #064e0b; }
-.jdih-sidebar-brand img { width: 44px; height: 44px; object-fit: contain; }
-.jdih-sidebar-brand strong { display: block; font-size: 21px; font-weight: 900; }
-.jdih-sidebar-section { padding: 0 32px 18px; color: #4d554b; font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: .12em; }
-.jdih-sidebar-menu { padding: 0 24px; }
-.jdih-sidebar-menu > li > a { display: flex!important; align-items: center; gap: 16px; margin-bottom: 8px; border-radius: 8px; color: #4d554b!important; padding: 15px 18px!important; font-size: 17px; font-weight: 700; }
-.jdih-sidebar-menu > li.active > a,.jdih-sidebar-menu > li > a:hover { background: #2d6727!important; color: #d7f6d4!important; }
-.jdih-sidebar-menu--bottom { position: absolute; left: 0; right: 0; bottom: 32px; padding-top: 28px; }
-.jdih-sidebar-menu--bottom:before { content: ""; display: block; height: 1px; margin: 0 24px 26px; background: #cbd5c0; }
-.main-footer { min-height: 72px; background: #064e0b; border: 0; color: rgba(255,255,255,.74); padding: 24px 46px; }
-.jdih-dashboard__head { display: flex; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
-.jdih-dashboard__head h1 { margin: 0 0 6px; color: #064e0b; font-size: 22px; }
-.jdih-stat-grid-admin { display: grid; grid-template-columns: repeat(4,1fr); gap: 28px; margin-bottom: 56px; }
-.jdih-stat-box { position: relative; overflow: hidden; min-height: 174px; border-radius: 12px; color: #fff; box-shadow: 0 14px 34px rgba(31,42,31,.12); }
-.jdih-stat-box > div { padding: 26px 28px 0; }
-.jdih-stat-box strong { display: block; font-size: 48px; line-height: 1; font-weight: 900; }
-.jdih-stat-box span { display: block; margin-top: 18px; font-size: 18px; }
-.jdih-stat-box > i { position: absolute; right: 20px; bottom: 48px; font-size: 78px; opacity: .24; }
-.jdih-stat-box a { position: absolute; left: 0; right: 0; bottom: 0; display: block; padding: 14px; background: rgba(0,0,0,.12); color: #fff; text-align: center; font-size: 17px; text-decoration: none; }
-.jdih-stat-box.is-blue{background:#108dcc}.jdih-stat-box.is-green{background:#2d842f}.jdih-stat-box.is-orange{background:#f58300}.jdih-stat-box.is-red{background:#d3222a}
-.jdih-admin-grid { display: grid; grid-template-columns: minmax(0,1fr) 360px; gap: 28px; }
-.jdih-admin-panel,.jdih-collection-card,.jdih-system-card { border: 1px solid #cbd5c0; border-radius: 12px; background: #fff; box-shadow: 0 16px 34px rgba(31,42,31,.07); }
-.jdih-chart-panel { padding: 28px 30px; min-height: 420px; }
-.jdih-panel-title { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
-.jdih-bars { height: 310px; display: grid; grid-template-columns: repeat(7,1fr); align-items: end; gap: 12px; padding-top: 58px; }
-.jdih-bars div { height: 100%; display: flex; flex-direction: column; justify-content: flex-end; text-align: center; }
-.jdih-bars span { display: block; border-radius: 9px 9px 0 0; background: #e6ece7; }
-.jdih-admin-side { display: grid; gap: 28px; }
-.jdih-survey-card { padding: 26px; border-radius: 12px; background: #064e0b; color: rgba(255,255,255,.78); }
-.jdih-survey-card h2 { color: #fff; }
-.jdih-survey-card a { display: block; margin-top: 24px; border-radius: 8px; background: #ffd200; color: #064e0b; text-align: center; padding: 13px; font-weight: 900; text-decoration: none; }
-@media(max-width:1199px){.jdih-stat-grid-admin,.jdih-admin-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:767px){.skin-red .main-header .logo,.skin-red .main-header .navbar{width:100%;margin-left:0}.jdih-admin-search{display:none}.skin-red .content-wrapper,.skin-red .main-footer{margin-left:0}.content{padding:22px 16px 36px}.jdih-stat-grid-admin,.jdih-admin-grid{grid-template-columns:1fr}}
+:root {
+    --jdih-green: #21451a;
+    --jdih-green-dark: #173d12;
+    --jdih-green-light: #2d6727;
+
+    --jdih-gold: #f5cf57;
+    --jdih-gold-dark: #d9ad25;
+
+    --jdih-blue: #4d8bc7;
+    --jdih-orange: #e68b2c;
+    --jdih-red: #c83a36;
+
+    --jdih-bg: #f7f7f2;
+    --jdih-card: #ffffff;
+
+    --jdih-text: #1f2a1f;
+    --jdih-muted: #667064;
+
+    --jdih-border: #d9ded4;
+
+    --jdih-radius: 12px;
+    --jdih-shadow: 0 8px 24px rgba(31, 42, 31, 0.07);
+}
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+body.login-page {
+    background:
+        radial-gradient(
+            circle at 18% 18%,
+            rgba(33, 69, 26, 0.10),
+            transparent 34%
+        ),
+        linear-gradient(
+            135deg,
+            #eef7ea 0%,
+            #f8f7f2 54%,
+            #f5efd7 100%
+        );
+
+    font-family:
+        Inter,
+        Arial,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+.jdih-admin-login {
+    width: min(100%, 440px);
+    margin: 0 auto;
+    color: var(--jdih-text);
+}
+
+.jdih-admin-login__brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 32px;
+}
+
+.jdih-admin-login__brand img {
+    width: 118px;
+    height: 62px;
+    object-fit: contain;
+    background: rgba(255, 255, 255, 0.72);
+}
+
+.jdih-admin-login__brand strong {
+    display: block;
+    color: #064e0b;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 28px;
+}
+
+.jdih-admin-login__brand span {
+    color: #4d554b;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.jdih-admin-login__card {
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #cbd5c0;
+    border-radius: 14px;
+    box-shadow: 0 24px 54px rgba(31, 42, 31, 0.12);
+}
+
+.jdih-admin-login__accent {
+    height: 7px;
+    background: var(--jdih-gold-dark);
+}
+
+.jdih-admin-login__card h1 {
+    margin: 34px 40px 8px;
+    color: var(--jdih-text);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 34px;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.jdih-admin-login__card > p {
+    margin: 0 40px 30px;
+    color: #4d554b;
+    text-align: center;
+}
+
+.jdih-admin-login__form {
+    padding: 0 40px 36px;
+}
+
+.jdih-admin-login__form label {
+    color: #4d554b;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.jdih-admin-input {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 52px;
+    padding: 0 14px;
+    background: #fbfbf8;
+    border: 1px solid #cbd5c0;
+    border-radius: 8px;
+}
+
+.jdih-admin-input .form-control {
+    height: 50px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+}
+
+.jdih-admin-login__options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 8px 0 18px;
+}
+
+.jdih-admin-login__submit {
+    width: 100%;
+    min-height: 54px;
+    background: var(--jdih-green);
+    border: 0;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 800;
+}
+
+.jdih-admin-login__submit:hover {
+    background: var(--jdih-green-dark);
+}
+
+.jdih-admin-login__footer {
+    padding: 20px 24px;
+    background: #ecebe4;
+    border-top: 1px solid #cbd5c0;
+    text-align: center;
+    font-weight: 700;
+}
+
+.jdih-admin-login__copy {
+    margin-top: 26px;
+    color: #7c8378;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+}
+
+
+/* =========================================================
+   ADMIN BASE
+   ========================================================= */
+
+body.skin-red,
+.skin-red .wrapper,
+.skin-red .content-wrapper {
+    background: var(--jdih-bg);
+    color: var(--jdih-text);
+    font-family:
+        Inter,
+        Arial,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.skin-red .main-header .logo,
+.skin-red .main-header .navbar {
+    background: #fff;
+    color: var(--jdih-green);
+    border-bottom: 1px solid var(--jdih-border);
+}
+
+.skin-red .main-header .logo {
+    width: 240px;
+    height: 68px;
+    line-height: 68px;
+    border-right: 1px solid var(--jdih-border);
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.skin-red .main-header .navbar {
+    min-height: 68px;
+    margin-left: 240px;
+}
+
+.skin-red .main-header .sidebar-toggle {
+    height: 68px;
+    padding: 22px 28px;
+    color: var(--jdih-green);
+    font-size: 18px;
+}
+
+.skin-red .main-header .navbar-custom-menu > .nav {
+    height: 68px;
+}
+
+.jdih-admin-search {
+    float: left;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    width: min(440px, 42vw);
+    height: 46px;
+
+    margin: 11px 24px 0 auto;
+    padding: 0 18px;
+
+    background: #f2f1ec;
+    border: 1px solid #ebece6;
+    border-radius: 999px;
+
+    color: #4d554b;
+}
+
+.jdih-admin-search input {
+    width: 100%;
+    padding: 0;
+
+    background: transparent;
+    border: 0;
+    outline: 0;
+
+    color: var(--jdih-text);
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.main-sidebar {
+    width: 240px;
+    padding-top: 68px;
+
+    background: #f5f6f2;
+    border-right: 1px solid var(--jdih-border);
+}
+
+.skin-red .content-wrapper,
+.skin-red .main-footer {
+    margin-left: 240px;
+}
+
+.content-header {
+    display: none;
+}
+
+.content {
+    padding: 34px 34px 48px;
+}
+
+.jdih-sidebar-brand {
+    display: none;
+}
+
+.jdih-sidebar-brand img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+}
+
+.jdih-sidebar-brand strong {
+    display: block;
+    font-size: 21px;
+    font-weight: 900;
+}
+
+.jdih-sidebar-section {
+    padding: 18px 24px 12px;
+
+    color: #4d554b;
+    font-size: 11px;
+    font-weight: 900;
+
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+.jdih-sidebar-menu {
+    padding: 0 16px;
+}
+
+.jdih-sidebar-menu > li > a {
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 5px;
+    padding: 13px 14px !important;
+
+    border-radius: 9px;
+
+    color: #4d554b !important;
+
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.jdih-sidebar-menu > li.active > a,
+.jdih-sidebar-menu > li > a:hover {
+    background: var(--jdih-green-light) !important;
+    color: #e8f6e6 !important;
+}
+
+.jdih-sidebar-menu--bottom {
+    position: absolute;
+    right: 0;
+    bottom: 32px;
+    left: 0;
+
+    padding-top: 28px;
+}
+
+.jdih-sidebar-menu--bottom::before {
+    display: block;
+    height: 1px;
+    margin: 0 24px 26px;
+
+    background: var(--jdih-border);
+
+    content: "";
+}
+
+
+/* =========================================================
+   ADMIN FOOTER
+   JDIH UPN VETERAN JAWA TIMUR
+   ========================================================= */
+
+.main-footer.jdih-admin-footer {
+    box-sizing: border-box;
+    width: auto;
+    min-height: 0;
+    margin-left: 240px;
+    padding: 0;
+    background: var(--jdih-green);
+    border: 0;
+    color: rgba(255, 255, 255, 0.78);
+    font-family: Inter, Arial, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.jdih-admin-footer__inner {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: minmax(280px, 1.5fr) minmax(170px, 0.8fr) minmax(220px, 1fr);
+    gap: 64px;
+    width: min(100%, 1200px);
+    margin: 0 auto;
+    padding: 44px 34px 38px;
+}
+
+.jdih-admin-footer__brand,
+.jdih-admin-footer__links,
+.jdih-admin-footer__contact {
+    min-width: 0;
+}
+
+.jdih-admin-footer__brand h3 {
+    margin: 0 0 16px;
+    color: var(--jdih-gold);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 23px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.jdih-admin-footer__brand p {
+    max-width: 390px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 13px;
+    line-height: 1.75;
+}
+
+.jdih-admin-footer__links h4,
+.jdih-admin-footer__contact h4 {
+    margin: 2px 0 17px;
+    color: #fff;
+    font-family: Inter, Arial, system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+}
+
+.jdih-admin-footer__links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.jdih-admin-footer__links a {
+    display: block;
+    margin: 0 0 11px;
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 13px;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.jdih-admin-footer__links a:hover {
+    color: var(--jdih-gold);
+    transform: translateX(3px);
+    text-decoration: none;
+}
+
+.jdih-admin-footer__contact p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.jdih-admin-footer__contact p + p {
+    margin-top: 12px;
+}
+
+.jdih-admin-footer__bottom {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 58px;
+    padding: 0 34px;
+    border-top: 1px solid rgba(255, 255, 255, 0.13);
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.jdih-admin-footer__bottom span {
+    display: block;
+}
+
+.jdih-admin-footer__bottom span:last-child {
+    text-align: right;
+}
+
+.jdih-admin-footer a:focus-visible {
+    outline: 2px solid var(--jdih-gold);
+    outline-offset: 4px;
+}
+
+@media (max-width: 1199px) {
+    .jdih-admin-footer__inner {
+        grid-template-columns: 1.3fr 0.8fr 1fr;
+        gap: 38px;
+        padding: 40px 28px 34px;
+    }
+
+    .jdih-admin-footer__bottom {
+        padding: 0 28px;
+    }
+}
+
+@media (max-width: 900px) {
+    .jdih-admin-footer__inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 34px;
+    }
+
+    .jdih-admin-footer__brand {
+        grid-column: 1 / -1;
+    }
+
+    .jdih-admin-footer__brand p {
+        max-width: 600px;
+    }
+}
+
+
+/* =========================================================
+   DASHBOARD HEADER
+   ========================================================= */
+
+.jdih-dashboard__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+
+    margin-bottom: 30px;
+}
+
+.jdih-dashboard__head h1 {
+    margin: 0 0 7px;
+
+    color: var(--jdih-green);
+
+    font-size: 27px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.jdih-dashboard__head p {
+    margin: 0;
+
+    color: var(--jdih-muted);
+
+    font-size: 15px;
+}
+
+.jdih-dashboard__head > div:last-child {
+    align-self: center;
+
+    color: #4d554b;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   STATISTIC CARDS
+   ========================================================= */
+
+.jdih-stat-grid-admin {
+    display: grid;
+
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 20px;
+
+    margin-bottom: 28px;
+}
+
+.jdih-stat-box {
+    position: relative;
+
+    min-height: 148px;
+
+    overflow: hidden;
+
+    border-radius: 11px;
+
+    color: #fff;
+
+    box-shadow: 0 7px 18px rgba(31, 42, 31, 0.12);
+}
+
+.jdih-stat-box > div {
+    padding: 24px 24px 0;
+}
+
+.jdih-stat-box strong {
+    display: block;
+
+    font-size: 44px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.jdih-stat-box span {
+    display: block;
+
+    margin-top: 13px;
+
+    font-size: 15px;
+}
+
+.jdih-stat-box > i {
+    position: absolute;
+
+    right: 22px;
+    bottom: 48px;
+
+    font-size: 78px;
+
+    opacity: 0.22;
+}
+
+.jdih-stat-box a {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    display: block;
+
+    padding: 11px;
+
+    background: rgba(0, 0, 0, 0.12);
+
+    color: #fff;
+
+    font-size: 13px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.jdih-stat-box a:hover {
+    background: rgba(0, 0, 0, 0.18);
+}
+
+.jdih-stat-box.is-blue {
+    background: var(--jdih-blue);
+}
+
+.jdih-stat-box.is-green {
+    background: #4c893b;
+}
+
+.jdih-stat-box.is-orange {
+    background: var(--jdih-orange);
+}
+
+.jdih-stat-box.is-red {
+    background: var(--jdih-red);
+}
+
+
+/* =========================================================
+   MAIN DASHBOARD GRID
+   ========================================================= */
+
+.jdih-admin-grid {
+    display: grid;
+
+    grid-template-columns: minmax(0, 1fr) 310px;
+
+    gap: 24px;
+
+    align-items: start;
+}
+
+.jdih-admin-main {
+    display: grid;
+    gap: 24px;
+
+    min-width: 0;
+}
+
+
+/* =========================================================
+   GENERIC PANELS
+   ========================================================= */
+
+.jdih-admin-panel,
+.jdih-collection-card,
+.jdih-system-card {
+    background: var(--jdih-card);
+
+    border: 1px solid var(--jdih-border);
+    border-radius: var(--jdih-radius);
+
+    box-shadow: var(--jdih-shadow);
+}
+
+
+/* =========================================================
+   PANEL TITLE
+   ========================================================= */
+
+.jdih-panel-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.jdih-panel-title h2 {
+    margin: 0;
+
+    color: var(--jdih-text);
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.jdih-panel-title h2 i {
+    margin-right: 7px;
+}
+
+.jdih-panel-title a {
+    color: var(--jdih-green);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.jdih-panel-title a:hover {
+    text-decoration: underline;
+}
+
+.jdih-panel-title button {
+    padding: 8px 13px;
+
+    background: #eceeea;
+    border: 0;
+    border-radius: 6px;
+
+    color: var(--jdih-text);
+
+    font-size: 12px;
+}
+
+.jdih-panel-title button + button {
+    margin-left: 4px;
+}
+
+.jdih-panel-title button:last-child {
+    background: var(--jdih-green);
+    color: #fff;
+}
+
+
+/* =========================================================
+   VISITOR CHART
+   ========================================================= */
+
+.jdih-chart-panel {
+    min-height: 400px;
+
+    padding: 22px 24px;
+}
+
+.jdih-bars {
+    display: grid;
+
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+
+    align-items: end;
+
+    height: 315px;
+
+    gap: 14px;
+
+    padding-top: 34px;
+}
+
+.jdih-bars div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    height: 100%;
+
+    text-align: center;
+}
+
+.jdih-bars span {
+    display: block;
+
+    min-height: 0;
+
+    background: #e2e9e3;
+
+    border-radius: 8px 8px 0 0;
+}
+
+.jdih-bars strong {
+    margin-top: 9px;
+
+    color: #343b34;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   RIGHT SIDEBAR
+   ========================================================= */
+
+.jdih-admin-side {
+    display: grid;
+
+    gap: 22px;
+}
+
+
+/* =========================================================
+   SURVEY
+   ========================================================= */
+
+.jdih-survey-card {
+    min-height: 235px;
+
+    padding: 25px;
+
+    background: var(--jdih-green);
+
+    border-radius: 12px;
+
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.jdih-survey-card h2 {
+    margin: 0 0 22px;
+
+    color: #fff;
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.jdih-survey-card h3 {
+    margin: 0 0 9px;
+
+    color: #fff;
+
+    font-size: 30px;
+    font-weight: 500;
+
+    text-align: center;
+}
+
+.jdih-survey-card p {
+    margin: 0;
+
+    font-size: 13px;
+
+    text-align: center;
+}
+
+.jdih-survey-card a {
+    display: block;
+
+    margin-top: 22px;
+    padding: 13px;
+
+    background: #ffd84a;
+
+    border-radius: 9px;
+
+    color: var(--jdih-green);
+
+    font-size: 13px;
+    font-weight: 800;
+
+    text-align: center;
+    text-decoration: none;
+}
+
+.jdih-survey-card a:hover {
+    background: #f5cf57;
+}
+
+
+/* =========================================================
+   DIGITAL COLLECTION
+   ========================================================= */
+
+.jdih-collection-card {
+    padding: 22px 24px;
+}
+
+.jdih-collection-card h2 {
+    margin: 0 0 14px;
+
+    color: var(--jdih-text);
+
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.jdih-collection-card > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 0;
+
+    border-top: 1px solid #edf0eb;
+}
+
+.jdih-collection-card > div > i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    background: #f0f2ed;
+
+    border-radius: 6px;
+
+    color: var(--jdih-green);
+
+    font-size: 17px;
+}
+
+.jdih-collection-card span {
+    display: block;
+
+    min-width: 0;
+
+    color: var(--jdih-text);
+
+    font-size: 13px;
+}
+
+.jdih-collection-card strong {
+    display: block;
+}
+
+.jdih-collection-card small {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #7c8378;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   SYSTEM STATUS
+   ========================================================= */
+
+.jdih-system-card {
+    padding: 16px;
+
+    color: var(--jdih-text);
+
+    font-size: 13px;
+}
+
+.jdih-system-card i {
+    margin-right: 5px;
+
+    color: #4d9c48;
+}
+
+
+/* =========================================================
+   VERIFICATION
+   ========================================================= */
+
+.jdih-verification-panel {
+    padding: 22px 24px;
+}
+
+.jdih-verification-head,
+.jdih-verification-row {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 2fr)
+        105px
+        90px
+        82px;
+
+    gap: 12px;
+
+    align-items: center;
+
+    padding: 14px 0;
+
+    border-bottom: 1px solid #edf0eb;
+
+    font-size: 13px;
+}
+
+.jdih-verification-head {
+    margin-top: 10px;
+
+    color: #4d554b;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.jdih-verification-row strong {
+    overflow: hidden;
+
+    color: var(--jdih-text);
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.jdih-verification-row em {
+    justify-self: start;
+
+    padding: 5px 8px;
+
+    background: #fff0a8;
+
+    border-radius: 8px;
+
+    color: #705900;
+
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 700;
+}
+
+.jdih-verification-row a {
+    color: var(--jdih-green);
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.jdih-verification-row a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1199px) {
+
+    .jdih-stat-grid-admin {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .jdih-admin-grid {
+        grid-template-columns: minmax(0, 1fr) 290px;
+    }
+
+    .jdih-verification-head,
+    .jdih-verification-row {
+        grid-template-columns:
+            minmax(0, 2fr)
+            90px
+            78px
+            72px;
+    }
+}
+
+
+/* =========================================================
+   SMALL TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .jdih-admin-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .jdih-admin-side {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .jdih-stat-grid-admin {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 767px) {
+
+    .skin-red .main-header .logo {
+        width: 100%;
+        margin-left: 0;
+
+        border-right: 0;
+    }
+
+    .skin-red .main-header .navbar {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .jdih-admin-search {
+        display: none;
+    }
+
+    .skin-red .content-wrapper,
+    .skin-red .main-footer {
+        margin-left: 0;
+    }
+
+    .main-sidebar {
+        width: 240px;
+    }
+
+    .content {
+        padding: 24px 16px 36px;
+    }
+
+    .jdih-dashboard__head {
+        display: block;
+    }
+
+    .jdih-dashboard__head > div:last-child {
+        margin-top: 12px;
+    }
+
+    .jdih-dashboard__head h1 {
+        font-size: 24px;
+    }
+
+    .jdih-stat-grid-admin {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .jdih-stat-box {
+        min-height: 135px;
+    }
+
+    .jdih-admin-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .jdih-admin-side {
+        grid-template-columns: 1fr;
+    }
+
+    .jdih-chart-panel {
+        min-height: 350px;
+        padding: 18px 16px;
+    }
+
+    .jdih-bars {
+        height: 265px;
+        gap: 6px;
+    }
+
+    .jdih-bars strong {
+        font-size: 9px;
+    }
+
+    .jdih-verification-panel {
+        overflow-x: auto;
+    }
+
+    .jdih-verification-head,
+    .jdih-verification-row {
+        min-width: 560px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .content {
+        padding: 20px 12px 30px;
+    }
+
+    .jdih-dashboard__head h1 {
+        font-size: 22px;
+    }
+
+    .jdih-dashboard__head p {
+        font-size: 14px;
+    }
+
+    .jdih-stat-box > div {
+        padding: 21px 20px 0;
+    }
+
+    .jdih-stat-box strong {
+        font-size: 38px;
+    }
+
+    .jdih-stat-box span {
+        font-size: 14px;
+    }
+
+    .jdih-chart-panel {
+        padding: 17px 13px;
+    }
+
+    .jdih-panel-title {
+        align-items: flex-start;
+    }
+
+    .jdih-panel-title h2 {
+        font-size: 15px;
+    }
+
+    .jdih-panel-title button {
+        padding: 7px 9px;
+        font-size: 11px;
+    }
+
+    .jdih-verification-panel {
+        padding: 18px 16px;
+    }
+
+    .jdih-survey-card,
+    .jdih-collection-card {
+        padding: 20px;
+    }
+}
+
+
+/* =========================================================
+   ADMIN FOOTER - MOBILE
+   ========================================================= */
+
+@media (max-width: 767px) {
+    .main-footer.jdih-admin-footer {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .jdih-admin-footer__inner {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        width: 100%;
+        padding: 36px 22px 30px;
+    }
+
+    .jdih-admin-footer__brand {
+        grid-column: auto;
+    }
+
+    .jdih-admin-footer__brand p {
+        max-width: 100%;
+    }
+
+    .jdih-admin-footer__bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 8px;
+        min-height: 0;
+        padding: 18px 22px;
+    }
+
+    .jdih-admin-footer__bottom span:last-child {
+        text-align: left;
+    }
+}
+
+@media (max-width: 480px) {
+    .jdih-admin-footer__inner {
+        gap: 24px;
+        padding: 30px 18px 26px;
+    }
+
+    .jdih-admin-footer__brand h3 {
+        font-size: 21px;
+    }
+
+    .jdih-admin-footer__brand p,
+    .jdih-admin-footer__links a,
+    .jdih-admin-footer__contact p {
+        font-size: 12px;
+    }
+
+    .jdih-admin-footer__bottom {
+        padding: 17px 18px;
+    }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+.jdih-admin-login__submit:focus,
+.jdih-stat-box a:focus,
+.jdih-sidebar-menu a:focus,
+.jdih-survey-card a:focus,
+.jdih-verification-row a:focus {
+    outline: 3px solid rgba(245, 207, 87, 0.55);
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   PRINT
+   ========================================================= */
+
+@media print {
+
+    body.skin-red,
+    .skin-red .wrapper,
+    .skin-red .content-wrapper {
+        background: #fff;
+        color: #000;
+    }
+
+    .main-sidebar,
+    .main-header,
+    .jdih-admin-search {
+        display: none !important;
+    }
+
+    .skin-red .content-wrapper,
+    .skin-red .main-footer {
+        margin-left: 0;
+    }
+
+    .content {
+        padding: 0;
+    }
+
+    .jdih-admin-panel,
+    .jdih-collection-card,
+    .jdih-system-card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}

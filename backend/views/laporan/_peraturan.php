@@ -48,10 +48,12 @@ use miloschuman\highcharts\Highcharts;
 	<div class="box-body">
 		<?php
 
+		$b = [];
 		$produkhukum = \backend\models\TipeDokumen::find()
 			->where(['parent_id' => 1])
 			->orderBy(['id' => SORT_ASC])
 			->all();
+		$b = [];
 		foreach ($produkhukum as $values) {
 			$produkpusat = DokumenJdih::find()
 				->where(['singkatan_jenis' => $values['singkatan']])
