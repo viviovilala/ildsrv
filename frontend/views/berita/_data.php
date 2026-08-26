@@ -16,117 +16,88 @@ $newsId = (int) $model->id;
 
 /*
 |--------------------------------------------------------------------------
-| PEMETAAN GAMBAR BERDASARKAN ID
+| INDEX KARTU
 |--------------------------------------------------------------------------
 |
-| NAMA FILE AKTUAL DI DALAM CONTAINER:
+| ListView Yii mengirimkan $index dengan urutan:
+|
+| 0 = berita 1
+| 1 = berita 2
+| 2 = berita 3
+| 3 = berita 4 / FEATURED
+| 4 = berita 5 / SIDE
+| 5 = berita 6
+|
+| Untuk dummy, GAMBAR mengikuti urutan kartu.
+| Ini sengaja tidak menggunakan ID database karena ID
+| dapat berbeda dengan urutan dummy.
+|--------------------------------------------------------------------------
+*/
+
+$cardIndex = isset($index)
+    ? (int) $index
+    : 0;
+
+
+/*
+|--------------------------------------------------------------------------
+| PEMETAAN GAMBAR BERDASARKAN URUTAN KARTU
+|--------------------------------------------------------------------------
+|
+| File AKTUAL di dalam Docker:
 |
 | /var/www/frontend/web/uploads/berita/
 |
-| 01-kkn-upnvjt.jpg.jpeg
-| 02-kknt-mbkm.jpg.jpeg
-| 04-kkn-internasional.jpg.jpeg
-| 05-wisuda-upnvjt.jpg.jpeg
-| 06-kkn-tematik.jpg.jpeg
-| hero-rektor-upnvjt.jpg.png
-|
 |--------------------------------------------------------------------------
 */
 
-$newsImagesById = [
+$newsImagesByIndex = [
 
-    9001 => '01-kkn-upnvjt.jpg.jpeg',
+    0 => '01-kkn-upnvjt.jpg.jpeg',
 
-    9002 => '02-kknt-mbkm.jpg.jpeg',
+    1 => '02-kknt-mbkm.jpg.jpeg',
 
-    9003 => '04-kkn-internasional.jpg.jpeg',
+    2 => '04-kkn-internasional.jpg.jpeg',
 
-    9004 => '05-wisuda-upnvjt.jpg.jpeg',
+    3 => '05-wisuda-upnvjt.jpg.jpeg',
 
-    9005 => '06-kkn-tematik.jpg.jpeg',
+    4 => '06-kkn-tematik.jpg.jpeg',
 
-    9006 => 'hero-rektor-upnvjt.jpg.png',
+    5 => 'hero-rektor-upnvjt.jpg.png',
 
 ];
 
 
 /*
 |--------------------------------------------------------------------------
-| PEMETAAN GAMBAR BERDASARKAN JUDUL
-|--------------------------------------------------------------------------
-|
-| Ini menjadi fallback apabila ID berita berbeda.
-|
+| PEMETAAN KATEGORI BERDASARKAN URUTAN
 |--------------------------------------------------------------------------
 */
 
-$newsImagesByTitle = [
+$newsCategoriesByIndex = [
 
-    'Mahasiswa KKN UPN Veteran Jawa Timur Dorong Pengembangan Potensi Masyarakat'
-        => '01-kkn-upnvjt.jpg.jpeg',
+    0 => 'Kemahasiswaan',
 
-    'KKNT MBKM UPN Veteran Jawa Timur Perkuat Kontribusi Mahasiswa di Masyarakat'
-        => '02-kknt-mbkm.jpg.jpeg',
+    1 => 'Akademik',
 
-    'UPN Veteran Jawa Timur Dorong Program KKN Internasional untuk Memperluas Pengalaman Mahasiswa'
-        => '04-kkn-internasional.jpg.jpeg',
+    2 => 'Kemahasiswaan',
 
-    'Wisuda UPN Veteran Jawa Timur, Rektor Tekankan Kompetensi dan Integritas Lulusan'
-        => '05-wisuda-upnvjt.jpg.jpeg',
+    3 => 'Akademik',
 
-    'KKN Tematik UPN Veteran Jawa Timur Hadirkan Program Pengabdian Berkelanjutan'
-        => '06-kkn-tematik.jpg.jpeg',
+    4 => 'Kemahasiswaan',
+
+    5 => 'Pengumuman',
 
 ];
 
 
 /*
 |--------------------------------------------------------------------------
-| KATEGORI BERDASARKAN ID
+| JUDUL FALLBACK
 |--------------------------------------------------------------------------
 */
 
-$newsCategoriesById = [
-
-    9001 => 'Kemahasiswaan',
-
-    9002 => 'Akademik',
-
-    9003 => 'Kemahasiswaan',
-
-    9004 => 'Akademik',
-
-    9005 => 'Kemahasiswaan',
-
-    9006 => 'Pengumuman',
-
-];
-
-
-/*
-|--------------------------------------------------------------------------
-| KATEGORI BERDASARKAN JUDUL
-|--------------------------------------------------------------------------
-*/
-
-$newsCategoriesByTitle = [
-
-    'Mahasiswa KKN UPN Veteran Jawa Timur Dorong Pengembangan Potensi Masyarakat'
-        => 'Kemahasiswaan',
-
-    'KKNT MBKM UPN Veteran Jawa Timur Perkuat Kontribusi Mahasiswa di Masyarakat'
-        => 'Akademik',
-
-    'UPN Veteran Jawa Timur Dorong Program KKN Internasional untuk Memperluas Pengalaman Mahasiswa'
-        => 'Kemahasiswaan',
-
-    'Wisuda UPN Veteran Jawa Timur, Rektor Tekankan Kompetensi dan Integritas Lulusan'
-        => 'Akademik',
-
-    'KKN Tematik UPN Veteran Jawa Timur Hadirkan Program Pengabdian Berkelanjutan'
-        => 'Kemahasiswaan',
-
-];
+$defaultTitle = 'Berita UPN Veteran Jawa Timur';
 
 
 /*
@@ -140,65 +111,13 @@ $author = 'UPN Veteran Jawa Timur';
 
 /*
 |--------------------------------------------------------------------------
-| TENTUKAN NAMA FILE GAMBAR
+| GAMBAR
 |--------------------------------------------------------------------------
 |
-| Prioritas:
+| DEFAULT:
+| gambar gedung UPN.
 |
-| 1. ID berita
-| 2. Judul berita
-| 3. Gambar database
-| 4. Fallback
-|
-|--------------------------------------------------------------------------
-*/
-
-$imageFilename = null;
-
-
-/*
-|--------------------------------------------------------------------------
-| 1. CARI BERDASARKAN ID
-|--------------------------------------------------------------------------
-*/
-
-if (isset($newsImagesById[$newsId])) {
-
-    $imageFilename = $newsImagesById[$newsId];
-
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| 2. JIKA BELUM KETEMU, CARI BERDASARKAN JUDUL
-|--------------------------------------------------------------------------
-*/
-
-if (
-    empty($imageFilename)
-    &&
-    isset($newsImagesByTitle[$judul])
-) {
-
-    $imageFilename = $newsImagesByTitle[$judul];
-
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| 3. TENTUKAN URL GAMBAR
-|--------------------------------------------------------------------------
-|
-| Untuk gambar dummy:
-|
-| /uploads/berita/nama-file
-|
-| Untuk gambar database lama:
-|
-| /common/dokumen/nama-file
-|
+| Kemudian diganti dengan gambar sesuai posisi kartu.
 |--------------------------------------------------------------------------
 */
 
@@ -209,25 +128,35 @@ $imageUrl = Url::to(
 
 /*
 |--------------------------------------------------------------------------
-| CEK GAMBAR DUMMY
+| CARI GAMBAR BERDASARKAN INDEX
 |--------------------------------------------------------------------------
 */
 
-if (!empty($imageFilename)) {
+if (isset($newsImagesByIndex[$cardIndex])) {
 
-    $dummyImagePath = Yii::getAlias(
-        '@webroot/uploads/berita/' . $imageFilename
+    $imageFilename =
+        $newsImagesByIndex[$cardIndex];
+
+
+    /*
+     * Path fisik di dalam container.
+     */
+
+    $imagePath = Yii::getAlias(
+        '@webroot/uploads/berita/' .
+        $imageFilename
     );
 
 
     /*
-     * Pastikan file benar-benar ada.
+     * Pastikan file memang ada.
      */
 
-    if (is_file($dummyImagePath)) {
+    if (is_file($imagePath)) {
 
         $imageUrl = Url::to(
-            '@web/uploads/berita/' . $imageFilename
+            '@web/uploads/berita/' .
+            $imageFilename
         );
 
     }
@@ -237,37 +166,22 @@ if (!empty($imageFilename)) {
 
 /*
 |--------------------------------------------------------------------------
-| 4. FALLBACK KE GAMBAR DATABASE
+| CACHE BUSTER
 |--------------------------------------------------------------------------
 |
-| Hanya digunakan apabila gambar dummy tidak ditemukan.
-|
+| Supaya browser tidak mempertahankan gambar lama
+| setelah file gambar diganti.
 |--------------------------------------------------------------------------
 */
 
-if (
-    $imageUrl === Url::to('@web/images/upnvjt-building.png')
-    &&
-    !empty($model->image)
-) {
+if (isset($imagePath) && is_file($imagePath)) {
 
-    $databaseFilename = basename(
-        (string) $model->image
-    );
+    $imageVersion =
+        (string) filemtime($imagePath);
 
-
-    $databaseImagePath = Yii::getAlias(
-        '@web/common/dokumen/' . $databaseFilename
-    );
-
-
-    if (is_file($databaseImagePath)) {
-
-        $imageUrl = Url::to(
-            '@web/common/dokumen/' . $databaseFilename
-        );
-
-    }
+    $imageUrl .=
+        '?v=' .
+        $imageVersion;
 
 }
 
@@ -281,13 +195,10 @@ if (
 $category = 'Berita';
 
 
-if (isset($newsCategoriesById[$newsId])) {
+if (isset($newsCategoriesByIndex[$cardIndex])) {
 
-    $category = $newsCategoriesById[$newsId];
-
-} elseif (isset($newsCategoriesByTitle[$judul])) {
-
-    $category = $newsCategoriesByTitle[$judul];
+    $category =
+        $newsCategoriesByIndex[$cardIndex];
 
 }
 
@@ -320,8 +231,7 @@ $excerpt = mb_strimwidth(
 |
 | JANGAN DIUBAH.
 |
-| URL ini sudah berhasil digunakan untuk detail dummy.
-|
+| URL ini sudah berhasil.
 |--------------------------------------------------------------------------
 */
 
@@ -345,9 +255,10 @@ $date = '-';
 
 if (!empty($model->tanggal)) {
 
-    $date = $model->getTanggal(
-        $model->tanggal
-    );
+    $date =
+        $model->getTanggal(
+            $model->tanggal
+        );
 
 }
 
@@ -357,14 +268,16 @@ if (!empty($model->tanggal)) {
 | POSISI CARD
 |--------------------------------------------------------------------------
 |
-| 9001 = card 1
-| 9002 = card 2
-| 9003 = card 3
-| 9004 = FEATURED
-| 9005 = SIDE
+| Layout yang sudah benar:
 |
-| Layout TIDAK DIUBAH.
+| Card 1 = normal
+| Card 2 = normal
+| Card 3 = normal
+| Card 4 = FEATURED
+| Card 5 = SIDE
 |
+| Tetap menggunakan ID seperti sebelumnya agar
+| layout yang sudah benar tidak berubah.
 |--------------------------------------------------------------------------
 */
 
@@ -373,14 +286,16 @@ $cardClass = 'news-card';
 
 if ($newsId === 9004) {
 
-    $cardClass .= ' news-card--featured';
+    $cardClass .=
+        ' news-card--featured';
 
 }
 
 
 if ($newsId === 9005) {
 
-    $cardClass .= ' news-card--side';
+    $cardClass .=
+        ' news-card--side';
 
 }
 
@@ -390,6 +305,7 @@ if ($newsId === 9005) {
 <article
     class="<?= Html::encode($cardClass) ?>"
     data-news-id="<?= $newsId ?>"
+    data-news-index="<?= $cardIndex ?>"
 >
 
 
@@ -413,15 +329,14 @@ if ($newsId === 9005) {
                     'alt' =>
                         $judul !== ''
                             ? $judul
-                            : 'Berita UPN Veteran Jawa Timur',
+                            : $defaultTitle,
 
                     /*
                      * Card pertama langsung dimuat.
-                     * Card lainnya tetap lazy-load.
                      */
 
                     'loading' =>
-                        $newsId === 9001
+                        $cardIndex === 0
                             ? 'eager'
                             : 'lazy',
 
@@ -441,7 +356,7 @@ if ($newsId === 9005) {
                     (
                         $judul !== ''
                             ? $judul
-                            : 'Berita UPN Veteran Jawa Timur'
+                            : $defaultTitle
                     ),
 
             ]
@@ -500,7 +415,7 @@ if ($newsId === 9005) {
 
                     $judul !== ''
                         ? $judul
-                        : 'Berita UPN Veteran Jawa Timur'
+                        : $defaultTitle
 
                 ),
 
@@ -508,7 +423,10 @@ if ($newsId === 9005) {
 
                 [
 
-                    'title' => $judul,
+                    'title' =>
+                        $judul !== ''
+                            ? $judul
+                            : $defaultTitle,
 
                 ]
 
