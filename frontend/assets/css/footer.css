@@ -1,200 +1,424 @@
+/* =========================================================
+   JDIH UPN VETERAN JAWA TIMUR
+   FOOTER - FINAL CLEAN
+========================================================= */
+
 :root {
     --footer-bg: #21451a;
     --footer-text: #d6dfd1;
+    --footer-muted: #aebca9;
     --footer-accent: #f5cf57;
-    --footer-link: #d6dfd1;
-    --footer-link-hover: #ffcb05;
+    --footer-border: rgba(255, 255, 255, 0.12);
 }
+
 
 /* =========================================================
-   FOOTER
-   ========================================================= */
+   FOOTER UTAMA
+========================================================= */
 
 .jdih-footer {
-    box-sizing: border-box;
+    display: block;
+
     width: 100%;
-    background: var(--footer-bg);
+
+    margin: 0;
+    padding: 48px 0 0;
+
+    background-color: var(--footer-bg);
     color: var(--footer-text);
-    padding: 56px 32px 0;
-    margin-top: 72px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
 }
 
+.jdih-footer,
 .jdih-footer *,
 .jdih-footer *::before,
 .jdih-footer *::after {
     box-sizing: border-box;
 }
 
-.jdih-footer .container {
-    width: min(100%, 1200px);
-    margin: 0 auto;
-    padding: 0;
-}
 
 /* =========================================================
-   FOOTER CONTENT
-   ========================================================= */
+   CONTAINER
+========================================================= */
+
+.jdih-footer > .container {
+    display: block;
+
+    width: 100%;
+    max-width: 1200px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    padding-left: 30px;
+    padding-right: 30px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   AREA UTAMA FOOTER
+========================================================= */
+
+/*
+   DESKTOP:
+
+   ┌────────────────┬──────────────┬─────────────────┐
+   │ INFORMASI JDIH │ TAUTAN CEPAT │ KONTAK          │
+   │                │              │                 │
+   │                │              │                 │
+   └────────────────┴──────────────┴─────────────────┘
+*/
 
 .jdih-footer__content {
-    display: grid;
-    grid-template-columns: 1.35fr 0.85fr 1.15fr;
-    column-gap: 64px;
-    align-items: start;
-    min-width: 0;
+    display: flex;
+
+    flex-direction: row;
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    width: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    gap: 60px;
 }
+
+
+/* =========================================================
+   KOLOM
+========================================================= */
 
 .jdih-footer__col {
-    min-width: 0;
-}
-
-/* =========================================================
-   LOGO
-   ========================================================= */
-
-.jdih-footer__logo {
-    display: flex;
-    align-items: center;
-    margin: 0 0 14px;
-}
-
-.jdih-footer__logo-img {
     display: block;
-    width: 205px;
-    max-width: 100%;
-    height: auto;
-    object-fit: contain;
-}
 
-/* =========================================================
-   DESCRIPTION
-   ========================================================= */
+    flex: 0 0 auto;
 
-.jdih-footer__desc {
-    max-width: 390px;
-    margin: 0 0 22px;
-    color: var(--footer-text);
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 1.6;
-}
+    min-width: 0;
 
-/* =========================================================
-   HEADING
-   ========================================================= */
-
-.jdih-footer__heading {
-    margin: 0 0 20px;
-    color: var(--footer-accent);
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 25px;
-    font-weight: 700;
-    line-height: 1.25;
-}
-
-/* =========================================================
-   LINKS
-   ========================================================= */
-
-.jdih-footer__list {
-    display: flex;
-    flex-direction: column;
-    gap: 13px;
-    list-style: none;
     margin: 0;
     padding: 0;
 }
 
+
+/*
+   Kolom pertama
+*/
+
+.jdih-footer__col--primary {
+    width: 42%;
+    max-width: 470px;
+}
+
+
+/*
+   Kolom kedua
+*/
+
+.jdih-footer__content > .jdih-footer__col:nth-child(2) {
+    width: 20%;
+    min-width: 160px;
+}
+
+
+/*
+   Kolom ketiga
+*/
+
+.jdih-footer__content > .jdih-footer__col:nth-child(3) {
+    width: 32%;
+    max-width: 360px;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.jdih-footer__logo {
+    display: flex;
+
+    align-items: center;
+
+    width: fit-content;
+
+    margin: 0 0 14px;
+    padding: 0;
+}
+
+.jdih-footer__logo-img {
+    display: block;
+
+    width: 185px;
+    max-width: 100%;
+
+    height: auto;
+
+    margin: 0;
+    padding: 0;
+
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   DESKRIPSI
+========================================================= */
+
+.jdih-footer__desc {
+    display: block;
+
+    width: 100%;
+    max-width: 450px;
+
+    margin: 0;
+    padding: 0;
+
+    color: var(--footer-text);
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 14px;
+    font-weight: 400;
+
+    line-height: 1.65;
+
+    text-align: left;
+}
+
+
+/* =========================================================
+   JUDUL KOLOM
+========================================================= */
+
+.jdih-footer__heading {
+    display: block;
+
+    margin: 0 0 18px;
+    padding: 0;
+
+    color: var(--footer-accent);
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 23px;
+
+    font-weight: 700;
+
+    line-height: 1.25;
+}
+
+
+/* =========================================================
+   LINK LIST
+========================================================= */
+
+.jdih-footer__list {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    width: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
 .jdih-footer__list li {
+    display: block;
+
+    width: auto;
+
     margin: 0;
     padding: 0;
 }
 
 .jdih-footer__list a {
     display: inline-block;
-    max-width: 100%;
-    color: var(--footer-link);
-    font-size: 15px;
+
+    margin: 0;
+    padding: 0;
+
+    color: var(--footer-link, var(--footer-text));
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 14px;
+    font-weight: 400;
+
     line-height: 1.5;
+
     text-decoration: none;
-    overflow-wrap: break-word;
-    transition: color 0.2s ease;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
 .jdih-footer__list a:hover,
 .jdih-footer__list a:focus-visible {
-    color: var(--footer-link-hover);
+    color: var(--footer-accent);
+
     text-decoration: none;
 }
 
+
 /* =========================================================
-   CONTACT
-   ========================================================= */
+   KONTAK
+========================================================= */
+
+.jdih-footer__contact {
+    display: flex;
+
+    flex-direction: column;
+
+    width: 100%;
+
+    margin: 0;
+    padding: 0;
+}
 
 .jdih-footer__contact-item {
     display: flex;
+
+    flex-direction: row;
+
     align-items: flex-start;
-    gap: 14px;
-    min-width: 0;
-    margin: 0 0 18px;
+
+    width: 100%;
+
+    gap: 12px;
+
+    margin: 0 0 17px;
+    padding: 0;
+
     color: var(--footer-text);
-    font-size: 15px;
-    line-height: 1.6;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 14px;
+
+    line-height: 1.55;
+}
+
+.jdih-footer__contact-item:last-child {
+    margin-bottom: 0;
 }
 
 .jdih-footer__contact-item i {
+    display: block;
+
     flex: 0 0 20px;
+
     width: 20px;
-    margin-top: 3px;
+
+    margin: 3px 0 0;
+    padding: 0;
+
     color: var(--footer-accent);
-    font-size: 19px;
+
+    font-size: 17px;
+
     line-height: 1;
+
+    text-align: center;
 }
 
 .jdih-footer__contact-item p {
+    display: block;
+
+    flex: 1 1 auto;
+
     min-width: 0;
+
     margin: 0;
     padding: 0;
-    overflow-wrap: break-word;
+
+    color: var(--footer-text);
+
+    font-size: 14px;
+
+    line-height: 1.55;
+
+    overflow-wrap: anywhere;
 }
 
 .jdih-footer__contact-item a {
-    color: var(--footer-link);
+    color: var(--footer-text);
+
+    font-size: 14px;
+
     text-decoration: none;
-    overflow-wrap: break-word;
-    transition: color 0.2s ease;
 }
 
 .jdih-footer__contact-item a:hover,
 .jdih-footer__contact-item a:focus-visible {
-    color: var(--footer-link-hover);
+    color: var(--footer-accent);
+
     text-decoration: none;
 }
 
+
 /* =========================================================
-   SOCIAL
-   ========================================================= */
+   SOCIAL MEDIA
+========================================================= */
 
 .jdih-footer__social {
     display: flex;
+
+    flex-direction: row;
+
     align-items: center;
-    gap: 12px;
-    margin-top: 18px;
+
+    gap: 10px;
+
+    margin: 20px 0 0;
+    padding: 0;
 }
 
 .jdih-footer__social-link {
     display: inline-flex;
+
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    flex: 0 0 40px;
-    border: 1px solid rgba(214, 223, 209, 0.35);
+
+    width: 36px;
+    height: 36px;
+
+    flex: 0 0 36px;
+
+    margin: 0;
+    padding: 0;
+
+    border: 1px solid rgba(214, 223, 209, 0.45);
+
     border-radius: 50%;
+
     background: transparent;
+
     color: var(--footer-text);
-    font-size: 17px;
+
+    font-size: 15px;
+
     line-height: 1;
+
     text-decoration: none;
+
     transition:
         background-color 0.2s ease,
         border-color 0.2s ease,
@@ -204,166 +428,358 @@
 
 .jdih-footer__social-link:hover,
 .jdih-footer__social-link:focus-visible {
+    background-color: var(--footer-accent);
+
     border-color: var(--footer-accent);
-    background: var(--footer-accent);
-    color: #21451a;
-    text-decoration: none;
+
+    color: var(--footer-bg);
+
     transform: translateY(-2px);
 }
 
+
 /* =========================================================
-   BOTTOM / COPYRIGHT
-   ========================================================= */
+   FOOTER BOTTOM
+========================================================= */
 
 .jdih-footer__bottom {
-    margin-top: 42px;
-    padding: 22px 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    display: block;
+
+    width: 100%;
+
+    margin: 42px 0 0;
+
+    padding: 18px 0 20px;
+
+    border-top:
+        1px solid var(--footer-border);
+
     text-align: center;
 }
 
 .jdih-footer__copyright {
+    display: block;
+
+    width: 100%;
+
     margin: 0;
-    color: var(--footer-text);
+    padding: 0;
+
+    color: var(--footer-muted);
+
+    font-family: Arial, Helvetica, sans-serif;
+
     font-size: 13px;
+
     font-weight: 400;
+
     line-height: 1.5;
-    opacity: 0.8;
+
+    text-align: center;
+
+    opacity: 1;
 }
+
 
 /* =========================================================
-   GENERAL LINK SAFETY
-   ========================================================= */
+   LINK GLOBAL
+========================================================= */
 
-.jdih-footer a {
-    cursor: pointer;
-}
-
+.jdih-footer a,
 .jdih-footer a[href] {
-    color: inherit;
+    cursor: pointer;
+
+    text-decoration: none;
 }
+
+
+/* =========================================================
+   PAKSA BACKGROUND HIJAU
+========================================================= */
+
+.jdih-footer {
+    background: #21451a;
+}
+
+.jdih-footer .container,
+.jdih-footer__content,
+.jdih-footer__bottom {
+    background: transparent;
+}
+
+
+/* =========================================================
+   AI FLOATING BUTTON
+========================================================= */
+
+.jdih-ai-float {
+    position: fixed;
+
+    right: 28px;
+    bottom: 28px;
+
+    z-index: 9999;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    min-height: 54px;
+
+    padding: 0 22px;
+
+    border: none;
+
+    border-radius: 999px;
+
+    background: #f5cf57;
+
+    color: #21451a;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    line-height: 1;
+
+    text-decoration: none;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.18);
+}
+
+.jdih-ai-float:hover,
+.jdih-ai-float:focus-visible {
+    background: #ffcb05;
+
+    color: #21451a;
+
+    text-decoration: none;
+}
+
 
 /* =========================================================
    TABLET
-   ========================================================= */
+========================================================= */
 
-@media (max-width: 900px) {
-    .jdih-footer {
-        padding: 48px 28px 0;
-    }
+@media (max-width: 1000px) {
 
     .jdih-footer__content {
-        grid-template-columns: 1.2fr 0.9fr 1fr;
-        column-gap: 40px;
+        gap: 35px;
+    }
+
+    .jdih-footer__col--primary {
+        width: 40%;
+    }
+
+    .jdih-footer__content > .jdih-footer__col:nth-child(2) {
+        width: 22%;
+        min-width: 145px;
+    }
+
+    .jdih-footer__content > .jdih-footer__col:nth-child(3) {
+        width: 35%;
     }
 
     .jdih-footer__logo-img {
-        width: 190px;
-    }
-
-    .jdih-footer__heading {
-        font-size: 23px;
-    }
-
-    .jdih-footer__desc,
-    .jdih-footer__list a,
-    .jdih-footer__contact-item {
-        font-size: 14px;
+        width: 170px;
     }
 }
+
+
+/* =========================================================
+   TABLET KECIL
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .jdih-footer {
+        padding-top: 40px;
+    }
+
+    .jdih-footer__content {
+        display: grid;
+
+        grid-template-columns:
+            minmax(0, 1.2fr)
+            minmax(0, 0.8fr);
+
+        gap: 35px 40px;
+    }
+
+    .jdih-footer__col--primary {
+        width: auto;
+
+        grid-column: 1 / -1;
+
+        max-width: 600px;
+    }
+
+    .jdih-footer__content > .jdih-footer__col:nth-child(2),
+    .jdih-footer__content > .jdih-footer__col:nth-child(3) {
+        width: auto;
+
+        max-width: none;
+        min-width: 0;
+    }
+}
+
 
 /* =========================================================
    MOBILE
-   ========================================================= */
+========================================================= */
 
-@media (max-width: 700px) {
+@media (max-width: 600px) {
+
     .jdih-footer {
-        padding: 42px 24px 0;
-        margin-top: 56px;
+        padding-top: 36px;
+    }
+
+    .jdih-footer > .container {
+        padding-left: 20px;
+        padding-right: 20px;
     }
 
     .jdih-footer__content {
-        grid-template-columns: 1fr 1fr;
-        gap: 36px 32px;
-    }
+        display: flex;
 
-    .jdih-footer__col--primary {
-        grid-column: 1 / -1;
-    }
+        flex-direction: column;
 
-    .jdih-footer__desc {
-        max-width: 520px;
-    }
-}
-
-/* =========================================================
-   SMALL MOBILE
-   ========================================================= */
-
-@media (max-width: 480px) {
-    .jdih-footer {
-        padding: 36px 20px 0;
-        margin-top: 44px;
-    }
-
-    .jdih-footer__content {
-        grid-template-columns: 1fr;
         gap: 30px;
     }
 
-    .jdih-footer__col--primary {
-        grid-column: auto;
+    .jdih-footer__col,
+    .jdih-footer__col--primary,
+    .jdih-footer__content > .jdih-footer__col:nth-child(2),
+    .jdih-footer__content > .jdih-footer__col:nth-child(3) {
+        width: 100%;
+
+        max-width: 100%;
+
+        min-width: 0;
     }
 
     .jdih-footer__logo-img {
-        width: 180px;
+        width: 175px;
     }
 
     .jdih-footer__heading {
-        margin-bottom: 16px;
         font-size: 22px;
     }
 
-    .jdih-footer__desc,
-    .jdih-footer__list a,
-    .jdih-footer__contact-item {
+    .jdih-footer__desc {
+        max-width: 100%;
+
         font-size: 14px;
-    }
-
-    .jdih-footer__social {
-        margin-top: 16px;
-    }
-
-    .jdih-footer__social-link {
-        width: 38px;
-        height: 38px;
-        flex-basis: 38px;
-        font-size: 16px;
     }
 
     .jdih-footer__bottom {
         margin-top: 34px;
-        padding: 18px 0;
     }
 
     .jdih-footer__copyright {
         font-size: 12px;
     }
+
+    .jdih-ai-float {
+        right: 16px;
+        bottom: 16px;
+
+        min-height: 48px;
+
+        padding: 0 18px;
+
+        font-size: 14px;
+    }
 }
+
 
 /* =========================================================
    PRINT
-   ========================================================= */
+========================================================= */
 
 @media print {
+
     .jdih-footer {
-        margin-top: 0;
+        margin: 0;
+
         background: #fff;
+
         color: #000;
+
         border-top: 1px solid #ccc;
     }
 
-    .jdih-footer__social {
+    .jdih-footer__social,
+    .jdih-ai-float {
         display: none;
+    }
+
+    .jdih-footer__list a,
+    .jdih-footer__contact-item,
+    .jdih-footer__contact-item p,
+    .jdih-footer__copyright {
+        color: #000;
+    }
+}
+
+
+/* =========================================================
+   FINAL OVERRIDES — FOOTER FULL WIDTH & STABIL
+   ========================================================= */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.jdih-site-footer {
+    display: block;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    background: #21451a;
+}
+
+.jdih-site-footer > .jdih-footer,
+.jdih-footer {
+    width: 100%;
+    max-width: none;
+}
+
+.jdih-footer > .container {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Jangan biarkan aturan global .container / footer mengubah layout */
+.jdih-footer__content {
+    width: 100%;
+    max-width: none;
+}
+
+.jdih-footer__bottom {
+    width: 100%;
+}
+
+/* Hindari footer terdorong ke kanan oleh elemen floating/global */
+.jdih-footer,
+.jdih-footer * {
+    min-width: 0;
+}
+
+@media (max-width: 600px) {
+    .jdih-footer > .container {
+        width: 100%;
+        max-width: 100%;
     }
 }

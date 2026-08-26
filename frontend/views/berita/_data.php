@@ -1,181 +1,234 @@
 <?php
 
-use common\components\LazyImage;
 use yii\helpers\Html;
-
-/*
- * =========================================================
- * DATA BERITA
- * =========================================================
- *
- * File gambar berada di:
- *
- * frontend/web/uploads/berita/
- *
- * 01-spotlight-umkm.jpg
- * 02-magang-fh-jakbar.jpg
- * 03-kkn-2026.jpg
- * 04-wisuda-ke-97.jpg
- * 05-abdimas-kedai-jerman.jpg
- */
+use yii\helpers\Url;
 
 
 /*
- * =========================================================
- * PEMETAAN BERITA
- * =========================================================
- *
- * Pemetaan berdasarkan judul berita.
- * Jika gambar di database belum sesuai, halaman tetap
- * menggunakan gambar yang sudah ditentukan di sini.
- */
+|--------------------------------------------------------------------------
+| DATA BERITA
+|--------------------------------------------------------------------------
+*/
 
-$newsData = [
+$judul = trim((string) $model->judul);
+$newsId = (int) $model->id;
 
-    'Mahasiswa KKN 21 UPN Veteran Jawa Timur Dorong Pengembangan UMKM Kelurahan Ledok Wetan Bojonegoro Melalui Program Spotlight UMKM' => [
-        'image' => '01-spotlight-umkm.jpg',
-        'category' => 'Kemahasiswaan',
-        'author' => 'Admin JDIH',
-    ],
 
-    'Pelaksanaan Program Magang UPN Veteran Jawa Timur Fakultas Hukum di Pengadilan Negeri Jakarta Barat Kelas 1A Khusus' => [
-        'image' => '02-magang-fh-jakbar.jpg',
-        'category' => 'Akademik',
-        'author' => 'Admin JDIH',
-    ],
+/*
+|--------------------------------------------------------------------------
+| PEMETAAN GAMBAR BERDASARKAN ID
+|--------------------------------------------------------------------------
+|
+| NAMA FILE AKTUAL DI DALAM CONTAINER:
+|
+| /var/www/frontend/web/uploads/berita/
+|
+| 01-kkn-upnvjt.jpg.jpeg
+| 02-kknt-mbkm.jpg.jpeg
+| 04-kkn-internasional.jpg.jpeg
+| 05-wisuda-upnvjt.jpg.jpeg
+| 06-kkn-tematik.jpg.jpeg
+| hero-rektor-upnvjt.jpg.png
+|
+|--------------------------------------------------------------------------
+*/
 
-    'UPN Veteran Jatim Berangkatkan Ribuan Mahasiswa KKN 2026, Sasaran Program Pengabdian Domestik Hingga Mancanegara' => [
-        'image' => '03-kkn-2026.jpg',
-        'category' => 'Kemahasiswaan',
-        'author' => 'Admin JDIH',
-    ],
+$newsImagesById = [
 
-    'Wisuda ke-97 UPN Veteran Jatim, Rektor Tegaskan Lulusan Harus Berkompetensi dan Berintegritas' => [
-        'image' => '04-wisuda-ke-97.jpg',
-        'category' => 'Akademik',
-        'author' => 'Admin JDIH',
-    ],
+    9001 => '01-kkn-upnvjt.jpg.jpeg',
 
-    'Tim Abdimas UPN Veteran Jatim Dampingi Proses Digitalisasi Manajemen Produksi Halal di UMKM Kedai Jerman' => [
-        'image' => '05-abdimas-kedai-jerman.jpg',
-        'category' => 'Akademik',
-        'author' => 'Admin JDIH',
-    ],
+    9002 => '02-kknt-mbkm.jpg.jpeg',
+
+    9003 => '04-kkn-internasional.jpg.jpeg',
+
+    9004 => '05-wisuda-upnvjt.jpg.jpeg',
+
+    9005 => '06-kkn-tematik.jpg.jpeg',
+
+    9006 => 'hero-rektor-upnvjt.jpg.png',
 
 ];
 
 
 /*
- * =========================================================
- * AMBIL DATA BERITA
- * =========================================================
- */
+|--------------------------------------------------------------------------
+| PEMETAAN GAMBAR BERDASARKAN JUDUL
+|--------------------------------------------------------------------------
+|
+| Ini menjadi fallback apabila ID berita berbeda.
+|
+|--------------------------------------------------------------------------
+*/
 
-$judul = trim((string) $model->judul);
+$newsImagesByTitle = [
 
-$currentNews = $newsData[$judul] ?? null;
+    'Mahasiswa KKN UPN Veteran Jawa Timur Dorong Pengembangan Potensi Masyarakat'
+        => '01-kkn-upnvjt.jpg.jpeg',
+
+    'KKNT MBKM UPN Veteran Jawa Timur Perkuat Kontribusi Mahasiswa di Masyarakat'
+        => '02-kknt-mbkm.jpg.jpeg',
+
+    'UPN Veteran Jawa Timur Dorong Program KKN Internasional untuk Memperluas Pengalaman Mahasiswa'
+        => '04-kkn-internasional.jpg.jpeg',
+
+    'Wisuda UPN Veteran Jawa Timur, Rektor Tekankan Kompetensi dan Integritas Lulusan'
+        => '05-wisuda-upnvjt.jpg.jpeg',
+
+    'KKN Tematik UPN Veteran Jawa Timur Hadirkan Program Pengabdian Berkelanjutan'
+        => '06-kkn-tematik.jpg.jpeg',
+
+];
 
 
 /*
- * =========================================================
- * GAMBAR
- * =========================================================
- *
- * Jika judul ditemukan di pemetaan di atas,
- * gunakan gambar yang sudah ditentukan.
- *
- * Jika belum ditemukan, gunakan gambar dari database.
- */
+|--------------------------------------------------------------------------
+| KATEGORI BERDASARKAN ID
+|--------------------------------------------------------------------------
+*/
 
-if ($currentNews && !empty($currentNews['image'])) {
+$newsCategoriesById = [
 
-    $image = '@web/uploads/berita/' . $currentNews['image'];
+    9001 => 'Kemahasiswaan',
 
-} elseif (!empty($model->image)) {
+    9002 => 'Akademik',
 
-    $image = '@web/common/dokumen/' . $model->image;
+    9003 => 'Kemahasiswaan',
 
-} else {
+    9004 => 'Akademik',
 
-    $image = '@web/images/upnvjt-building.png';
+    9005 => 'Kemahasiswaan',
+
+    9006 => 'Pengumuman',
+
+];
+
+
+/*
+|--------------------------------------------------------------------------
+| KATEGORI BERDASARKAN JUDUL
+|--------------------------------------------------------------------------
+*/
+
+$newsCategoriesByTitle = [
+
+    'Mahasiswa KKN UPN Veteran Jawa Timur Dorong Pengembangan Potensi Masyarakat'
+        => 'Kemahasiswaan',
+
+    'KKNT MBKM UPN Veteran Jawa Timur Perkuat Kontribusi Mahasiswa di Masyarakat'
+        => 'Akademik',
+
+    'UPN Veteran Jawa Timur Dorong Program KKN Internasional untuk Memperluas Pengalaman Mahasiswa'
+        => 'Kemahasiswaan',
+
+    'Wisuda UPN Veteran Jawa Timur, Rektor Tekankan Kompetensi dan Integritas Lulusan'
+        => 'Akademik',
+
+    'KKN Tematik UPN Veteran Jawa Timur Hadirkan Program Pengabdian Berkelanjutan'
+        => 'Kemahasiswaan',
+
+];
+
+
+/*
+|--------------------------------------------------------------------------
+| PENULIS
+|--------------------------------------------------------------------------
+*/
+
+$author = 'UPN Veteran Jawa Timur';
+
+
+/*
+|--------------------------------------------------------------------------
+| TENTUKAN NAMA FILE GAMBAR
+|--------------------------------------------------------------------------
+|
+| Prioritas:
+|
+| 1. ID berita
+| 2. Judul berita
+| 3. Gambar database
+| 4. Fallback
+|
+|--------------------------------------------------------------------------
+*/
+
+$imageFilename = null;
+
+
+/*
+|--------------------------------------------------------------------------
+| 1. CARI BERDASARKAN ID
+|--------------------------------------------------------------------------
+*/
+
+if (isset($newsImagesById[$newsId])) {
+
+    $imageFilename = $newsImagesById[$newsId];
+
 }
 
 
 /*
- * =========================================================
- * KATEGORI
- * =========================================================
- */
+|--------------------------------------------------------------------------
+| 2. JIKA BELUM KETEMU, CARI BERDASARKAN JUDUL
+|--------------------------------------------------------------------------
+*/
 
-$category = $currentNews['category'] ?? 'Berita';
+if (
+    empty($imageFilename)
+    &&
+    isset($newsImagesByTitle[$judul])
+) {
+
+    $imageFilename = $newsImagesByTitle[$judul];
+
+}
 
 
 /*
- * =========================================================
- * PENULIS
- * =========================================================
- */
+|--------------------------------------------------------------------------
+| 3. TENTUKAN URL GAMBAR
+|--------------------------------------------------------------------------
+|
+| Untuk gambar dummy:
+|
+| /uploads/berita/nama-file
+|
+| Untuk gambar database lama:
+|
+| /common/dokumen/nama-file
+|
+|--------------------------------------------------------------------------
+*/
 
-$author = $currentNews['author'] ?? 'Admin JDIH';
-
-
-/*
- * =========================================================
- * RINGKASAN BERITA
- * =========================================================
- */
-
-$isi = trim(strip_tags((string) $model->isi));
-
-$excerpt = mb_strimwidth(
-    $isi,
-    0,
-    135,
-    '...'
+$imageUrl = Url::to(
+    '@web/images/upnvjt-building.png'
 );
 
 
 /*
- * =========================================================
- * URL DETAIL
- * =========================================================
- */
+|--------------------------------------------------------------------------
+| CEK GAMBAR DUMMY
+|--------------------------------------------------------------------------
+*/
 
-$detailUrl = [
-    'view',
-    'id' => $model->id,
-];
+if (!empty($imageFilename)) {
+
+    $dummyImagePath = Yii::getAlias(
+        '@webroot/uploads/berita/' . $imageFilename
+    );
 
 
-/*
- * =========================================================
- * POSISI KARTU
- * =========================================================
- *
- * ListView mengirimkan $index.
- *
- * Urutan:
- *
- * 0 = berita pertama
- * 1 = berita kedua
- * 2 = berita ketiga
- * 3 = berita keempat → FEATURED
- * 4 = berita kelima
- *
- * Ini mengikuti layout pada desain yang kamu kirim.
- */
+    /*
+     * Pastikan file benar-benar ada.
+     */
 
-$cardClass = 'news-card';
+    if (is_file($dummyImagePath)) {
 
-if (isset($index)) {
-
-    if ($index === 3) {
-
-        $cardClass .= ' news-card--featured';
-
-    } elseif ($index === 4) {
-
-        $cardClass .= ' news-card--side';
+        $imageUrl = Url::to(
+            '@web/uploads/berita/' . $imageFilename
+        );
 
     }
 
@@ -183,18 +236,162 @@ if (isset($index)) {
 
 
 /*
- * =========================================================
- * TANGGAL
- * =========================================================
- */
+|--------------------------------------------------------------------------
+| 4. FALLBACK KE GAMBAR DATABASE
+|--------------------------------------------------------------------------
+|
+| Hanya digunakan apabila gambar dummy tidak ditemukan.
+|
+|--------------------------------------------------------------------------
+*/
 
-$date = !empty($model->tanggal)
-    ? $model->getTanggal($model->tanggal)
-    : '-';
+if (
+    $imageUrl === Url::to('@web/images/upnvjt-building.png')
+    &&
+    !empty($model->image)
+) {
+
+    $databaseFilename = basename(
+        (string) $model->image
+    );
+
+
+    $databaseImagePath = Yii::getAlias(
+        '@web/common/dokumen/' . $databaseFilename
+    );
+
+
+    if (is_file($databaseImagePath)) {
+
+        $imageUrl = Url::to(
+            '@web/common/dokumen/' . $databaseFilename
+        );
+
+    }
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| KATEGORI
+|--------------------------------------------------------------------------
+*/
+
+$category = 'Berita';
+
+
+if (isset($newsCategoriesById[$newsId])) {
+
+    $category = $newsCategoriesById[$newsId];
+
+} elseif (isset($newsCategoriesByTitle[$judul])) {
+
+    $category = $newsCategoriesByTitle[$judul];
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| RINGKASAN BERITA
+|--------------------------------------------------------------------------
+*/
+
+$isi = trim(
+    strip_tags(
+        (string) $model->isi
+    )
+);
+
+
+$excerpt = mb_strimwidth(
+    $isi,
+    0,
+    145,
+    '...'
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| URL DETAIL
+|--------------------------------------------------------------------------
+|
+| JANGAN DIUBAH.
+|
+| URL ini sudah berhasil digunakan untuk detail dummy.
+|
+|--------------------------------------------------------------------------
+*/
+
+$detailUrl = [
+
+    'index',
+
+    'view' => $model->id,
+
+];
+
+
+/*
+|--------------------------------------------------------------------------
+| TANGGAL
+|--------------------------------------------------------------------------
+*/
+
+$date = '-';
+
+
+if (!empty($model->tanggal)) {
+
+    $date = $model->getTanggal(
+        $model->tanggal
+    );
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| POSISI CARD
+|--------------------------------------------------------------------------
+|
+| 9001 = card 1
+| 9002 = card 2
+| 9003 = card 3
+| 9004 = FEATURED
+| 9005 = SIDE
+|
+| Layout TIDAK DIUBAH.
+|
+|--------------------------------------------------------------------------
+*/
+
+$cardClass = 'news-card';
+
+
+if ($newsId === 9004) {
+
+    $cardClass .= ' news-card--featured';
+
+}
+
+
+if ($newsId === 9005) {
+
+    $cardClass .= ' news-card--side';
+
+}
 
 ?>
 
-<article class="<?= Html::encode($cardClass) ?>">
+
+<article
+    class="<?= Html::encode($cardClass) ?>"
+    data-news-id="<?= $newsId ?>"
+>
+
 
     <!-- =====================================================
          GAMBAR
@@ -204,40 +401,81 @@ $date = !empty($model->tanggal)
 
         <?= Html::a(
 
-            LazyImage::img(
-                $image,
+            Html::img(
+
+                $imageUrl,
+
                 [
-                    'alt' => $judul,
-                    'loading' => 'lazy',
+
+                    'class' =>
+                        'news-card__image-element',
+
+                    'alt' =>
+                        $judul !== ''
+                            ? $judul
+                            : 'Berita UPN Veteran Jawa Timur',
+
+                    /*
+                     * Card pertama langsung dimuat.
+                     * Card lainnya tetap lazy-load.
+                     */
+
+                    'loading' =>
+                        $newsId === 9001
+                            ? 'eager'
+                            : 'lazy',
+
+                    'decoding' =>
+                        'async',
+
                 ]
+
             ),
 
-            $detailUrl
+            $detailUrl,
+
+            [
+
+                'aria-label' =>
+                    'Buka berita: ' .
+                    (
+                        $judul !== ''
+                            ? $judul
+                            : 'Berita UPN Veteran Jawa Timur'
+                    ),
+
+            ]
 
         ) ?>
 
 
-        <!-- KATEGORI -->
+        <!-- =================================================
+             BADGE
+        ================================================== -->
 
         <span class="news-card__badge">
+
             <?= Html::encode($category) ?>
+
         </span>
 
     </div>
 
 
     <!-- =====================================================
-         ISI KARTU
+         BODY
     ====================================================== -->
 
     <div class="news-card__body">
 
 
-        <!-- TANGGAL -->
+        <!-- =================================================
+             TANGGAL
+        ================================================== -->
 
         <time
             class="news-card__date"
-            datetime="<?= Html::encode($model->tanggal) ?>"
+            datetime="<?= Html::encode((string) $model->tanggal) ?>"
         >
 
             <i
@@ -250,36 +488,60 @@ $date = !empty($model->tanggal)
         </time>
 
 
-        <!-- JUDUL -->
+        <!-- =================================================
+             JUDUL
+        ================================================== -->
 
-        <h2>
+        <h2 class="news-card__title">
 
             <?= Html::a(
-                Html::encode($judul),
-                $detailUrl
+
+                Html::encode(
+
+                    $judul !== ''
+                        ? $judul
+                        : 'Berita UPN Veteran Jawa Timur'
+
+                ),
+
+                $detailUrl,
+
+                [
+
+                    'title' => $judul,
+
+                ]
+
             ) ?>
 
         </h2>
 
 
-        <!-- RINGKASAN -->
+        <!-- =================================================
+             RINGKASAN
+        ================================================== -->
 
         <?php if ($excerpt !== ''): ?>
 
-            <p>
+            <p class="news-card__excerpt">
+
                 <?= Html::encode($excerpt) ?>
+
             </p>
 
         <?php endif; ?>
 
 
         <!-- =================================================
-             FOOTER KARTU
+             FOOTER CARD
         ================================================== -->
 
         <div class="news-card__foot">
 
-            <span>
+
+            <!-- PENULIS -->
+
+            <span class="news-card__author">
 
                 <i
                     class="bi bi-person"
@@ -291,9 +553,21 @@ $date = !empty($model->tanggal)
             </span>
 
 
+            <!-- DETAIL -->
+
             <?= Html::a(
+
                 'Detail <i class="bi bi-chevron-right" aria-hidden="true"></i>',
-                $detailUrl
+
+                $detailUrl,
+
+                [
+
+                    'class' =>
+                        'news-card__detail',
+
+                ]
+
             ) ?>
 
         </div>
