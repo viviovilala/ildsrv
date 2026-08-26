@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/viviovilala/ildsrv/compare/v1.0.0...v1.0.1) (2026-08-26)
+
+### Maintenance
+
+* backup current server state before syncing main ([26b91a3](https://github.com/viviovilala/ildsrv/commit/26b91a3a3baade418b4910f0f6b3d60612354a8d))
+
 ## 1.0.0 (2026-07-03)
 
 ### ⚠ BREAKING CHANGES
