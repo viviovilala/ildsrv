@@ -25,12 +25,12 @@ $category = trim((string) Yii::$app->request->get('category', ''));
 | frontend/web/uploads/berita/
 |
 | File:
-| 01-kkn-upnvjt.jpg
-| 02-kknt-mbkm.jpg
-| 04-kkn-internasional.jpg
-| 05-wisuda-upnvjt.jpg
-| 06-kkn-tematik.jpg
-| hero-rektor-upnvjt.jpg
+| 01-kkn-upnvjt.jpg.jpeg
+| 02-kknt-mbkm.jpg.jpeg
+| 04-kkn-internasional.jpg.jpeg
+| 05-wisuda-upnvjt.jpg.jpeg
+| 06-kkn-tematik.jpg.jpeg
+| hero-rektor-upnvjt.jpg.png
 |
 |--------------------------------------------------------------------------
 */
@@ -41,7 +41,7 @@ $dummyNews = [
         'id' => 9001,
         'judul' => 'Mahasiswa KKN UPN Veteran Jawa Timur Dorong Pengembangan Potensi Masyarakat',
         'tanggal' => '2026-08-26',
-        'image' => '01-kkn-upnvjt.jpg',
+        'image' => '01-kkn-upnvjt.jpg.jpeg',
         'kategori' => 'Kemahasiswaan',
         'isi' => 'Mahasiswa UPN Veteran Jawa Timur melaksanakan kegiatan Kuliah Kerja Nyata sebagai bentuk pengabdian kepada masyarakat. Program ini mendorong mahasiswa untuk menerapkan pengetahuan sekaligus membantu mengembangkan potensi masyarakat.',
         'penulis' => 'UPN Veteran Jawa Timur',
@@ -51,7 +51,7 @@ $dummyNews = [
         'id' => 9002,
         'judul' => 'KKNT MBKM UPN Veteran Jawa Timur Perkuat Kontribusi Mahasiswa di Masyarakat',
         'tanggal' => '2026-08-25',
-        'image' => '02-kknt-mbkm.jpg',
+        'image' => '02-kknt-mbkm.jpg.jpeg',
         'kategori' => 'Akademik',
         'isi' => 'Program KKNT MBKM menjadi salah satu bentuk implementasi pembelajaran mahasiswa di luar kampus. Melalui kegiatan ini mahasiswa memperoleh pengalaman sekaligus berkontribusi terhadap kebutuhan masyarakat.',
         'penulis' => 'UPN Veteran Jawa Timur',
@@ -61,7 +61,7 @@ $dummyNews = [
         'id' => 9003,
         'judul' => 'UPN Veteran Jawa Timur Dorong Program KKN Internasional untuk Memperluas Pengabdian',
         'tanggal' => '2026-08-24',
-        'image' => '04-kkn-internasional.jpg',
+        'image' => '04-kkn-internasional.jpg.jpeg',
         'kategori' => 'Kemahasiswaan',
         'isi' => 'Kegiatan KKN internasional menjadi bagian dari upaya UPN Veteran Jawa Timur dalam memperluas pengalaman mahasiswa dan memperkuat kontribusi perguruan tinggi melalui kegiatan pengabdian di tingkat internasional.',
         'penulis' => 'UPN Veteran Jawa Timur',
@@ -71,7 +71,7 @@ $dummyNews = [
         'id' => 9004,
         'judul' => 'Wisuda UPN Veteran Jawa Timur, Rektor Tekankan Kompetensi dan Integritas Lulusan',
         'tanggal' => '2026-08-23',
-        'image' => '05-wisuda-upnvjt.jpg',
+        'image' => '05-wisuda-upnvjt.jpg.jpeg',
         'kategori' => 'Akademik',
         'isi' => 'Wisuda menjadi momentum penting bagi UPN Veteran Jawa Timur dalam melepas para lulusan. Para lulusan diharapkan mampu mengembangkan kompetensi, menjaga integritas, serta memberikan kontribusi positif bagi masyarakat dan bangsa.',
         'penulis' => 'UPN Veteran Jawa Timur',
@@ -81,7 +81,7 @@ $dummyNews = [
         'id' => 9005,
         'judul' => 'KKN Tematik UPN Veteran Jawa Timur Hadirkan Program Pengabdian Berkelanjutan',
         'tanggal' => '2026-08-22',
-        'image' => '06-kkn-tematik.jpg',
+        'image' => '06-kkn-tematik.jpg.jpeg',
         'kategori' => 'Kemahasiswaan',
         'isi' => 'Program KKN Tematik UPN Veteran Jawa Timur mendorong mahasiswa untuk terlibat langsung dalam menyelesaikan berbagai persoalan masyarakat melalui program pengabdian yang terarah dan berkelanjutan.',
         'penulis' => 'UPN Veteran Jawa Timur',
@@ -91,7 +91,7 @@ $dummyNews = [
         'id' => 9006,
         'judul' => 'Rektor UPN Veteran Jawa Timur Dorong Penguatan Pendidikan, Inovasi, dan Pengabdian',
         'tanggal' => '2026-08-21',
-        'image' => 'hero-rektor-upnvjt.jpg',
+        'image' => 'hero-rektor-upnvjt.jpg.png',
         'kategori' => 'Pengumuman',
         'isi' => 'UPN Veteran Jawa Timur terus mendorong penguatan kualitas pendidikan, inovasi, serta pengabdian kepada masyarakat sebagai bagian dari komitmen perguruan tinggi dalam menghasilkan sumber daya manusia yang unggul dan berintegritas.',
         'penulis' => 'UPN Veteran Jawa Timur',
@@ -407,6 +407,58 @@ $dataProvider = new ArrayDataProvider([
 <div class="jdih-news-page">
 
     <!-- =====================================================
+         HERO / BANNER BERITA
+         ====================================================== -->
+
+    <section class="news-hero" aria-label="Berita utama JDIH UPN Veteran Jawa Timur">
+
+        <div class="news-hero__media">
+            <img
+                class="news-hero__image"
+                src="<?= Html::encode(Yii::getAlias('@web/uploads/berita/hero-rektor-upnvjt.jpg.png')) ?>"
+                alt="UPN Veteran Jawa Timur"
+                width="1600"
+                height="520"
+                fetchpriority="high"
+                decoding="async"
+            >
+        </div>
+
+        <div class="news-hero__overlay" aria-hidden="true"></div>
+
+        <div class="news-hero__container">
+
+            <div class="news-hero__content">
+
+                <span class="news-hero__label">
+                    BERITA UTAMA
+                </span>
+
+                <h1 class="news-hero__title">
+                    Berita &amp; Informasi JDIH
+                </h1>
+
+                <p class="news-hero__excerpt">
+                    Informasi dan kegiatan terkini Universitas Pembangunan Nasional
+                    &quot;Veteran&quot; Jawa Timur yang terdokumentasi melalui Jaringan
+                    Dokumentasi dan Informasi Hukum.
+                </p>
+
+                <a
+                    href="#news-list"
+                    class="news-hero__button"
+                >
+                    Lihat Berita
+                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- =====================================================
          FILTER
     ====================================================== -->
 
@@ -618,6 +670,141 @@ $dataProvider = new ArrayDataProvider([
     padding-right: 0;
 }
 
+
+/* =========================================================
+   HERO / BANNER BERITA
+========================================================= */
+
+.jdih-news-page .news-hero {
+    position: relative;
+    width: 100%;
+    min-height: 390px;
+    overflow: hidden;
+    background: #173f35;
+}
+
+.jdih-news-page .news-hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.jdih-news-page .news-hero__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 390px;
+    object-fit: cover;
+    object-position: center center;
+}
+
+.jdih-news-page .news-hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+        linear-gradient(90deg,
+            rgba(12, 60, 43, .93) 0%,
+            rgba(12, 60, 43, .78) 42%,
+            rgba(12, 60, 43, .36) 72%,
+            rgba(12, 60, 43, .18) 100%
+        );
+}
+
+.jdih-news-page .news-hero__container {
+    position: relative;
+    z-index: 2;
+    width: min(100% - 56px, 1200px);
+    min-height: 390px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.jdih-news-page .news-hero__content {
+    width: min(620px, 100%);
+    padding: 62px 0;
+}
+
+.jdih-news-page .news-hero__label {
+    display: inline-flex;
+    align-items: center;
+    min-height: 25px;
+    padding: 6px 11px;
+    border-radius: 4px;
+    background: #f5cf43;
+    color: #173f35;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: .04em;
+}
+
+.jdih-news-page .news-hero__title {
+    margin: 18px 0 14px;
+    color: #fff;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(38px, 5vw, 58px);
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -.025em;
+}
+
+.jdih-news-page .news-hero__excerpt {
+    width: min(560px, 100%);
+    margin: 0 0 24px;
+    color: rgba(255, 255, 255, .84);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.jdih-news-page .news-hero__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 10px 16px;
+    border-radius: 6px;
+    background: #f5cf43;
+    color: #173f35 !important;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    text-decoration: none !important;
+    transition: transform .2s ease, background .2s ease;
+}
+
+.jdih-news-page .news-hero__button:hover {
+    background: #e9c137;
+    color: #173f35 !important;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 767px) {
+    .jdih-news-page .news-hero,
+    .jdih-news-page .news-hero__container,
+    .jdih-news-page .news-hero__image {
+        min-height: 360px;
+    }
+
+    .jdih-news-page .news-hero__container {
+        width: min(100% - 28px, 680px);
+    }
+
+    .jdih-news-page .news-hero__content {
+        padding: 48px 0;
+    }
+
+    .jdih-news-page .news-hero__title {
+        font-size: 34px;
+    }
+
+    .jdih-news-page .news-hero__excerpt {
+        font-size: 13px;
+    }
+}
 
 /* =========================================================
    FILTER
