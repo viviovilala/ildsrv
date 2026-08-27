@@ -1,9 +1,4 @@
-from pathlib import Path
-import subprocess
-
-out = Path("/mnt/data/frontend-dokumen-view-rapi.php")
-
-php = r'''<?php
+<?php
 
 use frontend\models\DataLampiran;
 use frontend\models\DataStatus;
@@ -1227,15 +1222,3 @@ CSS
     </div>
 
 </section>
-'''
-
-out.write_text(php, encoding="utf-8")
-
-result = subprocess.run(
-    ["php", "-l", str(out)],
-    capture_output=True,
-    text=True
-)
-
-print(result.stdout.strip() or result.stderr.strip())
-print(f"File dibuat: {out}")
