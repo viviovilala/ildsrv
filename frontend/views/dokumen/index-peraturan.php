@@ -61,79 +61,72 @@ $currentKeyword = Yii::$app->request->get('DokumenSearch')['judul'] ?? '';
 $heroImage = Url::to('@web/images/images1.png');
 
 $this->registerCss('
+/* =========================================================
+   PRODUK HUKUM — PAGE LAYOUT
+   ========================================================= */
+
+.peraturan-hero,
+.peraturan-search,
+.peraturan-tabs,
+.peraturan-content {
+    width: min(100% - 48px, 1280px);
+    margin-left: auto;
+    margin-right: auto;
+}
 
 /* =========================================================
-   HERO PRODUK HUKUM
+   HERO
    ========================================================= */
 
 .peraturan-hero {
     position: relative;
     overflow: hidden;
-
+    min-height: 245px;
+    box-sizing: border-box;
+    padding: 48px 48px 52px;
+    border-radius: 16px;
+    color: #fff;
     background-image:
         linear-gradient(
             90deg,
-            rgba(20, 66, 18, 0.94) 0%,
-            rgba(20, 66, 18, 0.82) 35%,
-            rgba(20, 66, 18, 0.55) 70%,
-            rgba(20, 66, 18, 0.38) 100%
+            rgba(20, 66, 18, 0.95) 0%,
+            rgba(20, 66, 18, 0.86) 36%,
+            rgba(20, 66, 18, 0.64) 72%,
+            rgba(20, 66, 18, 0.48) 100%
         ),
         url("' . $heroImage . '");
-
+    background-color: #154212;
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-
-    border-radius: 16px;
-
-    padding: 58px 48px 62px;
-
-    color: #fff;
-
-    margin: 0 auto;
-
-    max-width: 1280px;
-
-    min-height: 290px;
-
-    box-sizing: border-box;
 }
 
-/*
- * Lapisan tambahan supaya teks tetap terbaca
- * ketika gambar terlalu terang.
- */
 .peraturan-hero::before {
     content: "";
     position: absolute;
     inset: 0;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(20, 66, 18, 0.08),
-            rgba(20, 66, 18, 0.22)
-        );
-
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.04),
+        rgba(0, 0, 0, 0.16)
+    );
     pointer-events: none;
 }
 
-/*
- * Semua isi hero harus berada di atas overlay.
- */
 .peraturan-hero > * {
     position: relative;
     z-index: 2;
 }
 
 .peraturan-hero .breadcrumb {
-    font-size: 14px;
-    color: rgba(255,255,255,.82);
-    margin-bottom: 20px;
+    margin: 0 0 18px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.78);
 }
 
 .peraturan-hero .breadcrumb a {
-    color: rgba(255,255,255,.82);
+    color: rgba(255, 255, 255, 0.82);
     text-decoration: none;
 }
 
@@ -147,111 +140,93 @@ $this->registerCss('
 }
 
 .peraturan-hero h1 {
-    font-family: Georgia, serif;
-    font-size: 48px;
-    line-height: 1.1;
-
-    margin: 0 0 14px;
-
-    font-weight: 900;
-
+    margin: 0 0 12px;
     color: #fff;
-
-    text-shadow:
-        0 2px 4px rgba(0,0,0,.18);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(34px, 4vw, 48px);
+    font-weight: 900;
+    line-height: 1.08;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
 }
 
 .peraturan-hero p {
-    font-size: 17px;
-    line-height: 1.65;
-
-    color: rgba(255,255,255,.90);
-
-    margin: 0;
-
     max-width: 760px;
-
-    text-shadow:
-        0 1px 2px rgba(0,0,0,.15);
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    line-height: 1.65;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
 }
-
 
 /* =========================================================
    SEARCH
    ========================================================= */
 
 .peraturan-search {
-    display: flex;
-    gap: 12px;
-
-    max-width: 1280px;
-
-    margin: 24px auto 0;
-
-    padding: 0;
+    margin-top: 22px;
 }
 
 .peraturan-search form {
     display: flex;
-    gap: 12px;
     width: 100%;
+    gap: 12px;
+    align-items: stretch;
 }
 
 .peraturan-search-input {
-    flex: 1;
-
     display: flex;
+    min-width: 0;
+    flex: 1 1 auto;
     align-items: center;
-
-    gap: 10px;
-
-    background: #fff;
-
-    border: 1px solid #e3ded0;
-
-    border-radius: 24px;
-
-    padding: 12px 20px;
-
+    gap: 12px;
     box-sizing: border-box;
+    min-height: 58px;
+    padding: 0 20px;
+    border: 1px solid #e3ded0;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(31, 42, 31, 0.03);
 }
 
 .peraturan-search-input i {
-    color: #999;
-    font-size: 18px;
+    flex: 0 0 auto;
+    color: #8a8f89;
+    font-size: 19px;
+    line-height: 1;
 }
 
 .peraturan-search-input input {
-    flex: 1;
-
-    border: none;
-    outline: none;
-
-    font-size: 15px;
-
+    min-width: 0;
+    flex: 1 1 auto;
+    height: 56px;
+    padding: 0;
+    border: 0;
+    outline: 0;
     background: transparent;
+    color: #1f2a1f;
+    font-size: 15px;
+}
+
+.peraturan-search-input input::placeholder {
+    color: #8a8f89;
 }
 
 .peraturan-search-btn {
+    flex: 0 0 auto;
+    min-width: 102px;
+    min-height: 58px;
+    padding: 0 26px;
+    border: 0;
+    border-radius: 18px;
     background: #1e4620;
-
     color: #fff;
-
-    border: none;
-
-    border-radius: 24px;
-
-    padding: 0 28px;
-
     font-size: 15px;
-
-    font-weight: 600;
-
+    font-weight: 700;
+    line-height: 1;
     cursor: pointer;
-
     transition:
-        background .2s ease,
-        transform .2s ease;
+        background-color 0.2s ease,
+        transform 0.2s ease;
 }
 
 .peraturan-search-btn:hover {
@@ -259,43 +234,39 @@ $this->registerCss('
     transform: translateY(-1px);
 }
 
-
 /* =========================================================
    TABS
    ========================================================= */
 
 .peraturan-tabs {
     display: flex;
-
-    gap: 0;
-
-    max-width: 1280px;
-
-    margin: 24px auto 0;
-
+    align-items: stretch;
+    gap: 4px;
+    margin-top: 20px;
     border-bottom: 1px solid #e3ded0;
-
-    font-size: 14px;
+    overflow-x: auto;
+    scrollbar-width: thin;
 }
 
 .peraturan-tabs a {
-    padding: 12px 24px;
-
+    flex: 0 0 auto;
+    padding: 13px 22px 12px;
+    border-bottom: 3px solid transparent;
     color: #6b6f6b;
-
-    border-bottom: 2px solid transparent;
-
-    transition: all .15s ease;
-
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.35;
     text-decoration: none;
+    transition:
+        color 0.15s ease,
+        border-color 0.15s ease,
+        background-color 0.15s ease;
 }
 
 .peraturan-tabs a.active {
-    color: #1e4620;
-
-    font-weight: 700;
-
     border-bottom-color: #1e4620;
+    color: #1e4620;
+    font-weight: 700;
 }
 
 .peraturan-tabs a:hover {
@@ -303,217 +274,180 @@ $this->registerCss('
     text-decoration: none;
 }
 
-
 /* =========================================================
    CONTENT
    ========================================================= */
 
 .peraturan-content {
     display: flex;
-
-    gap: 32px;
-
-    max-width: 1280px;
-
-    margin: 28px auto 60px;
-
     align-items: flex-start;
+    gap: 28px;
+    margin-top: 24px;
+    margin-bottom: 56px;
 }
-
 
 /* =========================================================
    FILTER
    ========================================================= */
 
 .peraturan-filter {
-    width: 250px;
-
-    flex-shrink: 0;
-
-    background: #fff;
-
-    border: 1px solid #e3ded0;
-
-    border-radius: 12px;
-
-    padding: 24px;
-
+    width: 258px;
+    flex: 0 0 258px;
     box-sizing: border-box;
+    padding: 22px;
+    border: 1px solid #e3ded0;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 3px 14px rgba(31, 42, 31, 0.035);
 }
 
 .peraturan-filter h3 {
-    font-family: Georgia, serif;
-
-    font-size: 20px;
-
     margin: 0 0 20px;
-
     color: #1f2a1f;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.25;
 }
 
 .peraturan-filter-group {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .peraturan-filter-group label.group-title {
     display: block;
-
-    font-weight: 600;
-
-    font-size: 13px;
-
     margin-bottom: 8px;
-
     color: #1f2a1f;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.4;
 }
 
 .peraturan-filter select {
     width: 100%;
-
-    padding: 10px 12px;
-
-    border: 1px solid #e3ded0;
-
-    border-radius: 8px;
-
-    font-size: 13px;
-
-    background: #fff;
-
-    color: #1f2a1f;
-
+    min-height: 44px;
     box-sizing: border-box;
+    padding: 0 12px;
+    border: 1px solid #e3ded0;
+    border-radius: 9px;
+    outline: 0;
+    background: #fff;
+    color: #1f2a1f;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.peraturan-filter select:focus {
+    border-color: #8aa18a;
+    box-shadow: 0 0 0 3px rgba(30, 70, 32, 0.08);
 }
 
 .peraturan-filter-btn {
     width: 100%;
-
+    min-height: 46px;
+    margin-top: 6px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 9px;
     background: #1e4620;
-
     color: #fff;
-
-    border: none;
-
-    border-radius: 8px;
-
-    padding: 12px;
-
     font-size: 14px;
-
-    font-weight: 600;
-
+    font-weight: 700;
+    line-height: 1;
     cursor: pointer;
-
-    margin-top: 8px;
-
-    transition: background .2s ease;
+    transition: background-color 0.2s ease;
 }
 
 .peraturan-filter-btn:hover {
     background: #163717;
 }
 
-
 /* =========================================================
    RESULTS
    ========================================================= */
 
 .peraturan-results {
-    flex: 1;
-
     min-width: 0;
+    flex: 1 1 auto;
 }
 
 .peraturan-toolbar {
     display: flex;
-
-    justify-content: space-between;
-
     align-items: center;
-
-    margin-bottom: 16px;
-
-    font-size: 14px;
-
+    justify-content: space-between;
+    min-height: 42px;
+    margin-bottom: 12px;
     color: #6b6f6b;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
 .peraturan-toolbar strong {
     color: #1f2a1f;
+    font-weight: 700;
 }
-
 
 /* =========================================================
    DOCUMENT CARD
    ========================================================= */
 
 .doc-card {
-    background: #fff;
-
-    border: 1px solid #e3ded0;
-
-    border-radius: 10px;
-
-    padding: 20px 24px;
-
-    margin-bottom: 16px;
-
     display: flex;
-
-    justify-content: space-between;
-
     align-items: flex-start;
-
-    gap: 16px;
-
+    justify-content: space-between;
+    gap: 20px;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0 0 14px;
+    padding: 19px 22px;
+    border: 1px solid #e3ded0;
+    border-radius: 13px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(31, 42, 31, 0.025);
     transition:
-        box-shadow .15s ease,
-        transform .15s ease;
+        box-shadow 0.18s ease,
+        transform 0.18s ease,
+        border-color 0.18s ease;
 }
 
 .doc-card:hover {
-    box-shadow: 0 8px 24px rgba(31,42,31,.08);
-
+    border-color: #d8d2c3;
+    box-shadow: 0 8px 24px rgba(31, 42, 31, 0.07);
     transform: translateY(-1px);
 }
 
 .doc-card-main {
-    flex: 1;
+    min-width: 0;
+    flex: 1 1 auto;
 }
 
 .doc-card-meta {
     display: flex;
-
+    flex-wrap: wrap;
     align-items: center;
-
-    gap: 8px;
-
+    gap: 7px 9px;
     margin-bottom: 8px;
-
-    font-size: 12px;
-
     color: #6b6f6b;
+    font-size: 12px;
+    line-height: 1.45;
 }
 
 .doc-card-badge {
-    display: inline-block;
-
+    display: inline-flex;
+    align-items: center;
+    min-height: 22px;
     padding: 2px 10px;
-
-    border-radius: 20px;
-
-    font-size: 11px;
-
-    font-weight: 700;
-
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    line-height: 1.2;
     text-transform: uppercase;
-
-    letter-spacing: .03em;
 }
 
 .doc-card-badge.is-berlaku {
-    background: #e6f4ea;
-    color: #1e7a34;
+    background: #e8f4ea;
+    color: #25743a;
 }
 
 .doc-card-badge.is-cabut {
@@ -522,90 +456,84 @@ $this->registerCss('
 }
 
 .doc-card h3 {
+    margin: 0 0 9px;
+    color: #1f2a1f;
     font-size: 17px;
-
-    font-weight: 700;
-
-    margin: 0 0 8px;
-
-    line-height: 1.4;
+    font-weight: 750;
+    line-height: 1.42;
 }
 
 .doc-card h3 a {
-    color: #1f2a1f;
+    color: inherit;
+    text-decoration: none;
 }
 
 .doc-card h3 a:hover {
     color: #1e4620;
-
     text-decoration: underline;
 }
 
 .doc-card-info {
-    font-size: 13px;
-
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 18px;
     color: #6b6f6b;
+    font-size: 13px;
+    line-height: 1.5;
 }
 
 .doc-card-info span {
-    margin-right: 16px;
+    margin-right: 0;
 }
 
 .doc-card-detail {
+    flex: 0 0 auto;
     align-self: center;
-
     display: inline-flex;
-
     align-items: center;
-
-    gap: 4px;
-
-    background: #f7f4ec;
-
+    justify-content: center;
+    gap: 5px;
+    min-height: 40px;
+    padding: 0 16px;
     border: 1px solid #e3ded0;
-
-    border-radius: 20px;
-
-    padding: 8px 18px;
-
-    font-size: 13px;
-
-    font-weight: 600;
-
+    border-radius: 999px;
+    background: #f7f4ec;
     color: #1f2a1f;
-
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
     white-space: nowrap;
-
-    transition: background .15s ease;
+    text-decoration: none;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
 }
 
 .doc-card-detail:hover {
-    background: #e3ded0;
-
-    text-decoration: none;
-
+    border-color: #d7d0c0;
+    background: #ebe5d8;
     color: #1f2a1f;
+    text-decoration: none;
 }
 
-
 /* =========================================================
-   EMPTY
+   EMPTY STATE
    ========================================================= */
 
 .peraturan-empty {
-    text-align: center;
-
-    padding: 60px 20px;
-
-    color: #6b6f6b;
-
+    box-sizing: border-box;
+    padding: 58px 24px;
+    border: 1px dashed #dcd5c7;
+    border-radius: 13px;
     background: #fff;
-
-    border: 1px dashed #e3ded0;
-
-    border-radius: 10px;
+    color: #6b6f6b;
+    text-align: center;
+    line-height: 1.5;
 }
 
+.peraturan-empty i {
+    color: #c8cbc7 !important;
+}
 
 /* =========================================================
    PAGINATION
@@ -613,81 +541,77 @@ $this->registerCss('
 
 .peraturan-pagination {
     display: flex;
-
-    justify-content: center;
-
     align-items: center;
-
+    justify-content: center;
     gap: 6px;
-
-    margin-top: 28px;
+    margin-top: 24px;
 }
 
 .peraturan-pagination a,
 .peraturan-pagination span {
     display: inline-flex;
-
     align-items: center;
-
     justify-content: center;
-
     min-width: 36px;
-
     height: 36px;
-
+    padding: 0 8px;
+    box-sizing: border-box;
     border-radius: 50%;
-
-    font-size: 14px;
-
     color: #1f2a1f;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
 }
 
 .peraturan-pagination a.active {
     background: #1e4620;
-
     color: #fff;
 }
 
 .peraturan-pagination a:hover:not(.active) {
-    background: #e3ded0;
+    background: #e8e3d8;
+    text-decoration: none;
 }
 
 .peraturan-pagination .nav-arrow {
     border: 1px solid #e3ded0;
 }
 
-
 /* =========================================================
-   RESPONSIVE
+   TABLET
    ========================================================= */
 
 @media (max-width: 1100px) {
-
     .peraturan-hero,
     .peraturan-search,
     .peraturan-tabs,
     .peraturan-content {
-        margin-left: 24px;
-        margin-right: 24px;
+        width: min(100% - 40px, 1280px);
     }
 
-}
-
-@media (max-width: 900px) {
-
     .peraturan-content {
-        flex-direction: column;
+        gap: 22px;
     }
 
     .peraturan-filter {
-        width: 100%;
+        width: 235px;
+        flex-basis: 235px;
     }
 
+    .doc-card {
+        padding: 18px 20px;
+    }
+}
+
+/* =========================================================
+   MOBILE / TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
     .peraturan-hero {
-        padding: 40px 28px 48px;
-
-        min-height: 260px;
-
+        min-height: 235px;
+        padding: 38px 30px 44px;
         background-position: center;
     }
 
@@ -695,38 +619,46 @@ $this->registerCss('
         font-size: 36px;
     }
 
-    .peraturan-hero p {
-        font-size: 15px;
+    .peraturan-content {
+        flex-direction: column;
+    }
+
+    .peraturan-filter {
+        width: 100%;
+        flex-basis: auto;
     }
 
     .doc-card {
         flex-direction: column;
+        gap: 14px;
     }
 
     .doc-card-detail {
         align-self: flex-start;
     }
-
 }
 
-@media (max-width: 600px) {
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
 
+@media (max-width: 600px) {
     .peraturan-hero,
     .peraturan-search,
     .peraturan-tabs,
     .peraturan-content {
-        margin-left: 16px;
-        margin-right: 16px;
+        width: calc(100% - 28px);
     }
 
     .peraturan-hero {
-        padding: 32px 22px 40px;
-
-        min-height: 230px;
-
+        min-height: 220px;
+        padding: 30px 22px 36px;
         border-radius: 14px;
+    }
 
-        background-position: center;
+    .peraturan-hero .breadcrumb {
+        margin-bottom: 14px;
+        font-size: 12px;
     }
 
     .peraturan-hero h1 {
@@ -735,25 +667,74 @@ $this->registerCss('
 
     .peraturan-hero p {
         font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .peraturan-search {
+        margin-top: 16px;
     }
 
     .peraturan-search form {
         flex-direction: column;
     }
 
+    .peraturan-search-input {
+        min-height: 52px;
+        border-radius: 14px;
+    }
+
+    .peraturan-search-input input {
+        height: 50px;
+    }
+
     .peraturan-search-btn {
-        height: 46px;
+        width: 100%;
+        min-height: 48px;
+        border-radius: 14px;
     }
 
     .peraturan-tabs {
-        overflow-x: auto;
-        white-space: nowrap;
+        margin-top: 16px;
     }
 
     .peraturan-tabs a {
-        padding: 12px 16px;
+        padding: 11px 15px;
+        font-size: 13px;
     }
 
+    .peraturan-content {
+        margin-top: 18px;
+        margin-bottom: 42px;
+    }
+
+    .peraturan-filter {
+        padding: 18px;
+        border-radius: 12px;
+    }
+
+    .doc-card {
+        padding: 16px 17px;
+        border-radius: 12px;
+    }
+
+    .doc-card h3 {
+        font-size: 16px;
+        line-height: 1.42;
+    }
+
+    .doc-card-info {
+        font-size: 12px;
+    }
+
+    .doc-card-detail {
+        min-height: 38px;
+        padding: 0 14px;
+    }
+
+    .peraturan-toolbar {
+        min-height: 36px;
+        font-size: 13px;
+    }
 }
 
 ');
