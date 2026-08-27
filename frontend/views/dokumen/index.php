@@ -7,7 +7,7 @@ use yii\widgets\ListView;
 $pageTitle = $pageTitle ?? 'Produk Hukum';
 $pageDescription = $pageDescription ?? 'Arsip digital peraturan dan keputusan hukum dalam lingkungan UPN Veteran Jawa Timur.';
 $this->title = $pageTitle . ' - JDIH UPNVJT';
-$heroImage = Url::to('@web/images/upnvjt-building.png');
+$heroImage = Url::to('@web/images/images1.png');
 $totalCount = $dataProvider->getTotalCount();
 $from = $totalCount > 0 ? $dataProvider->pagination->offset + 1 : 0;
 $to = $totalCount > 0 ? min($dataProvider->pagination->offset + $dataProvider->pagination->limit, $totalCount) : 0;
